@@ -5,7 +5,9 @@
 
 #include "ChessCanvas.h"
 
+#include <chess.hpp>
 #include <iostream>
+#include <ranges>
 
 CanvasBoard::CanvasBoard(QWidget *parent)
     : QFrame(parent),
@@ -37,6 +39,13 @@ void CanvasBoard::resizeEvent(QResizeEvent *event) {
     auto rect = new QRect(0, 0, l, l);
     rect->moveCenter(center);
     this->setGeometry(*rect);
+}
+
+void CanvasBoard::load_FEN() {
+    std::string FEN = (new chess::Board())->getFen();
+    for (auto [square, new_value] : std::views::zip(findChildren<QLabel*>(), FEN)){
+        square->setText(new_value);
+    }
 }
 
 ChessSquare::ChessSquare(int square_id, bool is_white, int square_size)

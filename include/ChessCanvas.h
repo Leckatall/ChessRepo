@@ -16,9 +16,10 @@ class CanvasBoard : public QFrame {
 
 public:
     CanvasBoard(QWidget *parent = nullptr);
-    void initUI();
+    void load_FEN();
+    // void load_FEN(std::string FEN);
 private:
-
+    void initUI();
     void resizeEvent(QResizeEvent *event) override;
 
     int board_size{};

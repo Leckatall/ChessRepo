@@ -11,14 +11,15 @@
 #include "ChessCanvas.h"
 
 class MainWindow : public QMainWindow {
-    Q_OBJECT  // MOC requires this macro for signals and slots
+    Q_OBJECT // MOC requires this macro for signals and slots
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
 
 private:
     void initUI();
-    void initLayout(QLayout* layout);
+
+    void initLayout(QLayout *layout);
 
     // Private members
     QWidget *central_widget;

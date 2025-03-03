@@ -5,6 +5,7 @@
 
 #include "MainWindow.h"
 
+#include <chess.hpp>
 #include <iostream>
 #include <QPushButton>
 #include <QWidget>
@@ -17,6 +18,7 @@
 #include <QWidget>
 #include <QGridLayout>
 #include <QPushButton>
+#include <ranges>
 
 #include "ChessCanvas.h"
 
@@ -24,8 +26,8 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       central_widget(new QWidget(this)),
       status_bar(new QStatusBar(this)),
-button(new QPushButton(central_widget)),
-      chessCanvas(new CanvasBoard()){
+      button(new QPushButton(central_widget)),
+      chessCanvas(new CanvasBoard()) {
     // Set central widget
     setCentralWidget(central_widget);
 
@@ -53,6 +55,9 @@ void MainWindow::initUI() {
     status_bar->showMessage("Ready");
     // Create view menu
     QMenu *viewMenu = menuBar()->addMenu("View");
+
+
+    connect(button, &QPushButton::clicked, chessCanvas, &CanvasBoard::load_FEN);
     initLayout(new QGridLayout());
 }
 
