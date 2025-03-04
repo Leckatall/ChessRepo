@@ -25,13 +25,15 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets)
 set(SOURCES
     src/main.cpp
     src/MainWindow.cpp
-        src/ChessCanvas.cpp
+        src/ChessDisplay.cpp
+        src/ChessBoard.cpp
 )
 
 ## Building headers list
 set(HEADERS
     include/MainWindow.h
-        include/ChessCanvas.h
+        include/ChessDisplay.h
+        include/ChessBoard.h
 )
 
 add_executable(myapp ${SOURCES} ${HEADERS})

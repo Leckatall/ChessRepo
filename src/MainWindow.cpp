@@ -20,14 +20,14 @@
 #include <QPushButton>
 #include <ranges>
 
-#include "ChessCanvas.h"
+#include "ChessDisplay.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       central_widget(new QWidget(this)),
       status_bar(new QStatusBar(this)),
       button(new QPushButton(central_widget)),
-      chessCanvas(new CanvasBoard()) {
+      chessCanvas(new DisplayBoard()) {
     // Set central widget
     setCentralWidget(central_widget);
 
@@ -56,8 +56,9 @@ void MainWindow::initUI() {
     // Create view menu
     QMenu *viewMenu = menuBar()->addMenu("View");
 
+    chessCanvas->display(*new chess::Board);
 
-    connect(button, &QPushButton::clicked, chessCanvas, &CanvasBoard::load_FEN);
+    // connect(button, &QPushButton::clicked, chessCanvas, &CanvasBoard::load_FEN);
     initLayout(new QGridLayout());
 }
 
