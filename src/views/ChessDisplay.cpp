@@ -8,21 +8,23 @@
 #include <chess.hpp>
 #include <iostream>
 #include <ranges>
+
 DisplayBoard::DisplayBoard(QWidget *parent)
     : QFrame(parent),
       board_size(std::min(this->width(), this->height())),
       square_size(board_size / 8),
-      board_layout(new QGridLayout()){
+      board(*new ChessBoard) {
     this->initUI();
 }
 
 void DisplayBoard::initUI() {
+    auto board_layout = new QGridLayout();
     board_layout->setSpacing(0);
 
     // auto *square = new ChessSquare(1, true, this->square_size);
     // board_layout->addWidget(square);
     for (int row = 0; row < 8; ++row) {
-        const auto rank = chess::Rank(row);
+        const auto rank = chess::Rank(7 - row);
         for (int col = 0; col < 8; ++col) {
             const auto file = chess::File(col);
             const auto square = chess::Square(rank, file);
@@ -33,7 +35,6 @@ void DisplayBoard::initUI() {
         }
     }
     this->setLayout(board_layout);
-
 }
 
 void DisplayBoard::resizeEvent(QResizeEvent *event) {
@@ -46,36 +47,46 @@ void DisplayBoard::resizeEvent(QResizeEvent *event) {
     this->setGeometry(*rect);
 }
 
-void DisplayBoard::square_clicked(chess::Square square) {
-    this->label_map[square]->select();
+void DisplayBoard::square_clicked(const chess::Square square) {
+    if (selected_square != chess::Square(64)) {
+        // Has a piece already been selected
+        label_map[selected_square]->clear_selection();
+        for (auto target: targeted_squares) {
+            label_map[target]->clear_selection();
+        }
+
+        if (std::ranges::find(targeted_squares, square) != targeted_squares.end()) {
+            make_move(chess::Move::make(selected_square, square));
+            return;
+        }
+        targeted_squares.clear();
+    }
+    selected_square = square;
+    label_map[selected_square]->select();
     chess::Movelist moves;
     chess::movegen::legalmoves<chess::movegen::MoveGenType::ALL>(moves, board);
-    for (auto move : moves) {
-        std::cout << move.from();
-        std::cout << "\n";
-        std::cout << square;
-        std::cout << "\n";
-        std::cout << "\n";
-
+    for (auto move: moves) {
         if (move.from() == square) {
-            this->label_map[move.to()]->make_target();
-            this->targeted_squares.push_back(move.to());
+            label_map[move.to()]->make_target();
+            targeted_squares.push_back(move.to());
         }
     }
 }
 
-
-void DisplayBoard::display(const chess::Board &board) {
-    std::string FEN = (new chess::Board())->getFen();
-
-    QList<ChessSquareLbl *> square_lbls = findChildren<ChessSquareLbl *>();
+void DisplayBoard::display() {
     // Can't belive there's no zip() in this stupid language
     for (int square_id = 0; square_id < 64; square_id++) {
-        square_lbls[square_id]->set_piece(board.at(chess::Square(square_id)));
+        label_map[chess::Square(square_id)]->set_piece(board.at(chess::Square(square_id)));
     }
     // for (auto [square, new_value] : std::views::zip(, FEN)){
     //     square->setText(new_value);
     // }
+}
+
+void DisplayBoard::make_move(chess::Move move) {
+    std::cout << move;
+    board.makeMove<true>(move);
+    display();
 }
 
 ChessSquareLbl::ChessSquareLbl(chess::Square square, int square_size)
@@ -104,7 +115,10 @@ void ChessSquareLbl::make_target() {
 }
 
 void ChessSquareLbl::select() {
-    this->setStyleSheet(this->styleSheet().append("QLabel {border: 5px solid blue}"));
+    if(piece != chess::Piece()) {
+        // If there is a piece edit style
+        this->setStyleSheet(this->styleSheet().append("QLabel {border: 5px solid blue}"));
+    }
 }
 
 void ChessSquareLbl::clear_selection() {

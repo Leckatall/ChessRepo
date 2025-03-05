@@ -56,7 +56,7 @@ public:
     void select();
     void clear_selection();
 
-    chess::Piece piece;
+    chess::Piece piece = chess::Piece();
     bool target = false;
 
 signals:
@@ -71,15 +71,6 @@ protected:
 
 private:
     void initUI();
-
-    //
-    // void clear_piece();
-    //
-    // void select();
-    //
-    // void deselect();
-    //
-    // void highlight();
 
     chess::Square square;
     int square_size;
@@ -103,10 +94,13 @@ class DisplayBoard : public QFrame {
 public:
     explicit DisplayBoard(QWidget *parent = nullptr);
 
-    void display(const chess::Board &board);
+    void display();
+
+    void make_move(chess::Move move);
 
     ChessBoard board;
     std::unordered_map<chess::Square, ChessSquareLbl *> label_map;
+    chess::Square selected_square = chess::Square(64);
     std::list<chess::Square> targeted_squares;
     chess::Movelist enabled_moves;
 
@@ -117,7 +111,6 @@ private:
 
     int board_size{};
     int square_size{};
-    QGridLayout *board_layout;
 
 
 private slots:

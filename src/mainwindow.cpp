@@ -56,7 +56,7 @@ void MainWindow::initUI() {
     // Create view menu
     QMenu *viewMenu = menuBar()->addMenu("View");
 
-    chessCanvas->display(*new chess::Board);
+    chessCanvas->display();
 
     // connect(button, &QPushButton::clicked, chessCanvas, &CanvasBoard::load_FEN);
     initLayout(new QGridLayout());

@@ -3,15 +3,18 @@
 //
 
 #include <iostream>
-#include <QApplication>
-#include "Mainwindow.h"
 #include "chess.hpp"
+#include <QApplication>
+#include "MainWindow.h"
+#include "Explorer.h"
+
+
 
 using namespace chess;
 
 int main(int argc, char *argv[]) {
-    Board board = Board();
-    std::cout << board;
+    auto explore = Explorer();
+    explore.getMoves();
     QApplication app(argc, argv);  // Initialize Qt application
 
     MainWindow window;             // Create MainWindow object

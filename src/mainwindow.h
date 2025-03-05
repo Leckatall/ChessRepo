@@ -8,7 +8,7 @@
 #include <QMainWindow>
 #include <QPushButton>
 
-#include "ChessDisplay.h"
+#include "../include/ChessDisplay.h"
 
 class MainWindow : public QMainWindow {
     Q_OBJECT // MOC requires this macro for signals and slots
@@ -26,6 +26,8 @@ private:
     QStatusBar *status_bar;
     DisplayBoard *chessCanvas;
     QPushButton *button{};
+    QPushButton *PracticeRepoBtn{};
+    QPushButton *BuildRepoBtn{};
 
 };
 
