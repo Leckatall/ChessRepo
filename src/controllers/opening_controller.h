@@ -4,7 +4,7 @@
 
 #ifndef OPENING_CONTROLLER_H
 #define OPENING_CONTROLLER_H
-
+#include <QObject>
 
 
 class OpeningController : public QObject {

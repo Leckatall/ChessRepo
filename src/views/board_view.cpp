@@ -3,7 +3,7 @@
 //
 
 
-#include "ChessDisplay.h"
+#include "board_view.h"
 
 #include <chess.hpp>
 #include <iostream>
@@ -17,35 +17,35 @@ DisplayBoard::DisplayBoard(QWidget *parent)
     this->initUI();
 }
 
-void DisplayBoard::initUI() {
-    auto board_layout = new QGridLayout();
-    board_layout->setSpacing(0);
-
-    // auto *square = new ChessSquare(1, true, this->square_size);
-    // board_layout->addWidget(square);
-    for (int row = 0; row < 8; ++row) {
-        const auto rank = chess::Rank(7 - row);
-        for (int col = 0; col < 8; ++col) {
-            const auto file = chess::File(col);
-            const auto square = chess::Square(rank, file);
-            auto *squareLbl = new ChessSquareLbl(square, this->square_size);
-            label_map[square] = squareLbl;
-            board_layout->addWidget(squareLbl, row, col);
-            connect(squareLbl, &ChessSquareLbl::clicked, this, &DisplayBoard::square_clicked);
-        }
-    }
-    this->setLayout(board_layout);
-}
-
-void DisplayBoard::resizeEvent(QResizeEvent *event) {
-    QFrame::resizeEvent(event);
-
-    int l = std::min(this->width(), this->height());
-    QPoint center = this->rect().center();
-    auto rect = new QRect(0, 0, l, l);
-    rect->moveCenter(center);
-    this->setGeometry(*rect);
-}
+// void DisplayBoard::initUI() {
+//     auto board_layout = new QGridLayout();
+//     board_layout->setSpacing(0);
+//
+//     // auto *square = new ChessSquare(1, true, this->square_size);
+//     // board_layout->addWidget(square);
+//     for (int row = 0; row < 8; ++row) {
+//         const auto rank = chess::Rank(7 - row);
+//         for (int col = 0; col < 8; ++col) {
+//             const auto file = chess::File(col);
+//             const auto square = chess::Square(rank, file);
+//             auto *squareLbl = new ChessSquareLbl(square, this->square_size);
+//             label_map[square] = squareLbl;
+//             board_layout->addWidget(squareLbl, row, col);
+//             connect(squareLbl, &ChessSquareLbl::clicked, this, &DisplayBoard::square_clicked);
+//         }
+//     }
+//     this->setLayout(board_layout);
+// }
+//
+// void DisplayBoard::resizeEvent(QResizeEvent *event) {
+//     QFrame::resizeEvent(event);
+//
+//     int l = std::min(this->width(), this->height());
+//     QPoint center = this->rect().center();
+//     auto rect = new QRect(0, 0, l, l);
+//     rect->moveCenter(center);
+//     this->setGeometry(*rect);
+// }
 
 void DisplayBoard::square_clicked(const chess::Square square) {
     if (selected_square != chess::Square(64)) {

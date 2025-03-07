@@ -3,8 +3,9 @@
 //
 
 
-#include "Components/tablemodel.h"
+#include "table_model.h"
 #include <algorithm>
+#include <qvariant.h>
 
 
 QVariant TableModel::get_cell(const int row, const std::string& column) const {
@@ -93,11 +94,7 @@ bool TableModel::setData(const QModelIndex& index, const QVariant& value, int ro
     return false;
 }
 
-void TableModel::update_data(const std::vector<std::map<std::string, QVariant>>& data) {
-    beginResetModel();
-    _data = data;
-    endResetModel();
-}
+
 
 QModelIndex TableModel::get_row_by_id(const QVariant& source, const QVariant& listing_id) const {
     for (auto rows = std::views::iota(0, rowCount()); const int row : rows) {

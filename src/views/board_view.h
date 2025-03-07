@@ -13,7 +13,8 @@
 #include <QString>
 #include <QMouseEvent>
 
-#include "ChessBoard.h"
+#include "controllers/board_controller.h"
+
 
 // const std::unordered_map<char, std::string> UNICODE_PIECE_SYMBOLS = {
 //     {'R', "♖"}, {'r', "♜"},

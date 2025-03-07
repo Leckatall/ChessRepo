@@ -5,21 +5,39 @@
 #include <iostream>
 #include "chess.hpp"
 #include <QApplication>
-#include "MainWindow.h"
-#include "Explorer.h"
+#include <qurl.h>
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <QQmlContext>
+#include <QDir>
 
+#include "controllers/board_controller.h"
+//
+// #include "controllers/opening_controller.h"
 
-
-using namespace chess;
 
 int main(int argc, char *argv[]) {
-    auto explore = Explorer();
-    explore.getMoves();
-    QApplication app(argc, argv);  // Initialize Qt application
+    QGuiApplication app(argc, argv);
+    QQmlApplicationEngine engine;
 
-    MainWindow window;             // Create MainWindow object
-    window.show(); // Display window
+    // Create services and controllers
+    // OpeningController openingController;
+    // ApiService apiService;
+    BoardController boardController;
+
+    // Expose to QML context
+    // engine.rootContext()->setContextProperty("openingController", &openingController);
+    // engine.rootContext()->setContextProperty("apiService", &apiService);
+    engine.rootContext()->setContextProperty("boardController", &boardController);
+    // Load main QML
+    engine.load(QUrl(QStringLiteral("qrc:/qml/MainWindow.qml")));
+
+    if (engine.rootObjects().isEmpty()) {
+        std::cout << "did not find qml";
+        return -1;
+    }
 
     return app.exec();             // Run the application event loop
 
 }
+
