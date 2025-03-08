@@ -19,15 +19,20 @@
 #include <QGridLayout>
 #include <QPushButton>
 #include <ranges>
+#include <QFrame>
+#include <QHeaderView>
 
-#include "ChessDisplay.h"
+#include "models/boardtblmodel.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       central_widget(new QWidget(this)),
       status_bar(new QStatusBar(this)),
       button(new QPushButton(central_widget)),
-      chessCanvas(new DisplayBoard()) {
+      tableContainer(new QFrame(this)),
+      boardTblModel(new BoardTblModel(this)),
+      boardTblView(new BoardTblView(tableContainer)),
+      boardController(boardTblModel, boardTblView) {
     // Set central widget
     setCentralWidget(central_widget);
 
@@ -56,16 +61,18 @@ void MainWindow::initUI() {
     // Create view menu
     QMenu *viewMenu = menuBar()->addMenu("View");
 
-    chessCanvas->display();
+    boardTblView->setBoard(boardTblModel);
+    tableContainer->setLayout(new QVBoxLayout());
+    tableContainer->layout()->addWidget(boardTblView);
 
     // connect(button, &QPushButton::clicked, chessCanvas, &CanvasBoard::load_FEN);
     initLayout(new QGridLayout());
 }
 
 void MainWindow::initLayout(QLayout *layout) {
-    chessCanvas->setSizePolicy(QSizePolicy::Minimum, QSizePolicy::Minimum);
+    tableContainer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 
-    layout->addWidget(chessCanvas);
+    layout->addWidget(tableContainer);
     layout->addWidget(button);
     central_widget->setLayout(layout);
 }

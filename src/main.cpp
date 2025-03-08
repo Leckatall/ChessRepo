@@ -5,16 +5,13 @@
 #include <iostream>
 #include "chess.hpp"
 #include <QApplication>
-#include "MainWindow.h"
-#include "Explorer.h"
+#include "views/mainwindow.h"
 
 
 
 using namespace chess;
 
 int main(int argc, char *argv[]) {
-    auto explore = Explorer();
-    explore.getMoves();
     QApplication app(argc, argv);  // Initialize Qt application
 
     MainWindow window;             // Create MainWindow object

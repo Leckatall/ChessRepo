@@ -1,0 +1,39 @@
+//
+// Created by Lecka on 08/03/2025.
+//
+
+#ifndef BOARDTBLVIEW_H
+#define BOARDTBLVIEW_H
+#include <QTableView>
+
+#include "models/boardtblmodel.h"
+
+
+class BoardTblView : public QTableView {
+    Q_OBJECT
+
+public:
+    explicit BoardTblView(QWidget *parent = nullptr);
+
+    void setBoard(BoardTblModel *model);
+
+protected:
+    void mousePressEvent(QMouseEvent *event) override;
+
+    void mouseReleaseEvent(QMouseEvent *event) override {}
+
+    void paintEvent(QPaintEvent *event) override;
+
+    void resizeEvent(QResizeEvent *event) override;
+
+signals:
+    void squareClicked(QModelIndex index);
+
+private:
+
+
+    QFont m_coordinateFont;
+};
+
+
+#endif //BOARDTBLVIEW_H

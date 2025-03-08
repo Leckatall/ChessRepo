@@ -3,7 +3,7 @@
 //
 
 
-#include "Components/tablemodel.h"
+#include "tablemodel.h"
 #include <algorithm>
 
 
@@ -91,12 +91,6 @@ bool TableModel::setData(const QModelIndex& index, const QVariant& value, int ro
         return true;
     }
     return false;
-}
-
-void TableModel::update_data(const std::vector<std::map<std::string, QVariant>>& data) {
-    beginResetModel();
-    _data = data;
-    endResetModel();
 }
 
 QModelIndex TableModel::get_row_by_id(const QVariant& source, const QVariant& listing_id) const {

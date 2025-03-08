@@ -7,8 +7,11 @@
 
 #include <QMainWindow>
 #include <QPushButton>
+#include <QTableView>
 
-#include "../include/ChessDisplay.h"
+#include "boardtblview.h"
+#include "controllers/boardcontroller.h"
+#include "models/boardtblmodel.h"
 
 class MainWindow : public QMainWindow {
     Q_OBJECT // MOC requires this macro for signals and slots
@@ -24,7 +27,12 @@ private:
     // Private members
     QWidget *central_widget;
     QStatusBar *status_bar;
-    DisplayBoard *chessCanvas;
+
+    BoardTblModel *boardTblModel;
+    BoardTblView *boardTblView;
+    QFrame *tableContainer;
+    BoardController boardController;
+
     QPushButton *button{};
     QPushButton *PracticeRepoBtn{};
     QPushButton *BuildRepoBtn{};
