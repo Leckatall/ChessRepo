@@ -4,10 +4,10 @@
 
 #ifndef BOARDVIEW_H
 #define BOARDVIEW_H
+#include <QFrame>
 
 
-
-class boardview {
+class BoardView: public QFrame {
 
 };
 

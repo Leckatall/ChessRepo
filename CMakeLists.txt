@@ -7,7 +7,6 @@ set(CMAKE_CXX_STANDARD 20)       # Use C++20
 set(CMAKE_CXX_STANDARD_REQUIRED ON)  # Ensure the standard is used
 set(CMAKE_CXX_EXTENSIONS OFF) # Use only standard C++, no compiler-specific extensions
 #set(CMAKE_TOOLCHAIN_FILE "C:\\Users\\Lecka\\.vcpkg-clion\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
-set(CMAKE_TOOLCHAIN_FILE "")
 
 #set(CMAKE_PREFIX_PATH "C:/Users/Lecka/.vcpkg-clion/vcpkg/installed/x64-mingw-dynamic/share")
 
@@ -39,6 +38,15 @@ set(MODELS
         src/models/boardtblmodel.cpp
         src/models/boardwrapper.cpp
         src/models/boardwrapper.h
+        src/models/BoardTblProxyModel.cpp
+        src/models/BoardTblProxyModel.h
+        src/models/moveModel.cpp
+        src/models/moveModel.h
+
+        #        src/models/boardmodel.cpp
+#        src/models/boardmodel.h
+#        src/models/squaremodel.cpp
+#        src/models/squaremodel.h
 )
 set(VIEWS
         src/views/mainwindow.h
@@ -47,22 +55,25 @@ set(VIEWS
         src/views/squaredelegate.h
         src/views/boardtblview.cpp
         src/views/boardtblview.h
-        src/views/boardview.cpp
-        src/views/boardview.h
+        src/views/explorerview.cpp
+        src/views/explorerview.h
+        src/views/explorertblview.cpp
+        src/views/explorertblview.h
+        #        src/views/boardview.cpp
+        #        src/views/boardview.h
 )
 
 
 set(CONTROLLERS
         src/controllers/boardcontroller.h
         src/controllers/boardcontroller.cpp
-        src/controllers/boardcontroller.cpp
-        src/controllers/boardcontroller.h
-        src/controllers/squarecontroller.cpp
-        src/controllers/squarecontroller.h
-        src/models/boardmodel.cpp
-        src/models/boardmodel.h
-        src/models/squaremodel.cpp
-        src/models/squaremodel.h
+        src/models/openingbook.cpp
+        src/models/openingbook.h
+        #        src/controllers/boardcontroller.cpp
+#        src/controllers/boardcontroller.h
+#        src/controllers/squarecontroller.cpp
+#        src/controllers/squarecontroller.h
+
 )
 ## Building headers list
 #set(HEADERS
@@ -83,6 +94,8 @@ add_executable(myapp
         ${MODELS}
         ${VIEWS}
         ${CONTROLLERS}
+        src/services/LichessService.cpp
+        src/services/LichessService.h
 )
 
 # Link Qt6 libraries

@@ -20,19 +20,16 @@ public:
 protected:
     void mousePressEvent(QMouseEvent *event) override;
 
+    void mouseDoubleClickEvent(QMouseEvent *event) override {}
+
     void mouseReleaseEvent(QMouseEvent *event) override {}
 
-    void paintEvent(QPaintEvent *event) override;
+    // void paintEvent(QPaintEvent *event) override;
 
     void resizeEvent(QResizeEvent *event) override;
 
 signals:
     void squareClicked(QModelIndex index);
-
-private:
-
-
-    QFont m_coordinateFont;
 };
 
 

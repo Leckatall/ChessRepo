@@ -29,10 +29,7 @@ MainWindow::MainWindow(QWidget *parent)
       central_widget(new QWidget(this)),
       status_bar(new QStatusBar(this)),
       button(new QPushButton(central_widget)),
-      tableContainer(new QFrame(this)),
-      boardTblModel(new BoardTblModel(this)),
-      boardTblView(new BoardTblView(tableContainer)),
-      boardController(boardTblModel, boardTblView) {
+      board(new BoardController(this)) {
     // Set central widget
     setCentralWidget(central_widget);
 
@@ -61,18 +58,14 @@ void MainWindow::initUI() {
     // Create view menu
     QMenu *viewMenu = menuBar()->addMenu("View");
 
-    boardTblView->setBoard(boardTblModel);
-    tableContainer->setLayout(new QVBoxLayout());
-    tableContainer->layout()->addWidget(boardTblView);
-
     // connect(button, &QPushButton::clicked, chessCanvas, &CanvasBoard::load_FEN);
     initLayout(new QGridLayout());
 }
 
 void MainWindow::initLayout(QLayout *layout) {
-    tableContainer->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+    board.tbl_view()->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 
-    layout->addWidget(tableContainer);
+    layout->addWidget(board.tbl_view());
     layout->addWidget(button);
     central_widget->setLayout(layout);
 }

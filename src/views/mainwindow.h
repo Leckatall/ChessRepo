@@ -28,10 +28,7 @@ private:
     QWidget *central_widget;
     QStatusBar *status_bar;
 
-    BoardTblModel *boardTblModel;
-    BoardTblView *boardTblView;
-    QFrame *tableContainer;
-    BoardController boardController;
+    BoardController board;
 
     QPushButton *button{};
     QPushButton *PracticeRepoBtn{};

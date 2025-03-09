@@ -8,22 +8,26 @@
 #include <qtmetamacros.h>
 
 #include "models/boardtblmodel.h"
+#include "models/boardtblproxymodel.h"
 #include "views/boardtblview.h"
 
 
 class BoardController: public QObject {
     Q_OBJECT
 public:
-    BoardController(BoardTblModel *model, BoardTblView *view, QObject *parent = nullptr);
+    explicit BoardController(QObject *parent = nullptr);
+    ~BoardController() override {
+        delete m_boardTblView;
+    }
+    BoardTblView* tbl_view() const;
 
 private slots:
-    void handleSquareClicked(const QModelIndex &index);
+    void handleSquareClicked(const QModelIndex &index) const;
 
 private:
-    BoardTblModel *m_boardTblModel;
-    BoardTblView *m_boardTblView;
-    QModelIndex m_selected_square = {};
-    QSet<QModelIndex> m_targeted_squares;
+    BoardTblModel* m_boardTblModel;
+    BoardTblProxyModel* m_boardProxyModel;
+    BoardTblView* m_boardTblView;
 };
 
 

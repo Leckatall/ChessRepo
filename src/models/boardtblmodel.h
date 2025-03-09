@@ -37,15 +37,14 @@ public:
         : m_board(chess::Board()) {
     }
 
-    explicit BoardTblModel(chess::Board new_board, QObject *parent = nullptr)
-        : m_board(chess::Board(std::move(new_board))) {
+    explicit BoardTblModel(const chess::Board &new_board, QObject *parent = nullptr)
+        : m_board(chess::Board(new_board)) {
     }
 
     // Helper methods
     [[nodiscard]] QModelIndex square_to_index(const chess::Square &square) const {
         return index(square.rank(), square.file());
     }
-
 
     // Get table info
 
@@ -67,20 +66,41 @@ public:
     // Data to get from the board
     [[nodiscard]] QSet<QModelIndex> get_legal_targets_from(const QModelIndex &index) const;
 
+    [[nodiscard]] bool square_selected() const { return m_selected_square.isValid();}
+
     // Actions to perform on the board
-    void select(const QModelIndex &index);
-    void target(const QModelIndex &index);
-    void deselect(const QModelIndex &index);
 
-    void update_selections(const QModelIndex &sel, const QSet<QModelIndex> &targets);
+    void try_select(const QModelIndex &index);
 
-    void make_move(const QModelIndex &from, const QModelIndex &to);
+    void clear_selection();
+
+    void try_move_to(const QModelIndex &index);
+
     void undo_move(const QModelIndex &from, const QModelIndex &to);
 
+    void begin_update(){beginResetModel();}
+    void end_update(){endResetModel();}
+
+    void flip() {
+        m_white_on_bottom = !m_white_on_bottom;
+    }
+
+
 private:
+    void select(const QModelIndex &index);
+    void target(const QModelIndex &index);
+
+    void deselect(const QModelIndex &index);
+    void make_move(const QModelIndex &from, const QModelIndex &to);
+
+    bool m_white_on_bottom = true;
+
     BoardWrapper m_board;
+
     QModelIndex m_selected_square = {};
-    QSet<QModelIndex> m_targeted_squares;
+    QSet<QModelIndex> m_target_squares;
+
+
 };
 
 #endif //CHESSBOARD_H

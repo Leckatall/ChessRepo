@@ -30,7 +30,7 @@ public:
     }
     // Helper methods
     [[nodiscard]] static chess::Square square(const QModelIndex &index) {
-        return {(index.row() * 8) + index.column()};
+        return {index.row() * 8 + index.column()};
     }
 
     [[nodiscard]] static chess::Move move(const QModelIndex &from, const QModelIndex &to) {

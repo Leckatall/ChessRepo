@@ -34,12 +34,8 @@ BoardTblView::BoardTblView(QWidget *parent) : QTableView(parent), m_coordinateFo
     setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     setEditTriggers(NoEditTriggers);
-}
 
-void BoardTblView::setBoard(BoardTblModel *model) {
-    setModel(model);
-
-    setItemDelegate(new SquareDelegate);
+    setItemDelegate(new SquareDelegate(this));
 }
 
 
@@ -52,33 +48,9 @@ void BoardTblView::mousePressEvent(QMouseEvent *event) {
 }
 
 // Paints coords
-void BoardTblView::paintEvent(QPaintEvent *event) {
-    // First let the table view do its normal painting
-    QTableView::paintEvent(event);
-
-    QPainter painter(viewport());
-    painter.setFont(m_coordinateFont);
-
-    // Draw file coordinates (a-h)
-    for (int col = 0; col < 8; col++) {
-        QRect rect = visualRect(model()->index(7, col));
-        painter.drawText(
-            QRect(rect.right() - 20, rect.bottom() - 20, 15, 15),
-            Qt::AlignCenter,
-            QString(QChar('a' + col))
-        );
-    }
-
-    // Draw rank coordinates (1-8)
-    for (int row = 0; row < 8; row++) {
-        QRect rect = visualRect(model()->index(row, 0));
-        painter.drawText(
-            QRect(rect.left() + 5, rect.top() + 5, 15, 15),
-            Qt::AlignCenter,
-            QString::number(8 - row)
-        );
-    }
-}
+// void BoardTblView::paintEvent(QPaintEvent *event) {
+//     QTableView::paintEvent(event);
+// }
 
 void BoardTblView::resizeEvent(QResizeEvent *event) {
     QTableView::resizeEvent(event);

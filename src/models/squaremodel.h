@@ -4,11 +4,23 @@
 
 #ifndef SQUAREMODEL_H
 #define SQUAREMODEL_H
+#include <chess.hpp>
+#include <QObject>
 
 
+class SquareModel: public QObject {
+Q_OBJECT
+public:
+    SquareModel();
+    void select();
+    void target();
+    void deselect();
 
-class squaremodel {
-
+private:
+    chess::Square m_square;
+    chess::Piece m_piece = {};
+    bool isSelected = false;
+    bool isTargeted = false;
 };
 
 
