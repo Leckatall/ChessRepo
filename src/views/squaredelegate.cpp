@@ -6,7 +6,7 @@
 
 #include <QPainter>
 
-#include "models/boardtblmodel.h"
+#include "models/chessboard/boardtblmodel.h"
 
 
 

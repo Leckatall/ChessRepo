@@ -34,12 +34,12 @@ set(MODELS
         src/models/tablemodel.h
         src/models/tablemodel.cpp
 
-        src/models/boardtblmodel.h
-        src/models/boardtblmodel.cpp
-        src/models/boardwrapper.cpp
-        src/models/boardwrapper.h
-        src/models/BoardTblProxyModel.cpp
-        src/models/BoardTblProxyModel.h
+        src/models/chessboard/boardtblmodel.h
+        src/models/chessboard/boardtblmodel.cpp
+        src/models/chessboard/boardwrapper.cpp
+        src/models/chessboard/boardwrapper.h
+        src/models/chessboard/boardtblproxymodel.cpp
+        src/models/chessboard/boardtblproxymodel.h
         src/models/moveModel.cpp
         src/models/moveModel.h
 
@@ -55,10 +55,12 @@ set(VIEWS
         src/views/squaredelegate.h
         src/views/boardtblview.cpp
         src/views/boardtblview.h
-        src/views/explorerview.cpp
+        src/views/infoFrame.cpp
+        src/views/infoframe.h
+        #        src/views/explorerview.cpp
         src/views/explorerview.h
         src/views/explorertblview.cpp
-        src/views/explorertblview.h
+#        src/views/explorertblview.h
         #        src/views/boardview.cpp
         #        src/views/boardview.h
 )
@@ -67,8 +69,11 @@ set(VIEWS
 set(CONTROLLERS
         src/controllers/boardcontroller.h
         src/controllers/boardcontroller.cpp
-        src/models/openingbook.cpp
-        src/models/openingbook.h
+        src/controllers/explorercontroller.cpp
+        src/controllers/explorercontroller.h
+        src/controllers/contentcontroller.h
+        #        src/models/openingbook.cpp
+#        src/models/openingbook.h
         #        src/controllers/boardcontroller.cpp
 #        src/controllers/boardcontroller.h
 #        src/controllers/squarecontroller.cpp
@@ -95,6 +100,7 @@ add_executable(myapp
         ${VIEWS}
         ${CONTROLLERS}
         src/services/LichessService.cpp
+        src/services/LichessService.h
         src/services/LichessService.h
 )
 

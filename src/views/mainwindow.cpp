@@ -22,21 +22,27 @@
 #include <QFrame>
 #include <QHeaderView>
 
-#include "models/boardtblmodel.h"
+#include "infoFrame.h"
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent),
       central_widget(new QWidget(this)),
       status_bar(new QStatusBar(this)),
-      button(new QPushButton(central_widget)),
-      board(new BoardController(this)) {
+
+      button(new QPushButton(this)),
+
+      board(this),
+      explorer(this) {
     // Set central widget
     setCentralWidget(central_widget);
 
     // Create status bar
     setStatusBar(status_bar);
 
-    this->initUI();
+    initUI();
+    initLayout();
+    initConnections();
 
     // Connect button click to the quit function
     // connect(button, &QPushButton::clicked, this, &QMainWindow::close);
@@ -59,13 +65,22 @@ void MainWindow::initUI() {
     QMenu *viewMenu = menuBar()->addMenu("View");
 
     // connect(button, &QPushButton::clicked, chessCanvas, &CanvasBoard::load_FEN);
-    initLayout(new QGridLayout());
 }
 
-void MainWindow::initLayout(QLayout *layout) {
-    board.tbl_view()->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+void MainWindow::initLayout() {
+    const auto layout = new QGridLayout();
+    // QGridLayout.addWidget(row: int, column: int, rowSpan: int, columnSpan: int, alignment: Qt.Alignment)
+    board.view()->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    explorer.view()->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 
-    layout->addWidget(board.tbl_view());
-    layout->addWidget(button);
+    layout->addWidget(board.view(), 1, 0);
+    layout->addWidget(explorer.view(), 0, 1, 3, 1);
+    // layout->addWidget(button);
     central_widget->setLayout(layout);
+}
+
+void MainWindow::initConnections() {
+    explorer.exploreFen(board.get_current_fen());
+    connect(&board, &BoardController::boardChanged,
+        &explorer, &ExplorerController::exploreFen);
 }

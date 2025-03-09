@@ -8,8 +8,22 @@
 #include <qtmetamacros.h>
 
 
-class explorertblview : public QTableView {
+class ExplorerTblView : public QTableView {
     Q_OBJECT
+public:
+    explicit ExplorerTblView(QWidget *parent = nullptr);
+
+protected:
+    void mousePressEvent(QMouseEvent *event) override;
+
+    void mouseDoubleClickEvent(QMouseEvent *event) override {}
+
+    void mouseReleaseEvent(QMouseEvent *event) override {}
+
+    // void paintEvent(QPaintEvent *event) override;
+
+    signals:
+        void moveClicked(QModelIndex index);
 
 };
 

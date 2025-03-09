@@ -37,6 +37,11 @@ public:
         return chess::Move::make(square(from), square(to));
     }
     // Simple wrappers
+
+    [[nodiscard]] QString fen() const {
+        return QString::fromStdString(getFen());
+    }
+
     void undo_move(const QModelIndex &from, const QModelIndex &to) {
         return unmakeMove(move(from, to));
     }

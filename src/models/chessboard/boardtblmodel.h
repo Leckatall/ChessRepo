@@ -67,6 +67,7 @@ public:
     [[nodiscard]] QSet<QModelIndex> get_legal_targets_from(const QModelIndex &index) const;
 
     [[nodiscard]] bool square_selected() const { return m_selected_square.isValid();}
+    [[nodiscard]] QString get_fen() const {return m_board.fen();}
 
     // Actions to perform on the board
 

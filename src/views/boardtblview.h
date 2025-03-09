@@ -6,7 +6,7 @@
 #define BOARDTBLVIEW_H
 #include <QTableView>
 
-#include "models/boardtblmodel.h"
+#include "models/chessboard/boardtblmodel.h"
 
 
 class BoardTblView : public QTableView {
@@ -14,8 +14,6 @@ class BoardTblView : public QTableView {
 
 public:
     explicit BoardTblView(QWidget *parent = nullptr);
-
-    void setBoard(BoardTblModel *model);
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;

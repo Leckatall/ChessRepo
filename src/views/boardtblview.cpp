@@ -10,7 +10,7 @@
 
 #include "squaredelegate.h"
 
-BoardTblView::BoardTblView(QWidget *parent) : QTableView(parent), m_coordinateFont(QFont("Arial", 8)) {
+BoardTblView::BoardTblView(QWidget *parent) : QTableView(parent) {
     // Meta-cell styling
     this->setShowGrid(false);
     setFrameStyle(Box);
@@ -18,8 +18,8 @@ BoardTblView::BoardTblView(QWidget *parent) : QTableView(parent), m_coordinateFo
 
     this->horizontalHeader()->setVisible(false);
     this->verticalHeader()->setVisible(false);
-    // this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-    // this->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    this->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     this->setSelectionMode(SingleSelection);
     setSelectionBehavior(SelectItems);
@@ -54,8 +54,6 @@ void BoardTblView::mousePressEvent(QMouseEvent *event) {
 
 void BoardTblView::resizeEvent(QResizeEvent *event) {
     QTableView::resizeEvent(event);
-    setFixedHeight(parentWidget()->height());
-    setFixedWidth(parentWidget()->width());
 
     // height, width = min(height, width)
     if (width() > height()) {
