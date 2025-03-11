@@ -57,7 +57,7 @@ void LichessService::fetch_opening_data(QString fen, const QString &play) {
     connect(reply, &QNetworkReply::finished,
             [this, reply] {
                 handleOpeningReply(reply);
-                // reply->deleteLater();
+                reply->deleteLater();
             });
 }
 
@@ -93,10 +93,10 @@ LichessService::PositionData LichessService::parsePositionJson(const QJsonObject
     Opening opener;
     if (auto openingVal = json.value("opening"); !openingVal.isNull()) {
         auto opening = openingVal.toObject();
-        opener.name = opening.value("opening_name").toString();
-        opener.eco = opening.value("opening_eco").toString();
-    }
+        opener.name = opening.value("name").toString();
+        opener.eco = opening.value("eco").toString();
 
+    }
     return {games, white_wins, draws, black_wins, opener};
 }
 

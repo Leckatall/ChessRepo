@@ -68,24 +68,26 @@ public:
         }
 
         Opening() = default;
-        explicit operator bool() const {return eco.isEmpty() and name.isEmpty();}
+
+        explicit operator bool() const { return !(eco.isEmpty() and name.isEmpty()); }
     };
 
     struct PositionData {
-        std::int64_t games;
-        std::int64_t white_wins;
-        std::int64_t draws;
-        std::int64_t black_wins;
+        std::int64_t games{};
+        std::int64_t white_wins{};
+        std::int64_t draws{};
+        std::int64_t black_wins{};
         Opening opening;
 
-        PositionData(const std::int64_t g, const std::int64_t w, const std::int64_t d, const std::int64_t b, Opening o = {})
+        PositionData(const std::int64_t g, const std::int64_t w, const std::int64_t d, const std::int64_t b,
+                     Opening o = {})
             : games(g),
               white_wins(w),
               draws(d),
               black_wins(b),
-              opening(std::move(o)) {
+              opening(o) {
         }
-
+        PositionData() = default;
     };
 
     struct MoveData {
@@ -119,10 +121,11 @@ signals:
 private slots:
     void handleOpeningReply(QNetworkReply *reply);
 
-    void handleNetworkError(const QString& errorMessage);
+    void handleNetworkError(const QString &errorMessage);
 
 private:
     void initConnections();
+
     [[nodiscard]] QUrl buildApiUrl(QString fen, const QString &play) const;
 
     [[nodiscard]] static PositionData parsePositionJson(const QJsonObject &json);

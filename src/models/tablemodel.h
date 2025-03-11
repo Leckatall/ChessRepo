@@ -24,8 +24,17 @@ public:
         beginResetModel();
         m_data = data;
         endResetModel();
-        emit dataChanged(index(0,0),
-            index(rowCount() - 1, columnCount() - 1),
+        emit dataChanged(createIndex(0,0),
+            createIndex(rowCount() - 1, columnCount() - 1),
+            {role});
+    }
+
+    void clear_data(int role = Qt::EditRole) {
+        beginResetModel();
+        m_data.clear();
+        endResetModel();
+        emit dataChanged(createIndex(0,0),
+            createIndex(rowCount() - 1, columnCount() - 1),
             {role});
     }
 

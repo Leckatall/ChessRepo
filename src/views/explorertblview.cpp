@@ -7,18 +7,24 @@
 #include <QHeaderView>
 #include <QMouseEvent>
 
+#include "winratedelegate.h"
+
 ExplorerTblView::ExplorerTblView(QWidget *parent) : QTableView(parent) {
+
+}
+
+void ExplorerTblView::initUI() {
     // Meta-cell styling
     this->setShowGrid(false);
     setFrameStyle(Box);
     setLineWidth(1);
 
-    this->horizontalHeader()->setVisible(false);
-    this->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    this->verticalHeader()->setVisible(false);
+    this->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
     this->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     this->setSelectionMode(SingleSelection);
-    setSelectionBehavior(SelectItems);
+    setSelectionBehavior(SelectRows);
 
     // Drag and drop settings
     // setDragEnabled(true);
@@ -26,15 +32,14 @@ ExplorerTblView::ExplorerTblView(QWidget *parent) : QTableView(parent) {
     // setDropIndicatorShown(true);
     // setDragDropMode(InternalMove);
 
-    setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
-    setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+    // setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
     setEditTriggers(NoEditTriggers);
+    setItemDelegateForColumn(2, new WinrateDelegate(this));
 }
 
 void ExplorerTblView::mousePressEvent(QMouseEvent *event) {
-        QModelIndex index = indexAt(event->pos());
-        if (index.isValid()) {
+    if (QModelIndex index = indexAt(event->pos()); index.isValid()) {
             emit moveClicked(index);
         }
 

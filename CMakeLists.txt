@@ -60,7 +60,9 @@ set(VIEWS
         #        src/views/explorerview.cpp
         src/views/explorerview.h
         src/views/explorertblview.cpp
-#        src/views/explorertblview.h
+        src/views/winratedelegate.cpp
+        src/views/winratedelegate.h
+        #        src/views/explorertblview.h
         #        src/views/boardview.cpp
         #        src/views/boardview.h
 )

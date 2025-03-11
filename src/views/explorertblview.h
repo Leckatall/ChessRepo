@@ -12,6 +12,7 @@ class ExplorerTblView : public QTableView {
     Q_OBJECT
 public:
     explicit ExplorerTblView(QWidget *parent = nullptr);
+    void initUI();
 
 protected:
     void mousePressEvent(QMouseEvent *event) override;

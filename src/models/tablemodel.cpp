@@ -19,7 +19,11 @@ QVariant TableModel::get_cell(const QString& column, const int row) const {
 }
 
 void TableModel::add_row(const QMap<QString, QVariant>& row) {
+    beginInsertRows(QModelIndex(), rowCount(), rowCount());
     m_data.append(row);
+    endInsertRows();
+    emit dataChanged(createIndex(rowCount() - 1, 0),
+        createIndex(rowCount() - 1, columnCount() - 1));
 }
 
 int TableModel::rowCount(const QModelIndex& parent) const {

@@ -34,7 +34,7 @@ public slots:
 
     void updatePositionData(const LichessService::PositionData& position);
 
-    void updateMoves(QList<LichessService::MoveData> moves);
+    void updateMoves(const QList<LichessService::MoveData>& moves);
 
 private:
     void initUI();
@@ -46,6 +46,7 @@ private:
     QLabel m_current_pos_label;
     TableModel m_table_model;
     LichessService m_lichess_api;
+    LichessService::PositionData m_current_position{};
 };
 
 
