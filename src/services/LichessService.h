@@ -8,6 +8,8 @@
 #include <QNetworkAccessManager>
 #include <utility>
 
+#include "models/datatypes.h"
+
 
 class LichessService : public QObject {
     Q_OBJECT
@@ -45,7 +47,7 @@ public:
         };
         QString &operator[](const Config opt) { return params[keys[opt]]; }
         const QString &operator[](const Config opt) const { return std::move(params[keys[opt]]); }
-#
+
         [[nodiscard]] bool isSet(const Config opt) const { return !params[keys[opt]].isEmpty(); }
     };
 
@@ -58,49 +60,7 @@ public:
     // set config of multiple settings
     LichessService &config(std::initializer_list<std::pair<Config, QString> > configs);
 
-
     // Setting up service
-    struct Opening {
-        QString eco;
-        QString name;
-
-        Opening(QString eco_str, QString name_str): eco(std::move(eco_str)), name(std::move(name_str)) {
-        }
-
-        Opening() = default;
-
-        explicit operator bool() const { return !(eco.isEmpty() and name.isEmpty()); }
-    };
-
-    struct PositionData {
-        std::int64_t games{};
-        std::int64_t white_wins{};
-        std::int64_t draws{};
-        std::int64_t black_wins{};
-        Opening opening;
-
-        PositionData(const std::int64_t g, const std::int64_t w, const std::int64_t d, const std::int64_t b,
-                     Opening o = {})
-            : games(g),
-              white_wins(w),
-              draws(d),
-              black_wins(b),
-              opening(o) {
-        }
-        PositionData() = default;
-    };
-
-    struct MoveData {
-        QString uci;
-        QString san;
-        PositionData position_data;
-
-        MoveData(QString uci_str, QString san_str, PositionData position)
-            : uci(std::move(uci_str)),
-              san(std::move(san_str)),
-              position_data(std::move(position)) {
-        }
-    };
 
     explicit LichessService(QObject *parent = nullptr);
 
@@ -111,10 +71,10 @@ public:
 signals:
     // LichessService:: isn't redundant in signals
     // ReSharper disable once CppRedundantQualifier
-    void gotPositionData(LichessService::PositionData position);
+    void gotPositionData(Models::PositionData position);
 
     // ReSharper disable once CppRedundantQualifier
-    void gotMovesData(QList<LichessService::MoveData> moves);
+    void gotMovesData(QList<Models::MoveData> moves);
 
     void errorOccurred(QString errorMsg);
 
@@ -128,9 +88,9 @@ private:
 
     [[nodiscard]] QUrl buildApiUrl(QString fen, const QString &play) const;
 
-    [[nodiscard]] static PositionData parsePositionJson(const QJsonObject &json);
+    [[nodiscard]] static Models::PositionData parsePositionJson(const QJsonObject &json);
 
-    [[nodiscard]] static MoveData parseMoveJson(const QJsonObject &json);
+    [[nodiscard]] static Models::MoveData parseMoveJson(const QJsonObject &json);
 
     QNetworkAccessManager m_net_client;
     Configs m_config;

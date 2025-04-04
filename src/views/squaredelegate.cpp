@@ -13,6 +13,7 @@
 void SquareDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
     const QRect rect = option.rect;
     const auto data = index.data().value<SquareData>();
+    // TODO: This should really be like 5 methods lol
 
     const auto square_color = data.isLight ? light_square_color : dark_square_color;
     painter->fillRect(rect, square_color);
@@ -30,8 +31,15 @@ void SquareDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
     }
 
     // Draw piece
-    const QString unicode_piece = STR_TO_UNICODE_PIECE[data.piece];
+    int piece = data.piece;
     painter->setPen(Qt::white);
+    if (piece > 5) {
+        // If piece is not white
+        painter->setPen(Qt::black);
+        piece -= 6;
+    }
+    const QString unicode_piece = UNICODE_PIECE[piece];
+
     painter->setFont(QFont(piece_font, 24));
     painter->drawText(rect, Qt::AlignCenter, unicode_piece);
 

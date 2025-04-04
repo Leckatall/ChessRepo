@@ -6,6 +6,7 @@
 #define BOARDCONTROLLER_H
 #include <qboxlayout.h>
 #include <QObject>
+#include <QPushButton>
 #include <qtmetamacros.h>
 
 #include "models/chessboard/boardtblmodel.h"
@@ -27,17 +28,22 @@ signals:
     void boardChanged(const QString &fen);
 
 private slots:
-    void handleSquareClicked(const QModelIndex &index);
+    void handleSquareClicked(const QModelIndex &proxy_index);
+
+    void flipBoard();
+
+    void undoMove();
 
 private:
     void initUI();
     void initConnections();
     QFrame *m_container;
     QVBoxLayout m_layout;
+    QPushButton m_flip_btn;
+    QPushButton m_undo_btn;
     BoardTblView m_boardTblView;
     BoardTblModel m_boardTblModel;
     BoardTblProxyModel m_boardProxyModel;
-
 };
 
 

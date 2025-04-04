@@ -42,11 +42,9 @@ set(MODELS
         src/models/chessboard/boardtblproxymodel.h
         src/models/moveModel.cpp
         src/models/moveModel.h
-
-        #        src/models/boardmodel.cpp
-#        src/models/boardmodel.h
-#        src/models/squaremodel.cpp
-#        src/models/squaremodel.h
+        src/models/datatypes.h
+        src/models/explorerTblModel.cpp
+        src/models/explorerTblModel.h
 )
 set(VIEWS
         src/views/mainwindow.h
@@ -102,7 +100,6 @@ add_executable(myapp
         ${VIEWS}
         ${CONTROLLERS}
         src/services/LichessService.cpp
-        src/services/LichessService.h
         src/services/LichessService.h
 )
 

@@ -30,6 +30,8 @@ inline QHash<QString, QString> STR_TO_UNICODE_PIECE = {
     {".", " "}
 };
 
+inline QList<QString> UNICODE_PIECE = {"♟", "♞", "♝", "♜", "♛", "♚", " "};
+
 class SquareDelegate : public QStyledItemDelegate {
 public:
     explicit SquareDelegate(QObject *parent = nullptr): QStyledItemDelegate(parent) {

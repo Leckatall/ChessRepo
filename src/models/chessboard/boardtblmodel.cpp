@@ -60,6 +60,10 @@ QSet<QModelIndex> BoardTblModel::get_legal_targets_from(const QModelIndex &index
     return targets;
 }
 
+void BoardTblModel::emit_update() {
+    emit dataChanged(createIndex(0, 0), createIndex(7, 7));
+}
+
 void BoardTblModel::try_select(const QModelIndex &index) {
     if(m_board.is_enabled_square(index)) {
         select(index);
@@ -113,8 +117,14 @@ void BoardTblModel::try_move_to(const QModelIndex &index) {
 
 void BoardTblModel::make_move(const QModelIndex &from, const QModelIndex &to) {
     m_board.make_move(from, to);
+    m_move_history.append(Move(from, to));
+    emit_update();
 }
 
-void BoardTblModel::undo_move(const QModelIndex &from, const QModelIndex &to) {
-    m_board.undo_move(from, to);
+void BoardTblModel::undo_move() {
+    const auto move = m_move_history.takeLast();
+    m_board.undo_move(move.from, move.to);
+    emit_update();
 }
+
+

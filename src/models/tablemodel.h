@@ -20,27 +20,25 @@ public:
           m_orientation(orientation) {
     }
 
-    void update_data(const QList<QMap<QString, QVariant> > &data, int role = Qt::EditRole) {
+    void put_data(const QList<QMap<QString, QVariant> > &data, int role = Qt::EditRole) {
         beginResetModel();
         m_data = data;
         endResetModel();
-        emit dataChanged(createIndex(0,0),
-            createIndex(rowCount() - 1, columnCount() - 1),
-            {role});
+        emit dataChanged(createIndex(0, 0),
+                         createIndex(rowCount() - 1, columnCount() - 1),
+                         {role});
     }
 
     void clear_data(int role = Qt::EditRole) {
         beginResetModel();
         m_data.clear();
         endResetModel();
-        emit dataChanged(createIndex(0,0),
-            createIndex(rowCount() - 1, columnCount() - 1),
-            {role});
+        emit dataChanged(createIndex(0, 0),
+                         createIndex(rowCount() - 1, columnCount() - 1),
+                         {role});
     }
 
-    // Constexpr and nodiscard specifiers
     [[nodiscard]] constexpr Qt::Orientation get_orientation() const { return m_orientation; }
-
 
     [[nodiscard]] int rowCount(const QModelIndex &parent = QModelIndex()) const override;
 

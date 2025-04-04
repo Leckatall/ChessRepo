@@ -85,12 +85,12 @@ QUrl LichessService::buildApiUrl(QString fen, const QString &play) const {
     return url;
 }
 
-LichessService::PositionData LichessService::parsePositionJson(const QJsonObject &json) {
+Models::PositionData LichessService::parsePositionJson(const QJsonObject &json) {
     std::int64_t white_wins = json.value("white").toInt();
     std::int64_t draws = json.value("draws").toInt();
     std::int64_t black_wins = json.value("black").toInt();
     std::int64_t games = white_wins + draws + black_wins;
-    Opening opener;
+    Models::Opening opener;
     if (auto openingVal = json.value("opening"); !openingVal.isNull()) {
         auto opening = openingVal.toObject();
         opener.name = opening.value("name").toString();
@@ -101,7 +101,7 @@ LichessService::PositionData LichessService::parsePositionJson(const QJsonObject
 }
 
 
-LichessService::MoveData LichessService::parseMoveJson(const QJsonObject &json) {
+Models::MoveData LichessService::parseMoveJson(const QJsonObject &json) {
     QString uci = json.value("uci").toString();
     QString san = json.value("san").toString();
 
@@ -113,10 +113,10 @@ void LichessService::handleOpeningReply(QNetworkReply *reply) {
     if (reply->error() == QNetworkReply::NoError) {
         const auto doc = QJsonDocument::fromJson(reply->readAll()).object();
 
-        PositionData current_position = parsePositionJson(doc);
+        Models::PositionData current_position = parsePositionJson(doc);
         emit gotPositionData(current_position);
         auto jsonMoves = doc.value("moves").toArray();
-        QList<MoveData> moves;
+        QList<Models::MoveData> moves;
 
         for (auto jsonMove: jsonMoves) {
             auto jsonObj = jsonMove.toObject();

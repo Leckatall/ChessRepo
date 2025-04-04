@@ -10,15 +10,15 @@
 #include <QGridLayout>
 #include <QString>
 
-const QStringList ExplorerController::TABLE_HEADERS = {"Move", "Popularity", "GameOutcomes"};
+
 
 ExplorerController::ExplorerController(QWidget *parent)
     : QObject(parent),
       m_container(new QFrame(parent)),
       m_layout(m_container),
-      m_table_model(TABLE_HEADERS, parent),
       m_table_view(m_container),
       m_current_pos_label(m_container),
+      m_table_model(parent),
       m_lichess_api(this) {
     initUI();
     initConnections();
@@ -48,10 +48,12 @@ QFrame *ExplorerController::view() const {
 }
 
 void ExplorerController::update_model(const QList<QMap<QString, QVariant> > &new_data) {
-    // m_table_model.update_data(new_data);
+    // m_table_model.put_data(new_data);
 }
 
 void ExplorerController::handleMoveClicked(const QModelIndex &index) {
+    QModelIndex move_index = m_table_model.index(index.row(), 0);
+
 }
 
 void ExplorerController::exploreFen(const QString &fen) {
@@ -59,7 +61,7 @@ void ExplorerController::exploreFen(const QString &fen) {
     m_lichess_api.fetch_opening_data(fen);
 }
 
-void ExplorerController::updatePositionData(const LichessService::PositionData &position) {
+void ExplorerController::updatePositionData(const Models::PositionData &position) {
     m_current_position = position;
     QString new_text = "Games: " + QString::number(position.games) +
                        "\nWhite Wins: " + QString::number(position.white_wins) +
@@ -69,21 +71,9 @@ void ExplorerController::updatePositionData(const LichessService::PositionData &
         new_text += QString("\nOpening(name: \"%1\" eco: \"%2\")").arg(position.opening.name, position.opening.eco);
     }
     m_current_pos_label.setText(new_text);
+    m_table_model.set_root_position(position);
 }
 
-void ExplorerController::updateMoves(const QList<LichessService::MoveData> &moves) {
-    QList<QMap<QString, QVariant> > move_dicts = {};
-    for (auto move: moves) {
-        move_dicts.append({
-            {"Move", move.san},
-            {
-                "GameOutcomes",
-                QVector<QVariant>({
-                    move.position_data.white_wins, move.position_data.draws, move.position_data.black_wins
-                })
-            },
-            {"Popularity", QString::number((move.position_data.games / m_current_position.games) * 100) + "%"}
-        });
-    }
-    m_table_model.update_data(move_dicts);
+void ExplorerController::updateMoves(const QList<Models::MoveData> &moves) {
+    m_table_model.put_data(moves);
 }

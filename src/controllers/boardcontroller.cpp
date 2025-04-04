@@ -12,6 +12,8 @@ BoardController::BoardController(QWidget *parent)
     : QObject(parent),
       m_container(new QFrame(parent)),
       m_layout(m_container),
+      m_flip_btn(m_container),
+      m_undo_btn(m_container),
       m_boardTblView(m_container),
       m_boardTblModel(this),
       m_boardProxyModel(this) {
@@ -43,15 +45,31 @@ void BoardController::handleSquareClicked(const QModelIndex &proxy_index) {
     m_boardTblModel.end_update();
 }
 
+void BoardController::flipBoard() {
+    m_boardProxyModel.flip();
+}
+
+void BoardController::undoMove() {
+    m_boardTblModel.undo_move();
+    emit boardChanged(m_boardTblModel.get_fen());
+}
+
 void BoardController::initUI() {
+    m_flip_btn.setText("Flip board");
+    m_undo_btn.setText("Undo move");
+
     m_boardProxyModel.setSourceModel(&m_boardTblModel);
     m_boardTblView.setModel(&m_boardProxyModel);
 
     m_layout.addWidget(&m_boardTblView);
+    m_layout.addWidget(&m_flip_btn);
+    m_layout.addWidget(&m_undo_btn);
     m_container->setLayout(&m_layout);
 }
 
 void BoardController::initConnections() {
+    connect(&m_flip_btn, &QPushButton::clicked, this, &BoardController::flipBoard);
+    connect(&m_undo_btn, &QPushButton::clicked, this, &BoardController::undoMove);
     connect(&m_boardTblView, &BoardTblView::squareClicked,
             this, &BoardController::handleSquareClicked);
 }

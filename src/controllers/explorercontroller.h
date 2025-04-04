@@ -11,6 +11,7 @@
 #include <views/explorertblview.h>
 
 #include "contentcontroller.h"
+#include "models/explorertblmodel.h"
 #include "models/tablemodel.h"
 #include "services/LichessService.h"
 #include "views/boardtblview.h"
@@ -22,7 +23,6 @@ class ExplorerController : public QObject {
 public:
     explicit ExplorerController(QWidget *parent = nullptr);
 
-
     [[nodiscard]] QFrame *view() const;
 
     void update_model(const QList<QMap<QString, QVariant>>& new_data);
@@ -32,21 +32,21 @@ public slots:
 
     void exploreFen(const QString &fen);
 
-    void updatePositionData(const LichessService::PositionData& position);
+    void updatePositionData(const Models::PositionData& position);
 
-    void updateMoves(const QList<LichessService::MoveData>& moves);
+    void updateMoves(const QList<Models::MoveData>& moves);
 
 private:
     void initUI();
     void initConnections();
-    static const QStringList TABLE_HEADERS;
     QFrame *m_container;
     QVBoxLayout m_layout;
     ExplorerTblView m_table_view;
     QLabel m_current_pos_label;
-    TableModel m_table_model;
+    ExplorerTblModel m_table_model;
     LichessService m_lichess_api;
-    LichessService::PositionData m_current_position{};
+
+    Models::PositionData m_current_position{};
 };
 
 
