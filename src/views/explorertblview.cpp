@@ -13,6 +13,7 @@ ExplorerTblView::ExplorerTblView(QWidget *parent) : QTableView(parent) {
 
 }
 
+
 void ExplorerTblView::initUI() {
     // Meta-cell styling
     this->setShowGrid(false);
@@ -21,6 +22,7 @@ void ExplorerTblView::initUI() {
 
     this->verticalHeader()->setVisible(false);
     this->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
+    this->horizontalHeader()->setDefaultAlignment(Qt::AlignCenter);
     this->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
     this->setSelectionMode(SingleSelection);
@@ -38,10 +40,3 @@ void ExplorerTblView::initUI() {
     setItemDelegateForColumn(2, new WinrateDelegate(this));
 }
 
-void ExplorerTblView::mousePressEvent(QMouseEvent *event) {
-    if (QModelIndex index = indexAt(event->pos()); index.isValid()) {
-            emit moveClicked(index);
-        }
-
-    QTableView::mousePressEvent(event);
-}

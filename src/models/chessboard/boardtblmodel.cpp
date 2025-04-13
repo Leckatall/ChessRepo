@@ -39,6 +39,8 @@ QVariant BoardTblModel::data(const QModelIndex &index, int role) const {
             m_selected_square == index,
             m_target_squares.contains(index)));
     }
+    if (role == Qt::TextAlignmentRole)
+        return Qt::AlignCenter;
     return {};
 }
 
@@ -113,6 +115,14 @@ void BoardTblModel::try_move_to(const QModelIndex &index) {
     if(m_target_squares.contains(index)) {
         make_move(m_selected_square, index);
     }
+}
+
+void BoardTblModel::makeUciMove(const QString& uci) {
+    // UCI format is like "e2e4" or "e7e8q" for promotion
+    const auto move = chess::uci::uciToMove(m_board, uci.toStdString());
+    m_board.makeMove(move);
+    m_move_history.append(Move(square_to_index(move.from()), square_to_index(move.to())));
+    emit_update();
 }
 
 void BoardTblModel::make_move(const QModelIndex &from, const QModelIndex &to) {

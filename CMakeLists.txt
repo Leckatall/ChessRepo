@@ -45,6 +45,8 @@ set(MODELS
         src/models/datatypes.h
         src/models/explorerTblModel.cpp
         src/models/explorerTblModel.h
+        src/models/openingrepertoiremodel.cpp
+        src/models/openingrepertoiremodel.h
 )
 set(VIEWS
         src/views/mainwindow.h
@@ -60,6 +62,8 @@ set(VIEWS
         src/views/explorertblview.cpp
         src/views/winratedelegate.cpp
         src/views/winratedelegate.h
+        src/views/arrowoverlay.cpp
+        src/views/arrowoverlay.h
         #        src/views/explorertblview.h
         #        src/views/boardview.cpp
         #        src/views/boardview.h
@@ -72,6 +76,8 @@ set(CONTROLLERS
         src/controllers/explorercontroller.cpp
         src/controllers/explorercontroller.h
         src/controllers/contentcontroller.h
+        src/controllers/openingcontroller.cpp
+        src/controllers/openingcontroller.h
         #        src/models/openingbook.cpp
 #        src/models/openingbook.h
         #        src/controllers/boardcontroller.cpp
@@ -101,6 +107,8 @@ add_executable(myapp
         ${CONTROLLERS}
         src/services/LichessService.cpp
         src/services/LichessService.h
+        src/services/OpeningService.cpp
+        src/services/OpeningService.h
 )
 
 # Link Qt6 libraries

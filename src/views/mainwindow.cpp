@@ -81,6 +81,10 @@ void MainWindow::initLayout() {
 
 void MainWindow::initConnections() {
     explorer.exploreFen(board.get_current_fen());
+    // Update explorer on board change
     connect(&board, &BoardController::boardChanged,
         &explorer, &ExplorerController::exploreFen);
+    // Make move clicked in explorer
+    connect(&explorer, &ExplorerController::moveClicked,
+        &board, &BoardController::makeUciMove);
 }

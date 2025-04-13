@@ -11,7 +11,6 @@
 #include <QString>
 
 
-
 ExplorerController::ExplorerController(QWidget *parent)
     : QObject(parent),
       m_container(new QFrame(parent)),
@@ -37,23 +36,24 @@ void ExplorerController::initUI() {
 }
 
 void ExplorerController::initConnections() {
+    // Updating the model
     connect(&m_lichess_api, &LichessService::gotPositionData,
             this, &ExplorerController::updatePositionData);
     connect(&m_lichess_api, &LichessService::gotMovesData,
             this, &ExplorerController::updateMoves);
+    // Handling table clicks
+    connect(&m_table_view, &QTableView::clicked,
+            &m_table_model, &ExplorerTblModel::handleClick);
+    connect(&m_table_model, &ExplorerTblModel::moveClicked,
+            this, &ExplorerController::handleMoveClicked);
 }
 
 QFrame *ExplorerController::view() const {
     return m_container;
 }
 
-void ExplorerController::update_model(const QList<QMap<QString, QVariant> > &new_data) {
-    // m_table_model.put_data(new_data);
-}
-
-void ExplorerController::handleMoveClicked(const QModelIndex &index) {
-    QModelIndex move_index = m_table_model.index(index.row(), 0);
-
+void ExplorerController::handleMoveClicked(const Models::MoveData& move) {
+    emit moveClicked(move.uci);
 }
 
 void ExplorerController::exploreFen(const QString &fen) {

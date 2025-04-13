@@ -12,7 +12,7 @@
 
 BoardTblView::BoardTblView(QWidget *parent) : QTableView(parent) {
     // Meta-cell styling
-    this->setShowGrid(false);
+    this->setShowGrid(true);
     setFrameStyle(Box);
     setLineWidth(1);
 
@@ -68,6 +68,7 @@ void BoardTblView::resizeEvent(QResizeEvent *event) {
         setColumnWidth(i, squareSize);
         setRowHeight(i, squareSize);
     }
+    emit geometryChanged();
 }
 
 

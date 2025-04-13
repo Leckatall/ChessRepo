@@ -53,7 +53,7 @@ QVariant ExplorerTblModel::data(const QModelIndex &index, int role) const {
             case MoveName:
                 return move.san;
             case Popularity:
-                return static_cast<double>(move.position_data.games) / static_cast<double>(m_root_position.games);
+                return Models::formatPercentage(static_cast<double>(move.position_data.games) / static_cast<double>(m_root_position.games));
             case Winrates:
                 return {};
             case Evaluation:
@@ -69,8 +69,16 @@ QVariant ExplorerTblModel::data(const QModelIndex &index, int role) const {
         if(static_cast<Column>(index.column()) == Winrates) {
             return move.position_data.toToolTip();
         }
-    }
+    }else if (role == Qt::TextAlignmentRole )
+        return Qt::AlignCenter;
 
     return {};
 
+}
+
+void ExplorerTblModel::handleClick(const QModelIndex &index) {
+    if (!index.isValid() || index.row() >= m_moves.size())
+        return;
+
+    emit moveClicked(m_moves[index.row()]);
 }

@@ -24,3 +24,17 @@ QModelIndex BoardTblProxyModel::mapToSource(const QModelIndex &proxyIndex) const
     }
     return sourceModel()->index(row, proxyIndex.column());
 }
+
+QModelIndex BoardTblProxyModel::square_to_index(chess::Square square) {
+    //TODO: Refactor this to 1 line
+    if (!sourceModel()) {
+        return {};
+    }
+
+    int sourceRow = 7 - square.rank();
+    int column = square.file();
+
+    int viewRow = m_white_on_bottom ? sourceRow : (7 - sourceRow);
+
+    return index(viewRow, column);
+}

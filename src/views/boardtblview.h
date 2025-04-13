@@ -15,12 +15,17 @@ class BoardTblView : public QTableView {
 public:
     explicit BoardTblView(QWidget *parent = nullptr);
 
+signals:
+    void geometryChanged();
+
 protected:
     void mousePressEvent(QMouseEvent *event) override;
 
-    void mouseDoubleClickEvent(QMouseEvent *event) override {}
+    void mouseDoubleClickEvent(QMouseEvent *event) override {
+    }
 
-    void mouseReleaseEvent(QMouseEvent *event) override {}
+    void mouseReleaseEvent(QMouseEvent *event) override {
+    }
 
     // void paintEvent(QPaintEvent *event) override;
 

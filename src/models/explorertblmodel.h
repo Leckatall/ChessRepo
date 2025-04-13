@@ -44,9 +44,16 @@ public:
         emit dataChanged(createIndex(0, 0),
                          createIndex(rowCount() - 1, columnCount() - 1));
     }
+
     void set_root_position(const Models::PositionData &root_position) {
         m_root_position = root_position;
     }
+
+public slots:
+    void handleClick(const QModelIndex &index);
+
+signals:
+    void moveClicked(const Models::MoveData &move);
 
 private:
     Qt::Orientation m_orientation;

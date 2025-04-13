@@ -44,7 +44,7 @@ void SquareDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option
     painter->drawText(rect, Qt::AlignCenter, unicode_piece);
 
     // Draw coords
-    // MAYBE: put drawing of coords in seperate function
+    // MAYBE: put drawing of coords in seperate  method
     const auto coords_color = data.isLight ? dark_square_color : light_square_color;
     int padding = 2;
     painter->setPen(coords_color);

@@ -11,6 +11,7 @@
 
 #include "models/chessboard/boardtblmodel.h"
 #include "models/chessboard/boardtblproxymodel.h"
+#include "views/arrowoverlay.h"
 #include "views/boardtblview.h"
 
 
@@ -24,6 +25,10 @@ public:
 
     [[nodiscard]] QString get_current_fen() const;
 
+
+public slots:
+    void makeUciMove(const QString &uci);
+
 signals:
     void boardChanged(const QString &fen);
 
@@ -36,7 +41,9 @@ private slots:
 
 private:
     void initUI();
+
     void initConnections();
+
     QFrame *m_container;
     QVBoxLayout m_layout;
     QPushButton m_flip_btn;
@@ -44,6 +51,7 @@ private:
     BoardTblView m_boardTblView;
     BoardTblModel m_boardTblModel;
     BoardTblProxyModel m_boardProxyModel;
+    ArrowOverlay m_arrow_overlay;
 };
 
 

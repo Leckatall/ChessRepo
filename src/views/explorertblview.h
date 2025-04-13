@@ -7,24 +7,23 @@
 #include <QTableView>
 #include <qtmetamacros.h>
 
+#include "models/datatypes.h"
+
 
 class ExplorerTblView : public QTableView {
     Q_OBJECT
 public:
     explicit ExplorerTblView(QWidget *parent = nullptr);
     void initUI();
-
-protected:
-    void mousePressEvent(QMouseEvent *event) override;
-
-    void mouseDoubleClickEvent(QMouseEvent *event) override {}
-
-    void mouseReleaseEvent(QMouseEvent *event) override {}
-
-    // void paintEvent(QPaintEvent *event) override;
-
-    signals:
-        void moveClicked(QModelIndex index);
+//
+// protected:
+//     void mousePressEvent(QMouseEvent *event) override;
+//
+//     void mouseDoubleClickEvent(QMouseEvent *event) override {}
+//
+//     void mouseReleaseEvent(QMouseEvent *event) override {}
+//
+//     // void paintEvent(QPaintEvent *event) override;
 
 };
 

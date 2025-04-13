@@ -25,20 +25,23 @@ public:
 
     [[nodiscard]] QFrame *view() const;
 
-    void update_model(const QList<QMap<QString, QVariant>>& new_data);
-
 public slots:
-    void handleMoveClicked(const QModelIndex &index);
+    void handleMoveClicked(const Models::MoveData &move);
 
     void exploreFen(const QString &fen);
 
-    void updatePositionData(const Models::PositionData& position);
+    void updatePositionData(const Models::PositionData &position);
 
-    void updateMoves(const QList<Models::MoveData>& moves);
+    void updateMoves(const QList<Models::MoveData> &moves);
+
+signals:
+    void moveClicked(QString uci);
 
 private:
     void initUI();
+
     void initConnections();
+
     QFrame *m_container;
     QVBoxLayout m_layout;
     ExplorerTblView m_table_view;

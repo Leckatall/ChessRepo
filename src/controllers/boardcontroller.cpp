@@ -16,7 +16,8 @@ BoardController::BoardController(QWidget *parent)
       m_undo_btn(m_container),
       m_boardTblView(m_container),
       m_boardTblModel(this),
-      m_boardProxyModel(this) {
+      m_boardProxyModel(this),
+      m_arrow_overlay(&m_boardTblView) {
     initUI();
     initConnections();
 }
@@ -45,6 +46,12 @@ void BoardController::handleSquareClicked(const QModelIndex &proxy_index) {
     m_boardTblModel.end_update();
 }
 
+void BoardController::makeUciMove(const QString &uci) {
+    m_boardTblModel.makeUciMove(uci);
+    emit boardChanged(m_boardTblModel.get_fen());
+    m_boardTblModel.clear_selection();
+}
+
 void BoardController::flipBoard() {
     m_boardProxyModel.flip();
 }
@@ -65,6 +72,20 @@ void BoardController::initUI() {
     m_layout.addWidget(&m_flip_btn);
     m_layout.addWidget(&m_undo_btn);
     m_container->setLayout(&m_layout);
+
+    auto arrow_from = m_boardProxyModel.square_to_index(chess::Square("b1"));
+    auto arrow_to = m_boardProxyModel.square_to_index(chess::Square("c3"));
+    m_arrow_overlay.add_arrow({arrow_from, arrow_to});
+
+    // arrow_from = m_boardProxyModel.square_to_index(chess::Square("g1"));
+    // arrow_to = m_boardProxyModel.square_to_index(chess::Square("f3"));
+    // m_arrow_overlay.add_arrow({arrow_from, arrow_to});
+    // arrow_from = m_boardProxyModel.square_to_index(chess::Square("b8"));
+    // arrow_to = m_boardProxyModel.square_to_index(chess::Square("c6"));
+    // m_arrow_overlay.add_arrow({arrow_from, arrow_to});
+    // arrow_from = m_boardProxyModel.square_to_index(chess::Square("g8"));
+    // arrow_to = m_boardProxyModel.square_to_index(chess::Square("f6"));
+    // m_arrow_overlay.add_arrow({arrow_from, arrow_to});
 }
 
 void BoardController::initConnections() {

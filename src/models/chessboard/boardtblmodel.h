@@ -9,6 +9,7 @@
 #include <QAbstractTableModel>
 #include <QString>
 #include <utility>
+#include <QDebug>
 
 #include "boardwrapper.h"
 
@@ -57,7 +58,6 @@ public:
     }
 
     // Get table info
-
     [[nodiscard]] int rowCount(const QModelIndex &parent) const override { return 8; }
 
     [[nodiscard]] int columnCount(const QModelIndex &parent) const override { return 8; }
@@ -97,6 +97,9 @@ public:
     void flip() {
         m_white_on_bottom = !m_white_on_bottom;
     }
+
+public slots:
+    void makeUciMove(const QString& uci);
 
 private:
     void select(const QModelIndex &index);
