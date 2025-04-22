@@ -6,7 +6,7 @@
 #define WINRATEDELEGATE_H
 #include <QStyledItemDelegate>
 
-#include "models/datatypes.h"
+#include "../../models/datatypes.h"
 
 
 class WinrateDelegate : public QStyledItemDelegate {

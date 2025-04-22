@@ -8,18 +8,17 @@
 #include <QObject>
 #include <QStringList>
 #include <QLabel>
-#include <views/explorertblview.h>
+#include <views/explorer/explorertblview.h>
 
 #include "contentcontroller.h"
 #include "models/explorertblmodel.h"
-#include "models/tablemodel.h"
 #include "services/LichessService.h"
-#include "views/boardtblview.h"
 
 
 class ExplorerController : public QObject {
     Q_OBJECT
-
+    // TODO: Add engine support
+    // TODO: Add integration with openerController and highlight prepped moves
 public:
     explicit ExplorerController(QWidget *parent = nullptr);
 
@@ -46,7 +45,9 @@ private:
     QVBoxLayout m_layout;
     ExplorerTblView m_table_view;
     QLabel m_current_pos_label;
+
     ExplorerTblModel m_table_model;
+
     LichessService m_lichess_api;
 
     Models::PositionData m_current_position{};

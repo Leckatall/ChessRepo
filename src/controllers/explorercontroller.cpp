@@ -4,9 +4,6 @@
 
 #include "explorercontroller.h"
 
-#include "models/tablemodel.h"
-#include "views/boardtblview.h"
-
 #include <QGridLayout>
 #include <QString>
 
@@ -16,7 +13,7 @@ ExplorerController::ExplorerController(QWidget *parent)
       m_container(new QFrame(parent)),
       m_layout(m_container),
       m_table_view(m_container),
-      m_current_pos_label(m_container),
+      m_current_pos_label("Placeholder", m_container),
       m_table_model(parent),
       m_lichess_api(this) {
     initUI();
@@ -29,7 +26,7 @@ void ExplorerController::initUI() {
 
     m_container->setFrameStyle(QFrame::Box);
     m_current_pos_label.setStyleSheet("QLabel { color: white; font-weight: bold; }");
-    m_current_pos_label.setText("Placeholder");
+
     m_layout.addWidget(&m_table_view);
     m_layout.addWidget(&m_current_pos_label);
     m_container->setLayout(&m_layout);

@@ -25,7 +25,7 @@ QModelIndex BoardTblProxyModel::mapToSource(const QModelIndex &proxyIndex) const
     return sourceModel()->index(row, proxyIndex.column());
 }
 
-QModelIndex BoardTblProxyModel::square_to_index(chess::Square square) {
+QModelIndex BoardTblProxyModel::square_to_index(const chess::Square square) const {
     //TODO: Refactor this to 1 line
     if (!sourceModel()) {
         return {};

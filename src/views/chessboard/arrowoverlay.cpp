@@ -7,6 +7,8 @@
 #include <QPainter>
 #include <QPainterPath>
 
+#include "models/chessboard/boardtblproxymodel.h"
+
 void ArrowOverlay::add_arrow(const Arrow &arrow) {
     m_arrows.append(arrow);
     update();
@@ -34,9 +36,8 @@ void ArrowOverlay::paintEvent(QPaintEvent *event) {
 
 void ArrowOverlay::draw_arrow(QPainter *painter, const Arrow &arrow) const {
     // Get the center points of the cells
-    const QPoint start = m_table_view->visualRect(arrow.from).center();
-    const QPoint end = m_table_view->visualRect(arrow.to).center();
-    const int square_width = m_table_view->visualRect(arrow.from).width();
+    const QPoint start = m_table_view->visualRect(m_proxy_model->square_to_index(arrow.from)).center();
+    const QPoint end = m_table_view->visualRect(m_proxy_model->square_to_index(arrow.to)).center();
 
     if (start.isNull() || end.isNull()) {
         qDebug() << "Smth was null";

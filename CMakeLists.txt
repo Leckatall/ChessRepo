@@ -24,16 +24,11 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Network)
 
 # Building the execuatble
 ## Building source list
-#set(SOURCES
-#        src/main.cpp
-#        src/controllers/opening_controller.cpp
-#        src/controllers/opening_controller.h
-#)
+
 
 set(MODELS
         src/models/tablemodel.h
         src/models/tablemodel.cpp
-
         src/models/chessboard/boardtblmodel.h
         src/models/chessboard/boardtblmodel.cpp
         src/models/chessboard/boardwrapper.cpp
@@ -51,22 +46,17 @@ set(MODELS
 set(VIEWS
         src/views/mainwindow.h
         src/views/mainwindow.cpp
-        src/views/squaredelegate.cpp
-        src/views/squaredelegate.h
-        src/views/boardtblview.cpp
-        src/views/boardtblview.h
-        src/views/infoFrame.cpp
-        src/views/infoframe.h
-        #        src/views/explorerview.cpp
-        src/views/explorerview.h
-        src/views/explorertblview.cpp
-        src/views/winratedelegate.cpp
-        src/views/winratedelegate.h
-        src/views/arrowoverlay.cpp
-        src/views/arrowoverlay.h
-        #        src/views/explorertblview.h
-        #        src/views/boardview.cpp
-        #        src/views/boardview.h
+        src/views/chessboard/squaredelegate.cpp
+        src/views/chessboard/squaredelegate.h
+        src/views/chessboard/boardtblview.cpp
+        src/views/chessboard/boardtblview.h
+        src/views/explorer/explorertblview.cpp
+        src/views/explorer/winratedelegate.cpp
+        src/views/explorer/winratedelegate.h
+        src/views/chessboard/arrowoverlay.cpp
+        src/views/chessboard/arrowoverlay.h
+        src/views/repository/createrepomodal.cpp
+        src/views/repository/createrepomodal.h
 )
 
 
@@ -78,27 +68,7 @@ set(CONTROLLERS
         src/controllers/contentcontroller.h
         src/controllers/openingcontroller.cpp
         src/controllers/openingcontroller.h
-        #        src/models/openingbook.cpp
-#        src/models/openingbook.h
-        #        src/controllers/boardcontroller.cpp
-#        src/controllers/boardcontroller.h
-#        src/controllers/squarecontroller.cpp
-#        src/controllers/squarecontroller.h
-
 )
-## Building headers list
-#set(HEADERS
-#        src/mainwindow.h
-#        src/views/ChessDisplay.h
-#        src/models/chess_board.h
-#        src/views/BuildRepoFrame.h
-#        src/models/explorer.h
-#        include/ExplorerMovesTable.h
-#        src/models/table_model.h
-#)
-
-# Add the QML files to the resource system
-#qt_add_resources(RESOURCES resources.qrc)
 
 add_executable(myapp
         src/main.cpp

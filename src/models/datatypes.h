@@ -89,21 +89,22 @@ namespace Models {
     struct OpeningRepertoire {
         QString name;
         bool forWhite{true};
+        QString description;
         QString author;
         QDateTime createdAt;
 
-        QMap<FEN, OpeningPosition> positions;
+        QMap<FEN, OpeningPosition> positions{};
 
-        OpeningRepertoire(QString name_, const bool forWhite_, QString author_ = "Leckatall")
+        OpeningRepertoire(QString name_, const bool forWhite_, QString description_ = "", QString author_ = "")
             : name(std::move(name_)),
               forWhite(forWhite_),
+              description(std::move(description_)),
               author(std::move(author_)),
               createdAt(QDateTime::currentDateTime()) {
-            // Add starting position
-            const OpeningPosition startPos;
-            positions[startPos.position] = startPos;
         }
-        OpeningRepertoire(): name(""){}
+
+        OpeningRepertoire(): name("") {
+        }
 
         [[nodiscard]] bool isEmpty() const {
             return name == "";

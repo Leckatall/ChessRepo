@@ -16,7 +16,7 @@ public:
     [[nodiscard]] QModelIndex mapFromSource(const QModelIndex &sourceIndex) const override;
 
     [[nodiscard]] QModelIndex mapToSource(const QModelIndex &proxyIndex) const override;
-    QModelIndex square_to_index(chess::Square square);
+    [[nodiscard]] QModelIndex square_to_index(chess::Square square) const;
 
     void flip() {
         m_white_on_bottom = !m_white_on_bottom;

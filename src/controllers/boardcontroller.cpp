@@ -5,7 +5,7 @@
 #include "boardcontroller.h"
 #include <QDebug>
 
-#include "views/squaredelegate.h"
+#include "../views/chessboard/squaredelegate.h"
 
 
 BoardController::BoardController(QWidget *parent)
@@ -17,7 +17,7 @@ BoardController::BoardController(QWidget *parent)
       m_boardTblView(m_container),
       m_boardTblModel(this),
       m_boardProxyModel(this),
-      m_arrow_overlay(&m_boardTblView) {
+      m_arrow_overlay(&m_boardTblView, &m_boardProxyModel) {
     initUI();
     initConnections();
 }
@@ -73,8 +73,8 @@ void BoardController::initUI() {
     m_layout.addWidget(&m_undo_btn);
     m_container->setLayout(&m_layout);
 
-    auto arrow_from = m_boardProxyModel.square_to_index(chess::Square("b1"));
-    auto arrow_to = m_boardProxyModel.square_to_index(chess::Square("c3"));
+    auto arrow_from = chess::Square("b1");
+    auto arrow_to = chess::Square("c3");
     m_arrow_overlay.add_arrow({arrow_from, arrow_to});
 
     // arrow_from = m_boardProxyModel.square_to_index(chess::Square("g1"));

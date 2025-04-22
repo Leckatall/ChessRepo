@@ -22,7 +22,6 @@
 #include <QFrame>
 #include <QHeaderView>
 
-#include "infoFrame.h"
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -33,7 +32,8 @@ MainWindow::MainWindow(QWidget *parent)
       button(new QPushButton(this)),
 
       board(this),
-      explorer(this) {
+      explorer(this),
+      repos(this) {
     // Set central widget
     setCentralWidget(central_widget);
 
@@ -73,8 +73,9 @@ void MainWindow::initLayout() {
     board.view()->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     explorer.view()->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
 
+    layout->addWidget(repos.view(), 0, 1);
     layout->addWidget(board.view(), 1, 0);
-    layout->addWidget(explorer.view(), 0, 1, 3, 1);
+    layout->addWidget(explorer.view(), 1, 1, 2, 1);
     // layout->addWidget(button);
     central_widget->setLayout(layout);
 }
@@ -83,8 +84,8 @@ void MainWindow::initConnections() {
     explorer.exploreFen(board.get_current_fen());
     // Update explorer on board change
     connect(&board, &BoardController::boardChanged,
-        &explorer, &ExplorerController::exploreFen);
+            &explorer, &ExplorerController::exploreFen);
     // Make move clicked in explorer
     connect(&explorer, &ExplorerController::moveClicked,
-        &board, &BoardController::makeUciMove);
+            &board, &BoardController::makeUciMove);
 }

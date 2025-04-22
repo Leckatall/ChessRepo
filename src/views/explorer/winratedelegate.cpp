@@ -8,7 +8,7 @@
 #include <QPainter>
 #include <QPainterPath>
 
-#include "models/datatypes.h"
+#include "../../models/datatypes.h"
 
 void WinrateDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
     painter->save();

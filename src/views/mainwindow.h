@@ -11,6 +11,7 @@
 
 #include "controllers/boardcontroller.h"
 #include "controllers/explorercontroller.h"
+#include "controllers/openingcontroller.h"
 
 class MainWindow : public QMainWindow {
     Q_OBJECT // MOC requires this macro for signals and slots
@@ -29,6 +30,7 @@ private:
 
     BoardController board;
     ExplorerController explorer;
+    OpeningController repos;
     QPushButton *button{};
     QPushButton *PracticeRepoBtn{};
     QPushButton *BuildRepoBtn{};

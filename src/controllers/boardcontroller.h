@@ -11,8 +11,8 @@
 
 #include "models/chessboard/boardtblmodel.h"
 #include "models/chessboard/boardtblproxymodel.h"
-#include "views/arrowoverlay.h"
-#include "views/boardtblview.h"
+#include "views/chessboard/arrowoverlay.h"
+#include "views/chessboard/boardtblview.h"
 
 
 class BoardController : public QObject {
