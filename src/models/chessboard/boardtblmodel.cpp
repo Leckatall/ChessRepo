@@ -67,7 +67,7 @@ void BoardTblModel::emit_update() {
 }
 
 void BoardTblModel::try_select(const QModelIndex &index) {
-    if(m_board.is_enabled_square(index)) {
+    if (m_board.is_enabled_square(index)) {
         select(index);
     }
 }
@@ -101,23 +101,22 @@ void BoardTblModel::deselect(const QModelIndex &index) {
 }
 
 
-
 void BoardTblModel::clear_selection() {
     deselect(m_selected_square);
     m_selected_square = {};
-    for(auto targ: m_target_squares) {
+    for (auto targ: m_target_squares) {
         deselect(targ);
     }
     m_target_squares = {};
 }
 
 void BoardTblModel::try_move_to(const QModelIndex &index) {
-    if(m_target_squares.contains(index)) {
+    if (m_target_squares.contains(index)) {
         make_move(m_selected_square, index);
     }
 }
 
-void BoardTblModel::makeUciMove(const QString& uci) {
+void BoardTblModel::makeUciMove(const QString &uci) {
     // UCI format is like "e2e4" or "e7e8q" for promotion
     const auto move = chess::uci::uciToMove(m_board, uci.toStdString());
     m_board.makeMove(move);
@@ -132,9 +131,8 @@ void BoardTblModel::make_move(const QModelIndex &from, const QModelIndex &to) {
 }
 
 void BoardTblModel::undo_move() {
+    if (!m_move_history.empty()) { return; }
     const auto move = m_move_history.takeLast();
     m_board.undo_move(move.from, move.to);
     emit_update();
 }
-
-

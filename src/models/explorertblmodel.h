@@ -10,8 +10,6 @@
 #include "datatypes.h"
 #include "tablemodel.h"
 
-const QStringList TABLE_HEADERS = {"Move", "Popularity", "GameOutcomes"};
-
 class ExplorerTblModel : public QAbstractTableModel {
     Q_OBJECT
 
@@ -24,7 +22,7 @@ public:
         ColumnCount
     };
 
-    Q_ENUM(Column)
+    Q_ENUM(Column);
 
     explicit ExplorerTblModel(QObject *parent = nullptr, const Qt::Orientation &orientation = Qt::Horizontal);
 

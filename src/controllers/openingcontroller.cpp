@@ -4,7 +4,7 @@
 
 #include "openingcontroller.h"
 
-#include "views/repository/createrepomodal.h"
+#include "views/repositories/createrepomodal.h"
 
 OpeningController::OpeningController(QWidget *parent)
     : QObject(parent),
@@ -55,7 +55,7 @@ QWidget *OpeningController::view() const {
     return m_container;
 }
 
-QList<Models::UCIMove> OpeningController::responses_for_pos(Models::FEN pos) {
+QList<Models::UCIMove> OpeningController::responses_for_pos(const Models::FEN &pos) {
     return m_current_repo.positions[pos].responses.keys();
 }
 

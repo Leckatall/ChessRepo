@@ -42,6 +42,8 @@ set(MODELS
         src/models/explorerTblModel.h
         src/models/openingrepertoiremodel.cpp
         src/models/openingrepertoiremodel.h
+        src/models/repertoires/repotreemodel.cpp
+        src/models/repertoires/repotreemodel.h
 )
 set(VIEWS
         src/views/mainwindow.h
@@ -55,8 +57,8 @@ set(VIEWS
         src/views/explorer/winratedelegate.h
         src/views/chessboard/arrowoverlay.cpp
         src/views/chessboard/arrowoverlay.h
-        src/views/repository/createrepomodal.cpp
-        src/views/repository/createrepomodal.h
+        src/views/repertoires/createrepomodal.cpp
+        src/views/repertoires/createrepomodal.h
 )
 
 

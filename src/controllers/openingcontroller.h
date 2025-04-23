@@ -27,7 +27,7 @@ public:
 
     [[nodiscard]] QWidget *view() const;
 
-    QList<Models::UCIMove> responses_for_pos(Models::FEN pos);
+    QList<Models::UCIMove> responses_for_pos(const Models::FEN &pos);
 
 public slots:
     void annotateForPosition(Models::FEN pos);
@@ -40,7 +40,6 @@ signals:
     void openerChaned();
 
 private slots:
-    void loadOpener(const QString &uci) { return; }
     void saveRepo();
 
     void selectedOpenerChanged(int new_index);
