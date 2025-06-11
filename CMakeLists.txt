@@ -59,6 +59,8 @@ set(VIEWS
         src/views/chessboard/arrowoverlay.h
         src/views/repertoires/createrepomodal.cpp
         src/views/repertoires/createrepomodal.h
+        src/views/repertoires/repocard.cpp
+        src/views/repertoires/repocard.h
 )
 
 

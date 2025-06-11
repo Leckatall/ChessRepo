@@ -5,6 +5,7 @@
 #ifndef BOARDCONTROLLER_H
 #define BOARDCONTROLLER_H
 #include <qboxlayout.h>
+#include <QLabel>
 #include <QObject>
 #include <QPushButton>
 #include <qtmetamacros.h>
@@ -35,6 +36,8 @@ signals:
 private slots:
     void handleSquareClicked(const QModelIndex &proxy_index);
 
+    void updateMoveHistory();
+
     void flipBoard();
 
     void undoMove();
@@ -48,6 +51,7 @@ private:
     QVBoxLayout m_layout;
     QPushButton m_flip_btn;
     QPushButton m_undo_btn;
+    QLabel m_move_history_lbl;
     BoardTblView m_boardTblView;
     BoardTblModel m_boardTblModel;
     BoardTblProxyModel m_boardProxyModel;

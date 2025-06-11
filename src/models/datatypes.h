@@ -198,6 +198,17 @@ namespace Models {
         }
     };
 
+    struct Move {
+        UCIMove uci;
+        QString san;
+
+        Move(const QString &uci_str,
+             QString san_str)
+            : uci(uci_str),
+              san(std::move(san_str)) {
+        }
+    };
+
     struct MoveData {
         QString uci;
         QString san;
@@ -210,6 +221,10 @@ namespace Models {
         }
     };
 }
+
+Q_DECLARE_METATYPE(Models::UCIMove);
+
+Q_DECLARE_METATYPE(Models::Move);
 
 Q_DECLARE_METATYPE(Models::MoveData);
 

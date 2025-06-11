@@ -12,6 +12,7 @@
 #include <QDebug>
 
 #include "boardwrapper.h"
+#include "models/datatypes.h"
 
 struct SquareData {
     int piece;
@@ -29,15 +30,6 @@ struct SquareData {
 
 Q_DECLARE_METATYPE(SquareData);
 
-struct Move {
-    QModelIndex from;
-    QModelIndex to;
-
-    explicit Move(const QModelIndex &from_index, const QModelIndex &to_index): from(from_index), to(to_index) {
-    }
-};
-
-Q_DECLARE_METATYPE(Move);
 
 // MAYBE: Could also implment a SquareModel so the flow would be BoardModel->get(index)->action();
 class BoardTblModel : public QAbstractTableModel {
@@ -46,10 +38,7 @@ class BoardTblModel : public QAbstractTableModel {
 public:
     explicit BoardTblModel(QObject *parent = nullptr)
         : m_board(chess::Board()) {
-    }
-
-    explicit BoardTblModel(const chess::Board &new_board, QObject *parent = nullptr)
-        : m_board(chess::Board(new_board)) {
+        connect(this, madeMove, this, updateMoveHistory);
     }
 
     // Helper methods
@@ -89,6 +78,8 @@ public:
 
     void try_move_to(const QModelIndex &index);
 
+    void make_move(Models::Move);
+
     void undo_move();
 
     void begin_update() { beginResetModel(); }
@@ -98,8 +89,17 @@ public:
         m_white_on_bottom = !m_white_on_bottom;
     }
 
+    QList<Models::Move> get_history() {
+        return m_move_history;
+    }
+
 public slots:
-    void makeUciMove(const QString& uci);
+    void makeUciMove(const QString &uci);
+
+    void updateMoveHistory(const Models::Move &m);
+
+signals:
+    void madeMove(Models::Move);
 
 private:
     void select(const QModelIndex &index);
@@ -111,7 +111,7 @@ private:
     void make_move(const QModelIndex &from, const QModelIndex &to);
 
     bool m_white_on_bottom = true;
-    QList<Move> m_move_history = {};
+    QList<Models::Move> m_move_history = {};
 
     BoardWrapper m_board;
 

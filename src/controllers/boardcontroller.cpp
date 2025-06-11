@@ -14,6 +14,7 @@ BoardController::BoardController(QWidget *parent)
       m_layout(m_container),
       m_flip_btn(m_container),
       m_undo_btn(m_container),
+      m_move_history_lbl(m_container),
       m_boardTblView(m_container),
       m_boardTblModel(this),
       m_boardProxyModel(this),
@@ -46,6 +47,18 @@ void BoardController::handleSquareClicked(const QModelIndex &proxy_index) {
     m_boardTblModel.end_update();
 }
 
+void BoardController::updateMoveHistory() {
+    QString pgn;
+    int moveNumber = 1;
+    const auto &moves = m_boardTblModel.get_history();
+    for (int i = 0; i < moves.size(); i += 2) {
+        pgn += QString("%1. %2%3  ").arg(moveNumber++)
+                .arg(moves[i].san)
+                .arg(i + 1 < moves.size() ? " " + moves[i + 1].san : "");
+    }
+    m_move_history_lbl.setText(pgn);
+}
+
 void BoardController::makeUciMove(const QString &uci) {
     m_boardTblModel.makeUciMove(uci);
     emit boardChanged(m_boardTblModel.get_fen());
@@ -69,6 +82,7 @@ void BoardController::initUI() {
     m_boardTblView.setModel(&m_boardProxyModel);
 
     m_layout.addWidget(&m_boardTblView);
+    m_layout.addWidget(&m_move_history_lbl);
     m_layout.addWidget(&m_flip_btn);
     m_layout.addWidget(&m_undo_btn);
     m_container->setLayout(&m_layout);
@@ -93,4 +107,5 @@ void BoardController::initConnections() {
     connect(&m_undo_btn, &QPushButton::clicked, this, &BoardController::undoMove);
     connect(&m_boardTblView, &BoardTblView::squareClicked,
             this, &BoardController::handleSquareClicked);
+    connect(&m_boardTblModel, &BoardTblModel::madeMove, this, &BoardController::updateMoveHistory);
 }

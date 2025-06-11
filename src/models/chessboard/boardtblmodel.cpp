@@ -120,19 +120,25 @@ void BoardTblModel::makeUciMove(const QString &uci) {
     // UCI format is like "e2e4" or "e7e8q" for promotion
     const auto move = chess::uci::uciToMove(m_board, uci.toStdString());
     m_board.makeMove(move);
-    m_move_history.append(Move(square_to_index(move.from()), square_to_index(move.to())));
     emit_update();
 }
 
+void BoardTblModel::updateMoveHistory(const Models::Move& m) {
+    m_move_history.append(m);
+}
+
+void BoardTblModel::make_move(Models::Move m) {
+    emit madeMove(m_board.make_move(m));
+    emit_update();
+}
 void BoardTblModel::make_move(const QModelIndex &from, const QModelIndex &to) {
-    m_board.make_move(from, to);
-    m_move_history.append(Move(from, to));
+    emit madeMove(m_board.make_move(from, to));
     emit_update();
 }
 
 void BoardTblModel::undo_move() {
-    if (!m_move_history.empty()) { return; }
+    if (m_move_history.empty()) { return; }
     const auto move = m_move_history.takeLast();
-    m_board.undo_move(move.from, move.to);
+    m_board.undo_move(move);
     emit_update();
 }
