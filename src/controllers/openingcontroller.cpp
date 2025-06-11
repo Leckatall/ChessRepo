@@ -4,7 +4,7 @@
 
 #include "openingcontroller.h"
 
-#include "views/repertoires/createrepomodal.h"
+#include "ui/components/createrepomodal.h"
 
 OpeningController::OpeningController(QWidget *parent)
     : QObject(parent),

@@ -49,6 +49,7 @@ private:
 
     QFrame *m_container;
     QVBoxLayout m_layout;
+
     QPushButton m_flip_btn;
     QPushButton m_undo_btn;
     QLabel m_move_history_lbl;

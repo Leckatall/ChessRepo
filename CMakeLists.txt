@@ -57,10 +57,12 @@ set(VIEWS
         src/views/explorer/winratedelegate.h
         src/views/chessboard/arrowoverlay.cpp
         src/views/chessboard/arrowoverlay.h
-        src/views/repertoires/createrepomodal.cpp
-        src/views/repertoires/createrepomodal.h
-        src/views/repertoires/repocard.cpp
-        src/views/repertoires/repocard.h
+        src/ui/components/createrepomodal.cpp
+        src/ui/components/createrepomodal.h
+        src/ui/pages/list/repocard.cpp
+        src/ui/pages/list/repocard.h
+        src/app/router.cpp
+        src/app/router.h
 )
 
 
@@ -72,6 +74,11 @@ set(CONTROLLERS
         src/controllers/contentcontroller.h
         src/controllers/openingcontroller.cpp
         src/controllers/openingcontroller.h
+        src/ui/pages/list/repotoirelist_page.cpp
+        src/ui/pages/list/repotoirelist_page.h
+        src/controllers/repertoire_controller.cpp
+        src/controllers/repertoire_controller.h
+        src/controllers/Controller.h
 )
 
 add_executable(myapp
@@ -83,6 +90,10 @@ add_executable(myapp
         src/services/LichessService.h
         src/services/OpeningService.cpp
         src/services/OpeningService.h
+        src/app/application.cpp
+        src/app/application.h
+        src/ui/pages/page.cpp
+        src/ui/pages/page.h
 )
 
 # Link Qt6 libraries
