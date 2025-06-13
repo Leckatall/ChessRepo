@@ -7,8 +7,16 @@
 #include "services/OpeningService.h"
 #include "ui/pages/list/repotoirelist_page.h"
 
-QWidget * RepertoireController::view(QWidget *parent) {
-    // const auto page = ;
-    // page->showRepertoireList(OpeningService::list_repertoires());
-    return new RepertoireListPage(parent);
+
+
+void RepertoireController::updateView() {
+    if(m_is_view_outdated) {
+        m_view->updateRepertoireList(m_repertoire_list);
+        m_is_view_outdated = false;
+    }
+}
+
+void RepertoireController::updateData() {
+    m_repertoire_list = m_repertoire_service.get_repertoire_list();
+    m_is_view_outdated = true;
 }

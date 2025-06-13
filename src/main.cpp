@@ -18,8 +18,8 @@ int main(int argc, char *argv[]) {
 
     // MainWindow window;             // Create MainWindow object
     // window.show(); // Display window
-    Application application;
-    application.start();
+    application::Application mainApp;
+    mainApp.start();
 
     return app.exec();             // Run the application event loop
 

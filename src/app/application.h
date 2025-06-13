@@ -8,24 +8,31 @@
 #include <QWidget>
 
 #include "router.h"
-#include "controllers/openingcontroller.h"
 #include "controllers/repertoire_controller.h"
+#include "views/MainWindow.h"
 
+namespace application {
+    class Application : public QObject {
+        Q_OBJECT
 
-class Application : public QObject {
-    Q_OBJECT
-public:
-    explicit Application(QWidget* parent = nullptr);
-    void start();
+    public:
+        explicit Application();
 
-private:
-    Router* m_router;
-    OpeningController* m_openingController;
-    RepertoireController* m_repertoireController;
+        void start();
 
-    void setupConnections();
-};
+    private slots:
+        void updatePage(application::Page page);
 
+    private:
+        void addView(Page page, Controller* controller);
 
+        void initConnections();
+
+        QMainWindow* m_window;
+        Router* m_router;
+        QMap<Page, Controller*> m_controllers;
+        OpeningService m_repertoireService;
+    };
+}
 
 #endif //APPLICATION_H

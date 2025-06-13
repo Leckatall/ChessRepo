@@ -79,6 +79,7 @@ set(CONTROLLERS
         src/controllers/repertoire_controller.cpp
         src/controllers/repertoire_controller.h
         src/controllers/Controller.h
+        src/controllers/Controller.cpp
 )
 
 add_executable(myapp
@@ -94,6 +95,9 @@ add_executable(myapp
         src/app/application.h
         src/ui/pages/page.cpp
         src/ui/pages/page.h
+        src/services/session.cpp
+        src/services/session.h
+        src/app/models.h
 )
 
 # Link Qt6 libraries

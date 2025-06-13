@@ -20,7 +20,7 @@ public:
     explicit RepertoireListPage(QWidget *parent = nullptr);
 
     // Methods to update UI state
-    void showRepertoireList(QStringList reps) const;
+    void updateRepertoireList(const QStringList& reps);
 
 signals:
     // Events from user interactions
@@ -31,11 +31,15 @@ signals:
     void deleteRequested(int id);
 
 private:
-    QWidget *m_container;
-    QVBoxLayout m_layout;
+    void initLayout();
 
-    QScrollArea m_scrollArea;
-    QPushButton m_createButton;
+
+
+    QWidget *m_container;
+    QScrollArea* m_scrollArea;
+    QWidget* m_scroll_widget;
+    QVBoxLayout* m_scroll_layout;
+    // QPushButton m_createButton;
 
     // Other UI elements
 };

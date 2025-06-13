@@ -19,7 +19,15 @@ Models::OpeningRepertoire OpeningService::getRepertoire(const QString &name) {
     return load_repertoire(name);
 }
 
+void OpeningService::onDirectoryChanged() {
+    updateRepertoireList();
+    m_cached_repertoires.clear();
+    qDebug() << "Repertoire directory modified. repertoire cache cleared";
+    emit repertoireListChanged();
+}
+
 QString OpeningService::getRepoDir() {
+    // TODO: Consider moving to a config class
     return R"(C:\Users\Lecka\CLionProjects\ChessReop\RepoDir)";
 }
 
@@ -27,9 +35,13 @@ QString OpeningService::getRepertoireFilePath(const QString& name) {
     return QDir(getRepoDir()).filePath(name + ".json");
 }
 
-QStringList OpeningService::list_repertoires() {
-    return QDir(getRepoDir()).entryList({"*.json"}, QDir::Files)
+void OpeningService::updateRepertoireList() {
+    m_repertoire_title_list = QDir(getRepoDir()).entryList({"*.json"}, QDir::Files)
         .replaceInStrings(".json", "");
+}
+
+QStringList OpeningService::get_repertoire_list() {
+    return m_repertoire_title_list;
 }
 
 bool OpeningService::saveRepertoire(const Models::OpeningRepertoire &rep) {

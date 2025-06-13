@@ -74,7 +74,7 @@ void OpeningController::selectedOpenerChanged(const int new_index) {
 }
 
 QList<QString> OpeningController::getOpeners() {
-    return OpeningService::list_repertoires();
+    return {"Whatever"};
 }
 
 void OpeningController::annotateForPosition(Models::FEN pos) {

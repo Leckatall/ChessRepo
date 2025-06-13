@@ -10,47 +10,27 @@
 #include <QStackedWidget>
 #include <QObject>
 
-#include "controllers/Controller.h"
-#include "controllers/repertoire_controller.h"
+#include "models.h"
 
-enum class Page {
-    LIST,
-    STUDY,
-    EDIT
-};
 
-struct Route {
-    Page page;
-    const QVariantMap &params = {};
-    Route(const Page pg, const QVariantMap &params = {}): page(pg), params(params) {}
-};
+namespace application {
+    class Router : public QStackedWidget {
+        Q_OBJECT
 
-class Router : public QStackedWidget {
-    Q_OBJECT
+    public:
+        explicit Router(QWidget *parent = nullptr);
 
-public:
-    explicit Router(QWidget *parent = nullptr): QStackedWidget(parent), m_repertoire_controller(this) {
-        setWindowTitle("ChessRepo");
-        setGeometry(0, 0, 1200, 800);
-        m_page_controllers = {{Page::LIST, new RepertoireController(this)}};
-    }
+        void navigateTo(Page page);
 
-    void display(Route route = {Page::LIST});
+        void addView(Page page, QWidget* view);
 
-    void goBack();
+    signals:
+        void pageChanged(application::Page);
 
-    [[nodiscard]] bool canGoBack() const;
-
-signals:
-    void pageChanged(Route);
-
-private:
-    QWidget* requestPage(Page page);
-
-    QStack<Route> m_history{};
-    QMap<Page, Controller*> m_page_controllers;
-    RepertoireController m_repertoire_controller;
-};
+    private:
+        QMap<Page, QWidget*> m_pages;
+    };
+}
 
 
 #endif //ROUTER_H

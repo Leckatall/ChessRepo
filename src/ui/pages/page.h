@@ -7,7 +7,7 @@
 #include <QWidget>
 
 
-class Page : public QWidget {
+class PageOLD : public QWidget {
 
 };
 
