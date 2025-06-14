@@ -8,7 +8,6 @@
 #include "services/repertoire_service.h"
 #include "ui/pages/edit/edit_page.h"
 
-
 class EditController : public Controller {
     Q_OBJECT
 

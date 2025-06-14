@@ -40,9 +40,12 @@ namespace chessboard {
             return chess::Move::make(square(from), square(to));
         }
 
-        [[nodiscard]] chess::Move move(const Models::Move &m) const {
-            return chess::uci::uciToMove(*this, m.uci.toStdString());
+        [[nodiscard]] chess::Move move(const Models::Move &m) {
+            return chess::Move::make(chess::Square(m.uci.from().toStdString()), chess::Square(m.uci.to().toStdString()));
         }
+        // [[nodiscard]] chess::Move move(const chess::Move &m) const {
+        //     return chess::Move::make(m.from(), m.to());
+        // }
 
         [[nodiscard]] Models::Move moveModel(const chess::Move m) const {
             QString uci = QString::fromStdString(chess::uci::moveToUci(m));
@@ -55,11 +58,19 @@ namespace chessboard {
             return QString::fromStdString(getFen());
         }
 
-        bool make_move(chess::Move m);
+        bool make_move(const chess::Move m) {
+            return make_move(moveModel(m));
+        }
 
         bool make_move(const Models::Move &m) {
-            // Shouldn't be an override like this should have this be the only method making moves
-            return make_move(chess::uci::uciToMove(*this, m.uci.toStdString()));
+            const auto prev_state = fen();
+            makeMove(move(m));
+            if(fen() == prev_state) {
+                return false;
+            }
+            m_move_history.append(m);
+            return true;
+
         }
 
         bool make_move(const QModelIndex &from, const QModelIndex &to) {

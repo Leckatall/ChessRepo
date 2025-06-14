@@ -6,15 +6,7 @@
 
 namespace chessboard {
     // Move methods
-    bool Board::make_move(const chess::Move m) {
-        auto prev_state = fen();
-        makeMove(m);
-        if(fen() == prev_state) {
-            return false;
-        }
-        m_move_history.append(moveModel(m));
-        return true;
-    }
+
 
     bool Board::undo_last_move() {
         if (m_move_history.isEmpty()) { return false; }

@@ -10,16 +10,18 @@ namespace chessboard {
           m_flip_btn(new QPushButton(this)),
           m_undo_btn(new QPushButton(this)),
           m_move_history_lbl(new QLabel(this)),
-          m_tblView(new TblView(this)){
+          m_tblView(new TblView(this)) {
         m_flip_btn->setText("Flip board");
         m_undo_btn->setText("Undo move");
-        auto* layout = new QVBoxLayout();
+        auto *layout = new QVBoxLayout();
 
         layout->addWidget(m_tblView);
         layout->addWidget(m_move_history_lbl);
         layout->addWidget(m_flip_btn);
         layout->addWidget(m_undo_btn);
         setLayout(layout);
+
+        initConnections();
     }
 
     void View::setHistoryLabel(const QString &pgn_str) const {
@@ -28,10 +30,16 @@ namespace chessboard {
 
     void View::initConnections() {
         connect(m_flip_btn, &QPushButton::clicked,
-            this, [this]{ emit flipRequested();});
+                this, [this] {
+                    emit flipRequested();
+                });
         connect(m_undo_btn, &QPushButton::clicked,
-            this, [this]{ emit undoMoveRequested();});
+                this, [this] {
+                    emit undoMoveRequested();
+                });
         connect(m_tblView, &TblView::squareClicked,
-                this, [this](QModelIndex index){ emit square_clicked(index);});
+                this, [this](QModelIndex index) {
+                    emit square_clicked(index);
+                });
     }
-} // chess_board
+}

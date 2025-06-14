@@ -237,9 +237,9 @@ namespace Models {
         QString san;
 
         Move(const QString &uci_str,
-             QString san_str)
+             const QString &san_str)
             : uci(uci_str),
-              san(std::move(san_str)) {
+              san(san_str) {
         }
     };
 

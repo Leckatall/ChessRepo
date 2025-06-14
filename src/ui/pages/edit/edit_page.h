@@ -21,7 +21,11 @@ class EditPage : public QWidget {
     Q_OBJECT
 
 public:
-    explicit EditPage(chessboard::View *board, explorer::View *explorer, QWidget *parent = nullptr);
+    struct Components {
+        chessboard::View* boardView;
+        explorer::View* explorerView;
+    };
+    explicit EditPage(const Components& components, QWidget *parent = nullptr);
 
     void set_repertoire(const Models::Repertoire &repertoire) const;
 
@@ -49,11 +53,9 @@ private:
 
     void initConnections();
 
-    chessboard::View *m_board;
     QFrame *m_side_panel;
     // RepertoireTree *m_rep_tree;
     MovesDeck *m_moves_deck;
-    explorer::View *m_explorer;
 
     QLineEdit *m_rep_name_edit;
     QTextEdit *m_comment_edit;
