@@ -61,17 +61,15 @@ QVariant RepoTreeModel::data(const QModelIndex &index, int role) const {
         return {};
 
     TreeNode* node = getNode(index);
-    if (!node || !node->data)
+    if (!node)
         return {};
-
-    const Models::OpeningPosition& pos = *node->data;
 
     if (role == Qt::DisplayRole) {
         switch (index.column()) {
             case MoveSAN:
-                return pos.recommendedMove;
+                return node->data.recommendedMove;
             case Comment:
-                return pos.comment;
+                return node->data.comment;
             default:
                 return {};
         }
@@ -93,11 +91,19 @@ QVariant RepoTreeModel::headerData(int section, Qt::Orientation orientation, int
     return {};
 }
 
-void RepoTreeModel::set_repertoire(const Models::OpeningRepertoire &rep) {
+void RepoTreeModel::set_repertoire(const Models::Repertoire &rep) {
     beginResetModel();
     m_repertoire = rep;
     buildTree();
     endResetModel();
+}
+
+Models::FEN RepoTreeModel::positionAt(const QModelIndex &index) const {
+    return Models::FEN::startingPosition();
+}
+
+Models::Move RepoTreeModel::moveAt(const QModelIndex &index) const {
+    return {"e2e4", "nice type checking nerd"};
 }
 
 void RepoTreeModel::buildTree() {
@@ -119,7 +125,7 @@ void RepoTreeModel::buildTree() {
             nodeMap[it.key()] = node;
         }
 
-        node->data = &pos;
+        node->data = pos;
 
         // Create child nodes for all responses
         for (auto respIt = pos.responses.constBegin();

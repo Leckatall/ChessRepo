@@ -7,6 +7,7 @@
 #include <QObject>
 
 namespace application {
+    enum class Page;
     class Application;  // Forward declaration only
 }
 
@@ -16,6 +17,9 @@ class Controller : public QObject {
 public:
     explicit Controller(application::Application *app);
     [[nodiscard]] virtual QWidget *view() const = 0;
+
+signals:
+    void routeToPage(application::Page page);
 
 public slots:
     virtual void updateData() = 0;

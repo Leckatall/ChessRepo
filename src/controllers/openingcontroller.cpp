@@ -14,7 +14,7 @@ OpeningController::OpeningController(QWidget *parent)
       m_load_opener_btn("Load Opener", m_container),
       m_save_opener_btn("Save Opener", m_container),
       m_add_line_btn("Add Line", m_container),
-      m_opening_service(this),
+      m_repo_service(this),
       m_openers(getOpeners() << m_add_opener_selection) {
     initUI();
     initConnections();
@@ -60,7 +60,7 @@ QList<Models::UCIMove> OpeningController::responses_for_pos(const Models::FEN &p
 }
 
 void OpeningController::saveRepo() {
-    m_opening_service.saveRepertoire(m_current_repo);
+    m_repo_service.saveRepertoire(m_current_repo);
 }
 
 void OpeningController::selectedOpenerChanged(const int new_index) {
@@ -70,7 +70,7 @@ void OpeningController::selectedOpenerChanged(const int new_index) {
         update_combo_box();
         return;
     }
-    m_current_repo = m_opening_service.getRepertoire(m_opener_select.currentText());
+    m_current_repo = m_repo_service.getRepertoire(m_opener_select.currentText());
 }
 
 QList<QString> OpeningController::getOpeners() {

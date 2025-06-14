@@ -20,7 +20,7 @@ public:
 
     // Session data
     [[nodiscard]] const QString &currentUser() const { return m_currentUser; }
-    [[nodiscard]] const Models::OpeningRepertoire &currentRepo() const { return m_currentRepo; }
+    [[nodiscard]] const Models::Repertoire &currentRepo() const { return m_currentRepo; }
     [[nodiscard]] const QDateTime &sessionStart() const { return m_sessionStart; }
 
     // Session operations
@@ -30,7 +30,7 @@ public:
         emit sessionStarted(username);
     }
 
-    void setCurrentRepo(const Models::OpeningRepertoire &repo) {
+    void setCurrentRepo(const Models::Repertoire &repo) {
         m_currentRepo = repo;
         emit repoChanged(repo);
     }
@@ -38,11 +38,11 @@ public:
 signals:
     void sessionStarted(const QString &username);
 
-    void repoChanged(const Models::OpeningRepertoire &repo);
+    void repoChanged(const Models::Repertoire &repo);
 
 private:
     QString m_currentUser = "Leckatall"; // From your code
-    Models::OpeningRepertoire m_currentRepo;
+    Models::Repertoire m_currentRepo;
     QDateTime m_sessionStart;
 
     Session() = default;

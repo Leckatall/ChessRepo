@@ -43,7 +43,7 @@ void CreateRepoModal::initUI() {
     connect(&m_button_box, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }
 
-Models::OpeningRepertoire CreateRepoModal::getRepertoire() const {
+Models::Repertoire CreateRepoModal::getRepertoire() const {
     return {
         m_name_edit.text(),
         m_for_white_check_box.isChecked(),

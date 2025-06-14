@@ -29,57 +29,71 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Network)
 set(MODELS
         src/models/tablemodel.h
         src/models/tablemodel.cpp
-        src/models/chessboard/boardtblmodel.h
-        src/models/chessboard/boardtblmodel.cpp
-        src/models/chessboard/boardwrapper.cpp
-        src/models/chessboard/boardwrapper.h
-        src/models/chessboard/boardtblproxymodel.cpp
-        src/models/chessboard/boardtblproxymodel.h
-        src/models/moveModel.cpp
-        src/models/moveModel.h
+        src/models/chessboard/board_tblmodel.h
+        src/models/chessboard/board_tblmodel.cpp
+        src/models/chessboard/board_wrapper.cpp
+        src/models/chessboard/board_wrapper.h
+        src/models/chessboard/board_proxytblmodel.cpp
+        src/models/chessboard/board_proxytblmodel.h
         src/models/datatypes.h
-        src/models/explorerTblModel.cpp
-        src/models/explorerTblModel.h
-        src/models/openingrepertoiremodel.cpp
-        src/models/openingrepertoiremodel.h
+        src/models/explorer_tblmodel.cpp
+        src/models/explorer_tblmodel.h
         src/models/repertoires/repotreemodel.cpp
         src/models/repertoires/repotreemodel.h
+        src/services/repertoire_navigator.cpp
+        src/services/repertoire_navigator.h
 )
 set(VIEWS
-        src/views/mainwindow.h
-        src/views/mainwindow.cpp
-        src/views/chessboard/squaredelegate.cpp
-        src/views/chessboard/squaredelegate.h
-        src/views/chessboard/boardtblview.cpp
-        src/views/chessboard/boardtblview.h
-        src/views/explorer/explorertblview.cpp
-        src/views/explorer/winratedelegate.cpp
-        src/views/explorer/winratedelegate.h
-        src/views/chessboard/arrowoverlay.cpp
-        src/views/chessboard/arrowoverlay.h
+        src/ui/components/chessboard/square_delegate.cpp
+        src/ui/components/chessboard/square_delegate.h
+        src/ui/components/chessboard/board_tblview.cpp
+        src/ui/components/chessboard/board_tblview.h
+        src/ui/components/explorer/explorer_tblview.cpp
+        src/ui/components/explorer/explorer_tblview.h
+        src/ui/components/explorer/winrate_delegate.cpp
+        src/ui/components/explorer/winrate_delegate.h
+        src/ui/components/chessboard/arrowoverlay.cpp
+        src/ui/components/chessboard/arrowoverlay.h
         src/ui/components/createrepomodal.cpp
         src/ui/components/createrepomodal.h
         src/ui/pages/list/repocard.cpp
         src/ui/pages/list/repocard.h
         src/app/router.cpp
         src/app/router.h
+        src/ui/pages/edit/edit_page.cpp
+        src/ui/pages/edit/edit_page.h
+        src/ui/components/repertoire_tree.cpp
+        src/ui/components/repertoire_tree.h
+        src/ui/components/move_card.cpp
+        src/ui/components/move_card.h
+        src/ui/components/common/stats_painter.cpp
+        src/ui/components/common/stats_painter.h
+        src/ui/pages/edit/moves_deck.cpp
+        src/ui/pages/edit/moves_deck.h
+        src/ui/components/chessboard/board_view.cpp
+        src/ui/components/chessboard/board_view.h
 )
 
 
 set(CONTROLLERS
         src/controllers/boardcontroller.h
         src/controllers/boardcontroller.cpp
-        src/controllers/explorercontroller.cpp
-        src/controllers/explorercontroller.h
-        src/controllers/contentcontroller.h
+        src/controllers/explorer_controller.cpp
+        src/controllers/explorer_controller.h
         src/controllers/openingcontroller.cpp
         src/controllers/openingcontroller.h
-        src/ui/pages/list/repotoirelist_page.cpp
-        src/ui/pages/list/repotoirelist_page.h
-        src/controllers/repertoire_controller.cpp
-        src/controllers/repertoire_controller.h
+        src/ui/pages/list/list_page.cpp
+        src/ui/pages/list/list_page.h
+        src/controllers/repertoire_list_controller.cpp
+        src/controllers/repertoire_list_controller.h
         src/controllers/Controller.h
         src/controllers/Controller.cpp
+        src/controllers/edit_controller.cpp
+        src/controllers/edit_controller.h
+        src/controllers/board_controller.cpp
+        src/controllers/board_controller.h
+        src/ui/components/explorer/explorer_view.cpp
+        src/ui/components/explorer/explorer_view.h
 )
 
 add_executable(myapp
@@ -89,8 +103,8 @@ add_executable(myapp
         ${CONTROLLERS}
         src/services/LichessService.cpp
         src/services/LichessService.h
-        src/services/OpeningService.cpp
-        src/services/OpeningService.h
+        src/services/repertoire_service.cpp
+        src/services/repertoire_service.h
         src/app/application.cpp
         src/app/application.h
         src/ui/pages/page.cpp
@@ -98,6 +112,8 @@ add_executable(myapp
         src/services/session.cpp
         src/services/session.h
         src/app/models.h
+        src/services/repertoire_repository.cpp
+        src/services/repertoire_repository.h
 )
 
 # Link Qt6 libraries

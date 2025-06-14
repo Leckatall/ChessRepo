@@ -26,8 +26,6 @@ public:
           m_root(new TreeNode(Models::FEN::startingPosition())) {
     }
 
-
-
     // Overrides
     [[nodiscard]] QModelIndex index(int row, int column, const QModelIndex &parent) const override;
 
@@ -37,20 +35,21 @@ public:
 
     [[nodiscard]] int columnCount(const QModelIndex &parent) const override;
 
-    [[nodiscard]] QVariant data(const QModelIndex &index, int role) const override;
+    [[nodiscard]] QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
 
     QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 
     // Helper Methods
-    void set_repertoire(const Models::OpeningRepertoire &rep);
+    void set_repertoire(const Models::Repertoire &rep);
     [[nodiscard]] Models::FEN positionAt(const QModelIndex& index) const;
+    [[nodiscard]] Models::Move moveAt(const QModelIndex& index) const;
 
 private:
     struct TreeNode {
         Models::FEN position;
         TreeNode *parent{nullptr};
         QVector<TreeNode *> children;
-        const Models::OpeningPosition *data{nullptr}; // Pointer to position data in repertoire
+        Models::OpeningPosition data;
 
         explicit TreeNode(Models::FEN pos, TreeNode *p = nullptr)
             : position(std::move(pos)), parent(p) {
@@ -61,7 +60,7 @@ private:
         }
     };
 
-    Models::OpeningRepertoire m_repertoire;
+    Models::Repertoire m_repertoire;
     TreeNode *m_root{nullptr};
 
     void buildTree();

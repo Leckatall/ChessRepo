@@ -6,10 +6,13 @@
 #define APPLICATION_H
 #include <qtmetamacros.h>
 #include <QWidget>
+#include <QMainWindow>
 
 #include "router.h"
-#include "controllers/repertoire_controller.h"
-#include "views/MainWindow.h"
+#include "controllers/board_controller.h"
+#include "controllers/explorer_controller.h"
+#include "controllers/repertoire_list_controller.h"
+#include "ui/components/explorer/explorer_view.h"
 
 namespace application {
     class Application : public QObject {
@@ -18,7 +21,7 @@ namespace application {
     public:
         explicit Application();
 
-        void start();
+        void start() const;
 
     private slots:
         void updatePage(application::Page page);
@@ -30,8 +33,14 @@ namespace application {
 
         QMainWindow* m_window;
         Router* m_router;
+
+        RepertoireService m_repertoireService;
+        LichessService m_lichessApi;
+
         QMap<Page, Controller*> m_controllers;
-        OpeningService m_repertoireService;
+        chessboard::Controller* m_board_controller;
+        explorer::Controller* m_explorer_controller;
+
     };
 }
 

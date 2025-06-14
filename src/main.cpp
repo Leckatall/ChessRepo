@@ -2,12 +2,9 @@
 // Created by Lecka on 28/02/2025.
 //
 
-#include <iostream>
-#include "chess.hpp"
 #include <QApplication>
 
 #include "app/application.h"
-#include "views/mainwindow.h"
 
 
 

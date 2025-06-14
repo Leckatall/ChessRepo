@@ -20,7 +20,7 @@ Q_OBJECT
 public:
     explicit CreateRepoModal(QWidget* parent = nullptr);
 
-    Models::OpeningRepertoire getRepertoire() const;
+    Models::Repertoire getRepertoire() const;
 
 private slots:
     void validateForm() const;

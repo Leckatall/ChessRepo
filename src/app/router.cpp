@@ -4,8 +4,7 @@
 
 #include "router.h"
 
-#include "services/OpeningService.h"
-#include "ui/pages/list/repotoirelist_page.h"
+#include "ui/pages/list/list_page.h"
 
 namespace application {
     Router::Router(QWidget *parent): QStackedWidget(parent) {

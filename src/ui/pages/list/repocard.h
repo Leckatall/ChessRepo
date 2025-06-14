@@ -4,23 +4,24 @@
 
 #ifndef REPOCARD_H
 #define REPOCARD_H
+#include <QFrame>
 #include <QWidget>
 
 #include "models/datatypes.h"
 
 
-class RepoCard : public QWidget {
+class RepoCard : public QFrame {
     Q_OBJECT
 
 public:
     explicit RepoCard(QString repotoire_name, QWidget *parent = nullptr);
 
 signals:
-    void editClicked(Models::OpeningRepertoire m_rep);
+    void editClicked(QString rep_name);
 
-    void studyClicked(Models::OpeningRepertoire m_rep);
+    void studyClicked(QString rep_name);
 
-    void deleteClicked(Models::OpeningRepertoire m_rep);
+    void deleteClicked(QString rep_name);
 
 private:
     const QString m_rep;

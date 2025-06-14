@@ -105,7 +105,7 @@ Models::MoveData LichessService::parseMoveJson(const QJsonObject &json) {
     QString uci = json.value("uci").toString();
     QString san = json.value("san").toString();
 
-    return {uci, san, parsePositionJson(json)};
+    return {{uci, san}, parsePositionJson(json)};
 }
 
 

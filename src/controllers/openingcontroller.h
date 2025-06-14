@@ -12,7 +12,7 @@
 #include <QComboBox>
 
 #include "models/datatypes.h"
-#include "services/OpeningService.h"
+#include "services/repertoire_service.h"
 
 
 class OpeningController : public QObject {
@@ -61,11 +61,11 @@ private:
     QPushButton m_add_line_btn;
 
 
-    OpeningService m_opening_service;
+    RepertoireService m_repo_service;
 
     QString m_add_opener_selection = "Add New Opener...";
     QStringList m_openers;
-    Models::OpeningRepertoire m_current_repo{};
+    Models::Repertoire m_current_repo{};
 };
 
 

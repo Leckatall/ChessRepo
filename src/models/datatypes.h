@@ -84,9 +84,22 @@ namespace Models {
         explicit OpeningPosition(FEN pos = FEN::startingPosition())
             : position(std::move(pos)) {
         }
+
+        bool operator==(const OpeningPosition &other) const {
+            if(this->position != other.position) {
+                return false;
+            }
+            if(this->recommendedMove != other.recommendedMove) {
+                return false;
+            }
+            if(this->responses != other.responses) {
+                return false;
+            }
+            return true;
+        }
     };
 
-    struct OpeningRepertoire {
+    struct Repertoire {
         QString name;
         bool forWhite{true};
         QString description;
@@ -95,7 +108,7 @@ namespace Models {
 
         QMap<FEN, OpeningPosition> positions{};
 
-        OpeningRepertoire(QString name_, const bool forWhite_, QString description_ = "", QString author_ = "")
+        Repertoire(QString name_, const bool forWhite_, QString description_ = "", QString author_ = "")
             : name(std::move(name_)),
               forWhite(forWhite_),
               description(std::move(description_)),
@@ -103,7 +116,7 @@ namespace Models {
               createdAt(QDateTime::currentDateTime()) {
         }
 
-        OpeningRepertoire(): name("") {
+        Repertoire(): name("") {
         }
 
         [[nodiscard]] bool isEmpty() const {
@@ -137,6 +150,27 @@ namespace Models {
                 return it->recommendedMove;
             }
             return {};
+        }
+        [[nodiscard]] bool operator==(const Repertoire &other) const {
+            if(this->name != other.name) {
+                return false;
+            }
+            if(this->forWhite != other.forWhite) {
+                return false;
+            }
+            if(this->description != other.description) {
+                return false;
+            }
+            if(this->author != other.author) {
+                return false;
+            }
+            if(this->createdAt != other.createdAt) {
+                return false;
+            }
+            if(this->positions != other.positions) {
+                return false;
+            }
+            return true;
         }
     };
 
@@ -210,13 +244,11 @@ namespace Models {
     };
 
     struct MoveData {
-        QString uci;
-        QString san;
+        Move move;
         PositionData position_data;
 
-        MoveData(QString uci_str, QString san_str, PositionData position)
-            : uci(std::move(uci_str)),
-              san(std::move(san_str)),
+        MoveData(Move move_struct, PositionData position)
+            : move(std::move(move_struct)),
               position_data(std::move(position)) {
         }
     };
