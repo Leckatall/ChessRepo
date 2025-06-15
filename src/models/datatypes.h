@@ -19,7 +19,8 @@ namespace Models {
 
     class UCIMove : public QString {
     public:
-        explicit UCIMove(const QString &move = QString()) : QString(move) {
+        UCIMove() = default;
+        explicit UCIMove(const QString &move) : QString(move) {
             if (!isValid(move)) {
                 throw std::invalid_argument("Invalid UCI move");
             }
@@ -68,109 +69,30 @@ namespace Models {
         }
     };
 
-    struct OpeningPosition {
-        FEN position;
-        UCIMove recommendedMove; // The move we want to play from this FEN
-        QMap<UCIMove, FEN> responses;
-        // A mapping of the UCIMoves our opponent could make (after we play the recommended move) to the resulting FEN
-        int wins{0};
-        int draws{0};
-        int losses{0};
-        int timesPlayed{0};
-        QString comment;
-        QDateTime lastPlayed;
-        QDateTime createdAt{QDateTime::currentDateTime()};
+    struct Move {
+        UCIMove uci;
+        QString san;
 
-        explicit OpeningPosition(FEN pos = FEN::startingPosition())
-            : position(std::move(pos)) {
+        Move() = default;
+
+        Move(const QString &uci_str,
+             const QString &san_str)
+            : uci(uci_str),
+              san(san_str) {
         }
 
-        bool operator==(const OpeningPosition &other) const {
-            if(this->position != other.position) {
+        bool operator==(const Move &other) const {
+            if (uci != other.uci) {
                 return false;
             }
-            if(this->recommendedMove != other.recommendedMove) {
-                return false;
-            }
-            if(this->responses != other.responses) {
+            if (san != other.san) {
                 return false;
             }
             return true;
         }
-    };
 
-    struct Repertoire {
-        QString name;
-        bool forWhite{true};
-        QString description;
-        QString author;
-        QDateTime createdAt;
-
-        QMap<FEN, OpeningPosition> positions{};
-
-        Repertoire(QString name_, const bool forWhite_, QString description_ = "", QString author_ = "")
-            : name(std::move(name_)),
-              forWhite(forWhite_),
-              description(std::move(description_)),
-              author(std::move(author_)),
-              createdAt(QDateTime::currentDateTime()) {
-        }
-
-        Repertoire(): name("") {
-        }
-
-        [[nodiscard]] bool isEmpty() const {
-            return name == "";
-        }
-
-        void addMove(const FEN &fromPosition, const UCIMove &move, const FEN &toPosition,
-                     const QString &comment = QString()) {
-            // Update or create the 'from' position
-            auto &pos = positions[fromPosition];
-            pos.position = fromPosition;
-            pos.recommendedMove = move;
-            pos.responses[move] = toPosition;
-            if (!comment.isEmpty()) {
-                pos.comment = comment;
-            }
-
-            // Ensure the 'to' position exists in our repertoire
-            if (!positions.contains(toPosition)) {
-                positions[toPosition] = OpeningPosition(toPosition);
-            }
-        }
-
-        [[nodiscard]] bool hasPosition(const FEN &fen) const {
-            return positions.contains(fen);
-        }
-
-        [[nodiscard]] QString getRecommendedMove(const FEN &position) const {
-            auto it = positions.find(position);
-            if (it != positions.end()) {
-                return it->recommendedMove;
-            }
-            return {};
-        }
-        [[nodiscard]] bool operator==(const Repertoire &other) const {
-            if(this->name != other.name) {
-                return false;
-            }
-            if(this->forWhite != other.forWhite) {
-                return false;
-            }
-            if(this->description != other.description) {
-                return false;
-            }
-            if(this->author != other.author) {
-                return false;
-            }
-            if(this->createdAt != other.createdAt) {
-                return false;
-            }
-            if(this->positions != other.positions) {
-                return false;
-            }
-            return true;
+        bool operator<(const Move &other) const {
+            return uci < other.uci;
         }
     };
 
@@ -232,16 +154,110 @@ namespace Models {
         }
     };
 
-    struct Move {
-        UCIMove uci;
-        QString san;
+    struct OpeningPosition {
+        FEN position;
+        UCIMove recommendedMove; // The move we want to play from this FEN
+        QMap<UCIMove, FEN> responses;
+        // A mapping of the UCIMoves our opponent could make (after we play the recommended move) to the resulting FEN
+        PositionData myPositionData;
+        QString comment;
+        QDateTime lastPlayed;
+        QDateTime createdAt{QDateTime::currentDateTime()};
 
-        Move(const QString &uci_str,
-             const QString &san_str)
-            : uci(uci_str),
-              san(san_str) {
+        explicit OpeningPosition(FEN pos = FEN::startingPosition())
+            : position(std::move(pos)) {
+        }
+
+        bool operator==(const OpeningPosition &other) const {
+            if (this->position != other.position) {
+                return false;
+            }
+            if (this->recommendedMove != other.recommendedMove) {
+                return false;
+            }
+            if (this->responses != other.responses) {
+                return false;
+            }
+            return true;
         }
     };
+
+    struct Repertoire {
+        QString name;
+        bool forWhite{true};
+        QString description;
+        QString author;
+        QDateTime createdAt;
+
+        QMap<FEN, OpeningPosition> positions{};
+
+        Repertoire(QString name_, const bool forWhite_, QString description_ = "", QString author_ = "")
+            : name(std::move(name_)),
+              forWhite(forWhite_),
+              description(std::move(description_)),
+              author(std::move(author_)),
+              createdAt(QDateTime::currentDateTime()) {
+        }
+
+        Repertoire(): name("") {
+        }
+
+        [[nodiscard]] bool isEmpty() const {
+            return name == "";
+        }
+
+        void addMove(const FEN &fromPosition, const UCIMove &move, const FEN &toPosition,
+                     const QString &comment = QString()) {
+            // Update or create the 'from' position
+            auto &pos = positions[fromPosition];
+            pos.position = fromPosition;
+            pos.recommendedMove = move;
+            pos.responses[move] = toPosition;
+            if (!comment.isEmpty()) {
+                pos.comment = comment;
+            }
+
+            // Ensure the 'to' position exists in our repertoire
+            if (!positions.contains(toPosition)) {
+                positions[toPosition] = OpeningPosition(toPosition);
+            }
+        }
+
+        [[nodiscard]] bool hasPosition(const FEN &fen) const {
+            return positions.contains(fen);
+        }
+
+        [[nodiscard]] UCIMove getRecommendedMove(const FEN &position) const {
+            auto it = positions.find(position);
+            if (it != positions.end()) {
+                return it->recommendedMove;
+            }
+            return {};
+        }
+
+        [[nodiscard]] bool operator==(const Repertoire &other) const {
+            if (this->name != other.name) {
+                return false;
+            }
+            if (this->forWhite != other.forWhite) {
+                return false;
+            }
+            if (this->description != other.description) {
+                return false;
+            }
+            if (this->author != other.author) {
+                return false;
+            }
+            if (this->createdAt != other.createdAt) {
+                return false;
+            }
+            if (this->positions != other.positions) {
+                return false;
+            }
+            return true;
+        }
+    };
+
 
     struct MoveData {
         Move move;

@@ -28,8 +28,13 @@ namespace chessboard {
     public slots:
         void makeUciMove(const QString &uci);
 
+        void emitModelsFromUcis(QList<Models::UCIMove> uci_moves);
+
+
     signals:
-        void boardChanged(const QString &fen);
+        void boardChanged(const Models::FEN &fen);
+
+        void convertedUcis(QList<Models::Move> moves);
 
     private slots:
         void handleSquareClicked(const QModelIndex &proxy_index);

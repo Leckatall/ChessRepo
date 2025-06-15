@@ -13,6 +13,7 @@
 #include "controllers/boardcontroller.h"
 #include "controllers/board_controller.h"
 #include "controllers/explorer_controller.h"
+#include "controllers/repertoire_viewer_controller.h"
 #include "models/datatypes.h"
 #include "ui/components/repertoire_tree.h"
 
@@ -24,6 +25,7 @@ public:
     struct Components {
         chessboard::View* boardView;
         explorer::View* explorerView;
+        repertoire_viewer::View* repView;
     };
     explicit EditPage(const Components& components, QWidget *parent = nullptr);
 
@@ -34,7 +36,9 @@ public:
     void updateExplorer();
 
 signals:
-    void saveRequested(const Models::Repertoire &repertoire);
+    void saveRequested();
+
+    void addCurrentLine(QString comment);
 
     void moveAdded(const Models::FEN &fromPos, const Models::UCIMove &move);
 
@@ -43,8 +47,6 @@ signals:
     void commentUpdated(const Models::FEN &position, const QString &comment);
 
     void routeToListRequested();
-
-    void uciMoveRequest(const Models::UCIMove &uci_move);
 
     void explorerUpdateRequested(const Models::FEN &position);
 

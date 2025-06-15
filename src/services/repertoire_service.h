@@ -29,6 +29,8 @@ public:
 
     Models::Repertoire get_current_repertoire() { return m_current_repertoire; }
 
+    QList<Models::UCIMove> get_moves_from_fen(const Models::FEN &fen);
+
     void load_repertoire(const QString &name);
 
 public slots:

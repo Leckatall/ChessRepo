@@ -63,6 +63,7 @@ namespace chessboard {
 
         [[nodiscard]] bool square_selected() const { return m_selected_square.isValid(); }
         [[nodiscard]] QString get_fen() const { return m_board.fen(); }
+        Models::Move uci_to_model(const Models::UCIMove &uci) const;
 
         // Actions to perform on the board
         void try_select(const QModelIndex &index);

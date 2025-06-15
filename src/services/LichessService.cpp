@@ -48,7 +48,7 @@ LichessService &LichessService::config(std::initializer_list<std::pair<Config, Q
     return *this;
 }
 
-void LichessService::fetch_opening_data(QString fen, const QString &play) {
+void LichessService::fetch_opening_data(const Models::FEN &fen, const QString &play) {
     const QUrl url = buildApiUrl(fen, play);
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -61,7 +61,7 @@ void LichessService::fetch_opening_data(QString fen, const QString &play) {
             });
 }
 
-QUrl LichessService::buildApiUrl(QString fen, const QString &play) const {
+QUrl LichessService::buildApiUrl(const Models::FEN &fen, const QString &play) const {
     QUrl url(LICHESS_URL);
     QUrlQuery query;
 

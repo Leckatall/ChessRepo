@@ -9,16 +9,8 @@
 
 ListPage::ListPage(QWidget *parent)
     : QWidget(parent),
-      m_scrollArea(new QScrollArea(this)),
-      m_scroll_widget(new QWidget),
-      m_scroll_layout(new QVBoxLayout(m_scroll_widget)),
+      m_widget_list(new common::WidgetList(this)),
       m_create_rep_btn(new QPushButton(this)) {
-    m_scrollArea->setWidgetResizable(true);
-    m_scrollArea->setWidget(m_scroll_widget);
-
-    m_scroll_layout->setAlignment(Qt::AlignTop);
-    m_scroll_layout->setSpacing(8);
-
     m_create_rep_btn->setText("Create Repertoire");
     initLayout();
     initConnections();
@@ -27,8 +19,8 @@ ListPage::ListPage(QWidget *parent)
 void ListPage::initLayout() {
     const auto layout = new QVBoxLayout();
     //layout->setContentsMargins(0, 0, 0, 0);
-    m_scrollArea->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    layout->addWidget(m_scrollArea);
+    m_widget_list->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    layout->addWidget(m_widget_list);
     layout->addWidget(m_create_rep_btn);
     setLayout(layout);
 }
@@ -39,18 +31,15 @@ void ListPage::initConnections() {
 
 
 void ListPage::updateRepertoireList(const QStringList &reps) {
-    while (const QLayoutItem *item = m_scroll_layout->takeAt(0)) {
-        delete item->widget();
-        delete item;
-    }
+    m_widget_list->clear_widgets();
     for (const auto &rep: reps) {
-        auto *rep_card = new RepoCard(rep, m_scroll_widget);
+        auto *rep_card = new RepoCard(rep, m_widget_list);
         connect(rep_card, &RepoCard::studyClicked,
                 this, [this](const QString &rep_name) { emit studyRequested(rep_name); });
         connect(rep_card, &RepoCard::editClicked,
                 this, [this](const QString &rep_name) { emit editRequested(rep_name); });
         connect(rep_card, &RepoCard::deleteClicked,
                 this, [this](const QString &rep_name) { emit deleteRequested(rep_name); });
-        m_scroll_layout->addWidget(rep_card);
+        m_widget_list->add_widget(rep_card);
     }
 }

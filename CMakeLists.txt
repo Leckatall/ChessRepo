@@ -72,6 +72,14 @@ set(VIEWS
         src/ui/pages/edit/moves_deck.h
         src/ui/components/chessboard/board_view.cpp
         src/ui/components/chessboard/board_view.h
+        src/ui/components/common/card_widget.cpp
+        src/ui/components/common/card_widget.h
+        src/ui/components/common/list_widget.cpp
+        src/ui/components/common/list_widget.h
+        src/ui/components/repertoire_viewer/repertoire_view.cpp
+        src/ui/components/repertoire_viewer/repertoire_view.h
+        src/ui/components/repertoire_viewer/rep_move_card.cpp
+        src/ui/components/repertoire_viewer/rep_move_card.h
 )
 
 
@@ -94,6 +102,8 @@ set(CONTROLLERS
         src/controllers/board_controller.h
         src/ui/components/explorer/explorer_view.cpp
         src/ui/components/explorer/explorer_view.h
+        src/controllers/repertoire_viewer_controller.cpp
+        src/controllers/repertoire_viewer_controller.h
 )
 
 add_executable(myapp

@@ -28,7 +28,7 @@ namespace explorer {
         [[nodiscard]] View *view() const { return m_view; }
 
     public slots:
-        void exploreFen(const QString &fen) const;
+        void exploreFen(const Models::FEN &fen) const;
 
         void updateMoves(const QList<Models::MoveData> &moves);
 

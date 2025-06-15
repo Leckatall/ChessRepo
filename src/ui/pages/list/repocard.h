@@ -8,9 +8,10 @@
 #include <QWidget>
 
 #include "models/datatypes.h"
+#include "ui/components/common/card_widget.h"
 
 
-class RepoCard : public QFrame {
+class RepoCard : public common::CardWidget {
     Q_OBJECT
 
 public:

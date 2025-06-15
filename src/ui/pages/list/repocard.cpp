@@ -11,14 +11,9 @@
 
 
 RepoCard::RepoCard(QString repotoire_name, QWidget *parent)
-    : QFrame(parent),
+    : CardWidget(repotoire_name, parent),
       m_rep(std::move(repotoire_name)) {
-    setFrameStyle(StyledPanel);
-    auto layout = new QHBoxLayout(this);
-
-    auto nameLabel = new QLabel(m_rep, this);
-    nameLabel->setStyleSheet("QLabel { color: white; font-size: 32px; font-weight: bold;}");
-
+    m_title_lbl->setStyleSheet("QLabel { color: white; font-size: 32px; font-weight: bold;}");
 
     auto study_btn = new QPushButton(tr("Study"), this);
     auto edit_btn = new QPushButton(tr("Edit"), this);
@@ -28,8 +23,7 @@ RepoCard::RepoCard(QString repotoire_name, QWidget *parent)
     connect(edit_btn, &QPushButton::clicked, this, [this] {emit editClicked(m_rep);});
     connect(delete_btn, &QPushButton::clicked, this, [this] {emit deleteClicked(m_rep);});
 
-    layout->addWidget(nameLabel, 1);
-    layout->addWidget(study_btn);
-    layout->addWidget(edit_btn);
-    layout->addWidget(delete_btn);
+    m_content_layout->addWidget(study_btn, 0, 0);
+    m_content_layout->addWidget(edit_btn, 0, 1);
+    m_content_layout->addWidget(delete_btn, 0, 2);
 }

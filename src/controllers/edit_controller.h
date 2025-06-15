@@ -5,6 +5,7 @@
 #ifndef EDIT_CONTROLLER_H
 #define EDIT_CONTROLLER_H
 #include "Controller.h"
+#include "repertoire_viewer_controller.h"
 #include "services/repertoire_service.h"
 #include "ui/pages/edit/edit_page.h"
 
@@ -24,6 +25,8 @@ public slots:
 
     void updateData() override;
 
+    void add_current_line();
+
     // void onEditRequest(QString rep_name);
 
 private:
@@ -32,6 +35,7 @@ private:
     Models::Repertoire m_current_repertoire;
     chessboard::Controller *m_board_controller;
     explorer::Controller *m_explorer_controller;
+    repertoire_viewer::Controller *m_rep_controller;
     EditPage *m_view;
 
     bool m_is_view_outdated{true};

@@ -66,7 +66,7 @@ public:
 
     explicit LichessService(Configs config, QObject *parent = nullptr);
 
-    void fetch_opening_data(QString fen, const QString &play = {});
+    void fetch_opening_data(const Models::FEN &fen, const QString &play = {});
 
 signals:
     // LichessService:: isn't redundant in signals
@@ -86,7 +86,7 @@ private slots:
 private:
     void initConnections();
 
-    [[nodiscard]] QUrl buildApiUrl(QString fen, const QString &play) const;
+    [[nodiscard]] QUrl buildApiUrl(const Models::FEN &fen, const QString &play) const;
 
     [[nodiscard]] static Models::PositionData parsePositionJson(const QJsonObject &json);
 

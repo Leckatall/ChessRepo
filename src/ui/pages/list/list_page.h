@@ -11,6 +11,7 @@
 #include <QScrollArea>
 
 #include "models/datatypes.h"
+#include "ui/components/common/list_widget.h"
 
 
 class ListPage : public QWidget {
@@ -39,13 +40,9 @@ private:
 
     void initConnections();
 
+    common::WidgetList* m_widget_list;
     QWidget *m_container;
-    QScrollArea *m_scrollArea;
-    QWidget *m_scroll_widget;
-    QVBoxLayout *m_scroll_layout;
     QPushButton *m_create_rep_btn;
-
-    // Other UI elements
 };
 
 

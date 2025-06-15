@@ -44,12 +44,18 @@ QStringList RepertoireService::get_repertoire_list() {
     return m_repertoire_title_list;
 }
 
+QList<Models::UCIMove> RepertoireService::get_moves_from_fen(const Models::FEN &fen) {
+    const auto current_pos = m_current_repertoire.positions[fen];
+    return current_pos.responses.keys();
+}
+
 void RepertoireService::load_repertoire(const QString &name) {
     auto it = m_cached_repertoires.find(name);
     if (it != m_cached_repertoires.end()) {
         m_current_repertoire = it.value();
     }
     m_current_repertoire = read_repertoire_file(name);
+    emit newRepertoireLoaded();
 }
 
 bool RepertoireService::saveRepertoire(const Models::Repertoire &rep) {
@@ -69,11 +75,14 @@ bool RepertoireService::saveRepertoire(const Models::Repertoire &rep) {
     for (auto it = rep.positions.begin(); it != rep.positions.end(); ++it) {
         QJsonObject pos;
         pos["fen"] = it.key();
-        pos["recommendedMove"] = it.value().recommendedMove;
-        pos["wins"] = it.value().wins;
-        pos["draws"] = it.value().draws;
-        pos["losses"] = it.value().losses;
-        pos["timesPlayed"] = it.value().timesPlayed;
+        QJsonObject pos_data;
+        pos_data["recommendedMove"] =it.value().recommendedMove;
+        pos_data["timesPlayed"] = it.value().myPositionData.games;
+        pos_data["whiteWins"] = it.value().myPositionData.white_wins;
+        pos_data["draws"] = it.value().myPositionData.draws;
+        pos_data["blackWins"] = it.value().myPositionData.black_wins;
+        pos_data["openingName"] = it.value().myPositionData.opening.name;
+        pos["myPositionData"] = pos_data;
         pos["comment"] = it.value().comment;
         pos["lastPlayed"] = it.value().lastPlayed.toString(Qt::ISODate);
 
@@ -118,10 +127,14 @@ Models::Repertoire RepertoireService::read_repertoire_file(const QString &name) 
         QJsonObject pos = posRef.toObject();
         Models::OpeningPosition position(Models::FEN(pos["fen"].toString()));
         position.recommendedMove = Models::UCIMove(pos["recommendedMove"].toString());
-        position.wins = pos["wins"].toInt();
-        position.draws = pos["draws"].toInt();
-        position.losses = pos["losses"].toInt();
-        position.timesPlayed = pos["timesPlayed"].toInt();
+
+        Models::PositionData pos_data;
+        pos_data.white_wins = pos["whiteWins"].toInt();
+        pos_data.draws = pos["draws"].toInt();
+        pos_data.black_wins = pos["blackWins"].toInt();
+        pos_data.games = pos["timesPlayed"].toInt();
+        position.myPositionData = pos_data;
+
         position.comment = pos["comment"].toString();
         position.lastPlayed = QDateTime::fromString(pos["lastPlayed"].toString(), Qt::ISODate);
 

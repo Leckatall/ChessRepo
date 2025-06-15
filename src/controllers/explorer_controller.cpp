@@ -33,7 +33,7 @@ namespace explorer {
                 this, [this](const Models::MoveData &move) { emit moveClicked(move.move.uci); });
     }
 
-    void Controller::exploreFen(const QString &fen) const {
+    void Controller::exploreFen(const Models::FEN &fen) const {
         // will emit signals to connected to: updatePositionData(pos) and updateMoves(moves)
         m_lichess_api.fetch_opening_data(fen);
     }

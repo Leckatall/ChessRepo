@@ -67,6 +67,14 @@ namespace chessboard {
         emit boardUpdated();
     }
 
+    Models::Move TblModel::uci_to_model(const Models::UCIMove &uci) const {
+        const auto chess_move = chess::uci::uciToMove(m_board, uci.toStdString());
+        return {
+            QString::fromStdString(chess::uci::moveToUci(chess_move)),
+            QString::fromStdString(chess::uci::moveToSan(m_board, chess_move))
+        };
+    }
+
     void TblModel::try_select(const QModelIndex &index) {
         if (m_board.is_enabled_square(index)) {
             select(index);
@@ -138,7 +146,7 @@ namespace chessboard {
     }
 
     void TblModel::undo_move() {
-        if(m_board.undo_last_move()) {
+        if (m_board.undo_last_move()) {
             emit_update();
         }
     }

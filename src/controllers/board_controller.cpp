@@ -22,6 +22,8 @@ namespace chessboard {
         connect(m_view, &View::flipRequested,
                 this, &Controller::flipBoard);
         connect(&m_boardTblModel, &TblModel::boardUpdated, this, &Controller::updateMoveHistory);
+        connect(&m_boardTblModel, &TblModel::boardUpdated,
+            this, [this]{emit boardChanged(Models::FEN(get_current_fen()));});
     }
 
     QString Controller::get_current_fen() const {
@@ -60,12 +62,19 @@ namespace chessboard {
         m_boardTblModel.clear_selection();
     }
 
+    void Controller::emitModelsFromUcis(QList<Models::UCIMove> uci_moves) {
+        QList<Models::Move> moves = {};
+        for(const auto move :uci_moves) {
+            moves.append(m_boardTblModel.uci_to_model(move));
+        }
+        emit convertedUcis(moves);
+    }
+
     void Controller::flipBoard() {
         m_boardProxyModel.flip();
     }
 
     void Controller::undoMove() {
         m_boardTblModel.undo_move();
-        emit boardChanged(m_boardTblModel.get_fen());
     }
 }
