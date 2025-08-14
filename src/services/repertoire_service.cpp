@@ -9,6 +9,7 @@
 #include <QJsonObject>
 
 #include "QDir"
+#include "models/datatypes/position.h"
 
 
 Models::Repertoire RepertoireService::getRepertoire(const QString &name) {
@@ -44,14 +45,17 @@ QStringList RepertoireService::get_repertoire_list() {
     return m_repertoire_title_list;
 }
 
-QList<Models::UCIMove> RepertoireService::get_moves_from_fen(const Models::FEN &fen) {
-    const auto current_pos = m_current_repertoire.positions[fen];
-    return current_pos.responses.keys();
+QList<Models::Move> RepertoireService::get_moves_from_fen(const Models::FEN &fen) {
+    const auto current_pos = m_current_repertoire.move_db.positions[fen];
+    QList<Models::Move> moves;
+    for (const auto& move : current_pos.moves) {
+        moves.append(move.move);
+    }
+    return moves;
 }
 
 void RepertoireService::load_repertoire(const QString &name) {
-    auto it = m_cached_repertoires.find(name);
-    if (it != m_cached_repertoires.end()) {
+    if (auto it = m_cached_repertoires.find(name); it != m_cached_repertoires.end()) {
         m_current_repertoire = it.value();
     }
     m_current_repertoire = read_repertoire_file(name);
@@ -115,7 +119,7 @@ Models::Repertoire RepertoireService::read_repertoire_file(const QString &name) 
     const QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
     QJsonObject root = doc.object();
 
-    Models::Repertoire rep(
+    Models::RepertoireInfo rep(
         root["name"].toString(),
         root["forWhite"].toBool()
     );
@@ -125,18 +129,18 @@ Models::Repertoire RepertoireService::read_repertoire_file(const QString &name) 
     QJsonArray positions = root["positions"].toArray();
     for (const auto& posRef : positions) {
         QJsonObject pos = posRef.toObject();
-        Models::OpeningPosition position(Models::FEN(pos["fen"].toString()));
-        position.recommendedMove = Models::UCIMove(pos["recommendedMove"].toString());
+        Models::Position position(Models::FEN(pos["fen"].toString()));
 
-        Models::PositionData pos_data;
+        Models::PositionStats pos_data;
         pos_data.white_wins = pos["whiteWins"].toInt();
         pos_data.draws = pos["draws"].toInt();
         pos_data.black_wins = pos["blackWins"].toInt();
         pos_data.games = pos["timesPlayed"].toInt();
-        position.myPositionData = pos_data;
+        Models::PositionInfo pos_info;
+        position.stats.user_stats = pos_data;
 
-        position.comment = pos["comment"].toString();
-        position.lastPlayed = QDateTime::fromString(pos["lastPlayed"].toString(), Qt::ISODate);
+        pos_info.comment = pos["comment"].toString();
+        pos_info.lastPlayed = QDateTime::fromString(pos["lastPlayed"].toString(), Qt::ISODate);
 
         QJsonObject responses = pos["responses"].toObject();
         for (auto it = responses.begin(); it != responses.end(); ++it) {

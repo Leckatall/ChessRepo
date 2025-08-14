@@ -6,7 +6,9 @@
 #define REPOTREEMODEL_H
 #include <qabstractitemmodel.h>
 
-#include "models/datatypes.h"
+#include "models/datatypes/chess_primitives.h"
+#include "models/datatypes/move.h"
+#include "models/datatypes/repertoire.h"
 
 
 class RepoTreeModel : public QAbstractItemModel {
@@ -45,23 +47,8 @@ public:
     [[nodiscard]] Models::Move moveAt(const QModelIndex& index) const;
 
 private:
-    struct TreeNode {
-        Models::FEN position;
-        TreeNode *parent{nullptr};
-        QVector<TreeNode *> children;
-        Models::OpeningPosition data;
-
-        explicit TreeNode(Models::FEN pos, TreeNode *p = nullptr)
-            : position(std::move(pos)), parent(p) {
-        }
-
-        ~TreeNode() {
-            qDeleteAll(children);
-        }
-    };
-
     Models::Repertoire m_repertoire;
-    TreeNode *m_root{nullptr};
+    Models::Position *m_root{nullptr};
 
     void buildTree();
 

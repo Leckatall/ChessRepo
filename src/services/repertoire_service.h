@@ -9,7 +9,7 @@
 #include <qtmetamacros.h>
 #include <QtCore>
 
-#include "models/datatypes.h"
+#include "models/datatypes/repertoire.h"
 
 
 class RepertoireService : public QObject {
@@ -29,7 +29,7 @@ public:
 
     Models::Repertoire get_current_repertoire() { return m_current_repertoire; }
 
-    QList<Models::UCIMove> get_moves_from_fen(const Models::FEN &fen);
+    QList<Models::Move> get_moves_from_fen(const Models::FEN &fen);
 
     void load_repertoire(const QString &name);
 

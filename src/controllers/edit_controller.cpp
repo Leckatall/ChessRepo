@@ -41,6 +41,10 @@ void EditController::updateData() {
     }
 }
 
+void EditController::add_current_line() {
+    qDebug() << "Add current line";
+}
+
 void EditController::initConnections() {
     connect(m_view, &EditPage::routeToListRequested,
             this, [this] { emit routeToPage(application::Page::LIST); });

@@ -6,7 +6,10 @@
 #define WINRATEDELEGATE_H
 #include <QStyledItemDelegate>
 
-#include "models/datatypes.h"
+
+namespace Models {
+    struct PositionStats;
+}
 
 // TODO: Use stats painter
 class WinrateDelegate : public QStyledItemDelegate {
@@ -30,7 +33,7 @@ private:
         int black;
     };
 
-    [[nodiscard]] static BarWidths calculate_widths(int totalWidth, const Models::PositionData& data);
+    [[nodiscard]] static BarWidths calculate_widths(int totalWidth, const Models::PositionStats& data);
 
     static std::tuple<QRect, QRect, QRect> createRects(const QRect& baseRect, const BarWidths& widths);
 

@@ -4,7 +4,6 @@
 
 #ifndef REPERTOIRE_NAVIGATOR_H
 #define REPERTOIRE_NAVIGATOR_H
-#include "../models/datatypes.h"
 
 // class RepertoireLine {
 // public:

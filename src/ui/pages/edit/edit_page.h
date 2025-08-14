@@ -38,7 +38,7 @@ public:
 signals:
     void saveRequested();
 
-    void addCurrentLine(QString comment);
+    void addCurrentLine(QString comment = "");
 
     void moveAdded(const Models::FEN &fromPos, const Models::UCIMove &move);
 

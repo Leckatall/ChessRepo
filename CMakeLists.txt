@@ -35,13 +35,22 @@ set(MODELS
         src/models/chessboard/board_wrapper.h
         src/models/chessboard/board_proxytblmodel.cpp
         src/models/chessboard/board_proxytblmodel.h
-        src/models/datatypes.h
         src/models/explorer_tblmodel.cpp
         src/models/explorer_tblmodel.h
         src/models/repertoires/repotreemodel.cpp
         src/models/repertoires/repotreemodel.h
         src/services/repertoire_navigator.cpp
         src/services/repertoire_navigator.h
+        src/models/repertoires/repo_model.cpp
+        src/models/repertoires/repo_model.h
+        src/models/datatypes/repertoire.cpp
+        src/models/datatypes/repertoire.h
+        src/models/datatypes/position.cpp
+        src/models/datatypes/position.h
+        src/models/datatypes/chess_primitives.cpp
+        src/models/datatypes/chess_primitives.h
+        src/models/datatypes/move.cpp
+        src/models/datatypes/move.h
 )
 set(VIEWS
         src/ui/components/chessboard/square_delegate.cpp
@@ -124,6 +133,7 @@ add_executable(myapp
         src/app/models.h
         src/services/repertoire_repository.cpp
         src/services/repertoire_repository.h
+        src/utils/utils.h
 )
 
 # Link Qt6 libraries

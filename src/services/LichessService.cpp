@@ -90,7 +90,7 @@ Models::PositionData LichessService::parsePositionJson(const QJsonObject &json) 
     std::int64_t draws = json.value("draws").toInt();
     std::int64_t black_wins = json.value("black").toInt();
     std::int64_t games = white_wins + draws + black_wins;
-    Models::Opening opener;
+    Models::OpeningTitle opener;
     if (auto openingVal = json.value("opening"); !openingVal.isNull()) {
         auto opening = openingVal.toObject();
         opener.name = opening.value("name").toString();

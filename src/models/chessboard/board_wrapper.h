@@ -10,18 +10,16 @@
 #include <QString>
 #include <QModelIndex>
 
-#include "models/datatypes.h"
+#include "models/datatypes/move.h"
 
 
 // Stupid language needs me to tell it how to hash the easiest to hash thing in the world...
-namespace std {
-    template<>
-    struct hash<chess::Square> {
-        size_t operator()(const chess::Square &s) const noexcept {
-            return static_cast<size_t>(s.index()); // Convert to integer index
-        }
-    };
-}
+template<>
+struct std::hash<chess::Square> {
+    size_t operator()(const chess::Square &s) const noexcept {
+        return static_cast<size_t>(s.index()); // Convert to integer index
+    }
+};
 
 namespace chessboard {
     class Board : public chess::Board {

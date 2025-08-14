@@ -36,9 +36,9 @@ namespace chessboard {
         if (m_boardTblModel.square_selected()) {
             // A piece has already been selected
             m_boardTblModel.try_move_to(index);
-            // Clear the currrent highlights:
-            // Case A: they're moving and they no longer apply
-            // Case B: They're changing the piece to move and they no longer apply
+            // Clear the current highlights:
+            // Case A: they're moving, and they no longer apply
+            // Case B: They're changing the piece to move, and they no longer apply
             m_boardTblModel.clear_selection();
         }
         m_boardTblModel.try_select(index);

@@ -7,8 +7,6 @@
 #include <QTableView>
 #include <qtmetamacros.h>
 
-#include "models/datatypes.h"
-
 namespace explorer{
     class TblView : public QTableView {
         Q_OBJECT
