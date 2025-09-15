@@ -1,78 +1,79 @@
-#ifndef MODELS_REPERTOIRE_H
-#define MODELS_REPERTOIRE_H
+//
+// Created by Lecka on 14/08/2025.
+//
 
-
-namespace Models { class FEN; } 
-namespace Models { struct Position; } 
-namespace Models { struct Move; } 
+#ifndef CHESSREPO_REPERTOIRE_H
+#define CHESSREPO_REPERTOIRE_H
+#include <qdatetime.h>
 
 namespace Models {
+    struct Move;
+    struct Position;
+    class FEN;
 
-struct RepertoireInfo {
-    QString name;
+    struct RepertoireInfo {
+        QString name;
+        bool forWhite{true};
+        QString description;
+        QString author;
+        QDateTime createdAt;
 
-    bool forWhite {true};
+        RepertoireInfo(QString name_, const bool forWhite_, QString description_ = "", QString author_ = "")
+            : name(std::move(name_)),
+              forWhite(forWhite_),
+              description(std::move(description_)),
+              author(std::move(author_)),
+              createdAt(QDateTime::currentDateTime()) {
+        }
 
-    QString description;
+        RepertoireInfo() : name("") {
+        }
 
-    QString author;
+        [[nodiscard]] bool isEmpty() const { return name.isEmpty(); }
 
-    QDateTime createdAt;
 
-    inline RepertoireInfo(QString name_, const bool forWhite_, QString description_ = "", QString author_ = "") : name(std::move(name_)),
-                  forWhite(forWhite_),
-                  description(std::move(description_)),
-                  author(std::move(author_)),
-                  createdAt(QDateTime::currentDateTime()) {
-            };
+    };
 
-    inline RepertoireInfo() : name("") {
-            };
+    class RepertoireMoves {
+    public:
+        QMap<FEN, Position> positions{};
 
-    inline bool isEmpty() const { return name.isEmpty(); };
+        void addMove(const FEN &fromPosition, const Move &move, const FEN &toPosition,
+                     const QString &comment = QString());
 
-};
-class RepertoireMoves {
-  public:
-    QMap<FEN,Position> positions {};
+        [[nodiscard]] Move getRecommendedMove(const FEN &position) const;
 
-    void addMove(const FEN & fromPosition, const Move & move, const FEN & toPosition, const QString & comment = QString());
+        bool operator==(const RepertoireMoves & other) const {
+            return positions == other.positions;
+        }
+    };
 
-    Move getRecommendedMove(const FEN & position) const;
+    struct Repertoire {
+        RepertoireInfo header;
+        RepertoireMoves move_db;
 
-    inline bool operator ==(const RepertoireMoves & other) const {
-                return positions == other.positions;
-            };
+        [[nodiscard]] bool operator==(const Repertoire &other) const {
+            if (this->header.name != other.header.name) {
+                return false;
+            }
+            if (this->header.forWhite != other.header.forWhite) {
+                return false;
+            }
+            if (this->header.description != other.header.description) {
+                return false;
+            }
+            if (this->header.author != other.header.author) {
+                return false;
+            }
+            if (this->header.createdAt != other.header.createdAt) {
+                return false;
+            }
+            if (this->move_db != other.move_db) {
+                return false;
+            }
+            return true;
+        }
+    };
+} // Models
 
-};
-struct Repertoire {
-    RepertoireInfo header;
-
-    RepertoireMoves move_db;
-
-    inline bool operator ==(const Repertoire & other) const {
-                if (this->header.name != other.header.name) {
-                    return false;
-                }
-                if (this->header.forWhite != other.header.forWhite) {
-                    return false;
-                }
-                if (this->header.description != other.header.description) {
-                    return false;
-                }
-                if (this->header.author != other.header.author) {
-                    return false;
-                }
-                if (this->header.createdAt != other.header.createdAt) {
-                    return false;
-                }
-                if (this->move_db != other.move_db) {
-                    return false;
-                }
-                return true;
-            };
-
-};
-
-} // namespace Models
-#endif
+#endif //CHESSREPO_REPERTOIRE_H

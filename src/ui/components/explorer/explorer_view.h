@@ -1,35 +1,39 @@
-#ifndef EXPLORER_EXPLORER_VIEW_H
-#define EXPLORER_EXPLORER_VIEW_H
+//
+// Created by Lecka on 14/06/2025.
+//
 
+#ifndef EXPLORER_VIEW_H
+#define EXPLORER_VIEW_H
+#include <QLabel>
+#include <qtmetamacros.h>
+#include <QWidget>
 
-namespace explorer { class TblModel; } 
-namespace explorer { class TblView; } 
+#include "explorer_tblview.h"
+#include "models/explorer_tblmodel.h"
 
 namespace explorer {
+    class View : public QWidget {
+        Q_OBJECT
 
-typedef QWidget typedef48;
-class View : public typedef48 {
-  Q_OBJECT
-  public:
-    explicit View(QWidget * parent = nullptr);
+    public:
+        explicit View(QWidget *parent = nullptr);
 
-    inline void setTblModel(TblModel * model) const { m_tblView->setModel(model); };
+        void setTblModel(TblModel *model) const { m_tblView->setModel(model); }
 
-    inline void initTblUi() const { m_tblView->initUI(); };
+        void initTblUi() const { m_tblView->initUI(); }
 
-  signals:    void moveIndexClicked(const QModelIndex & _t1);
+    signals:
+        void moveIndexClicked(const QModelIndex &proxy_index);
 
-  public slots:    void updatePositionLabel(const QString & position_data_str) const;
+    public slots:
+        void updatePositionLabel(const QString &position_data_str) const;
 
+    private:
+        void initConnections();
 
-  private:
-    void initConnections();
+        TblView *m_tblView;
+        QLabel *m_current_pos_label;
+    };
+}
 
-    TblView * m_tblView;
-
-    QLabel * m_current_pos_label;
-
-};
-
-} // namespace explorer
-#endif
+#endif //EXPLORER_VIEW_H

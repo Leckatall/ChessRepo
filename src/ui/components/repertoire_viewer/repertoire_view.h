@@ -1,27 +1,32 @@
-#ifndef REPERTOIRE_VIEWER_REPERTOIRE_VIEW_H
-#define REPERTOIRE_VIEWER_REPERTOIRE_VIEW_H
+//
+// Created by Lecka on 15/06/2025.
+//
 
+#ifndef REPERTOIRE_VIEW_H
+#define REPERTOIRE_VIEW_H
+#include <qtmetamacros.h>
+#include <QWidget>
 
-namespace Models { struct Move; } 
-namespace common { class WidgetList; } 
+#include "models/datatypes.h"
+#include "ui/components/common/list_widget.h"
+
 
 namespace repertoire_viewer {
+    class View : public QWidget {
+        Q_OBJECT
 
-typedef QWidget typedef50;
-class View : public typedef50 {
-  Q_OBJECT
-  public:
-    explicit View(QWidget * parent = nullptr);
+    public:
+        explicit View(QWidget *parent = nullptr);
 
-    void updateMovesWidget(const QList<Models::Move> & moves);
+        void updateMovesWidget(const QList<Models::Move>& moves);
 
-  signals:    void move_clicked(Models::Move _t1);
+    signals:
+        void move_clicked(Models::Move move);
+
+    private:
+        common::WidgetList *m_moves_widget;
+    };
+}
 
 
-  private:
-    common::WidgetList * m_moves_widget;
-
-};
-
-} // namespace repertoire_viewer
-#endif
+#endif //REPERTOIRE_VIEW_H

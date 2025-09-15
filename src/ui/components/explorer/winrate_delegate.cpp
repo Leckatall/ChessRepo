@@ -1,9 +1,18 @@
+//
+// Created by Lecka on 11/03/2025.
+//
 
 #include "winrate_delegate.h"
-#include "position.h"
 
-void WinrateDelegate::paint() const {
+#include <QLabel>
+#include <QPainter>
+#include <QPainterPath>
 
+#include "models/datatypes/position.h"
+#include "utils/utils.h"
+
+
+void WinrateDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
     painter->save();
     const auto pos_data = index.data(Qt::UserRole).value<Models::PositionStats>();
 
@@ -24,20 +33,18 @@ void WinrateDelegate::paint() const {
     painter->restore();
 }
 
-QSize WinrateDelegate::sizeHint() const {
-
+QSize WinrateDelegate::sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const {
     return QStyledItemDelegate::sizeHint(option, index);
 }
 
-constexpr int WinrateDelegate::PADDING;
+WinrateDelegate::BarWidths WinrateDelegate::calculate_widths(const int totalWidth, const Models::PositionStats &data) {
+    const int width_w = static_cast<int>(totalWidth * data.white_wr());
+    const int width_b = static_cast<int>(totalWidth * data.black_wr());
+    const int width_d = totalWidth - width_w - width_b;
+    return {width_w, width_d, width_b};
+}
 
-constexpr int WinrateDelegate::CORNER_RADIUS;
-
-constexpr double WinrateDelegate::MIN_DRAW_RATE_DISPLAY;
-
-std::tuple<QRect, QRect, QRect> WinrateDelegate::createRects()
-{
-
+std::tuple<QRect, QRect, QRect> WinrateDelegate::createRects(const QRect &baseRect, const BarWidths &widths) {
     QRect rect_w = baseRect.adjusted(PADDING, PADDING,
                                      -baseRect.width() + widths.white + PADDING, -PADDING);
     QRect rect_d = baseRect.adjusted(widths.white, PADDING,
@@ -47,9 +54,20 @@ std::tuple<QRect, QRect, QRect> WinrateDelegate::createRects()
     return {rect_w, rect_d, rect_b};
 }
 
-void WinrateDelegate::draw_segment_text()
-{
 
+void WinrateDelegate::draw_segment_background(QPainter *painter, const QRect &rect, const QColor &color,
+                                              const bool rounded) {
+    painter->setPen(Qt::NoPen);
+    QPainterPath path;
+    if (rounded) {
+        path.addRoundedRect(rect, CORNER_RADIUS, CORNER_RADIUS);
+    } else {
+        path.addRect(rect);
+    }
+    painter->fillPath(path, color);
+}
+
+void WinrateDelegate::draw_segment_text(QPainter* painter, const QRect& rect, const QString& text, const QColor& color) {
     painter->setPen(color);
     // Ensure text fits in rectangle
     const QFontMetrics fm(painter->font());

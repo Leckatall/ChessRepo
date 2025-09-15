@@ -1,8 +1,16 @@
+//
+// Created by Lecka on 09/03/2025.
+//
 
 #include "openingbook.h"
 
-bool OpeningBook::save() {
+#include <QFile>
+#include <QTextStream>
+#include <QXmlStreamWriter>
+#include <QtXml/QDomDocument>
+#include <QtXml/QDomElement>
 
+bool OpeningBook::save(QString filepath) {
     QDomDocument doc;
     QDomElement root = doc.createElement("Book");
     root.setAttribute("title", title);
@@ -34,4 +42,6 @@ bool OpeningBook::save() {
     file.close();
     return true;
 }
+
+
 

@@ -1,14 +1,51 @@
+//
+// Created by Lecka on 06/04/2025.
+//
 
 #include "repertoire_service.h"
-#include "chess_primitives.h"
+
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
+
+#include "QDir"
+#include "models/datatypes/position.h"
+
+
+Models::Repertoire RepertoireService::getRepertoire(const QString &name) {
+    auto it = m_cached_repertoires.find(name);
+    if (it != m_cached_repertoires.end()) {
+        return it.value();
+    }
+    return read_repertoire_file(name);
+}
+
+void RepertoireService::onDirectoryChanged() {
+    updateRepertoireList();
+    m_cached_repertoires.clear();
+    qDebug() << "Repertoire directory modified. repertoire cache cleared";
+    emit repertoireListChanged();
+}
+
+QString RepertoireService::getRepoDir() {
+    // TODO: Consider moving to a config class
+    return R"(C:\Users\Lecka\CLionProjects\ChessReop\RepoDir)";
+}
+
+QString RepertoireService::getRepertoireFilePath(const QString& name) {
+    return QDir(getRepoDir()).filePath(name + ".json");
+}
+
+void RepertoireService::updateRepertoireList() {
+    m_repertoire_title_list = QDir(getRepoDir()).entryList({"*.json"}, QDir::Files)
+        .replaceInStrings(".json", "");
+}
 
 QStringList RepertoireService::get_repertoire_list() {
-
     return m_repertoire_title_list;
 }
 
-QList<Models::Move> RepertoireService::get_moves_from_fen() {
-
+QList<Models::Move> RepertoireService::get_moves_from_fen(const Models::FEN &fen) {
     const auto current_pos = m_current_repertoire.move_db.positions[fen];
     QList<Models::Move> moves;
     for (const auto& move : current_pos.moves) {
@@ -17,70 +54,47 @@ QList<Models::Move> RepertoireService::get_moves_from_fen() {
     return moves;
 }
 
-void RepertoireService::load_repertoire() {
-
-    if (m_cache.contains(name)) {
-        m_current_repertoire = m_cache[name];
-    }else {
-        m_current_repertoire = read_repertoire_file(name);
+void RepertoireService::load_repertoire(const QString &name) {
+    if (auto it = m_cached_repertoires.find(name); it != m_cached_repertoires.end()) {
+        m_current_repertoire = it.value();
     }
+    m_current_repertoire = read_repertoire_file(name);
     emit newRepertoireLoaded();
 }
 
-bool RepertoireService::saveRepertoire() {
-
-    QFile file(getRepertoireFilePath(rep.header.name));
+bool RepertoireService::saveRepertoire(const Models::Repertoire &rep) {
+    QFile file(getRepertoireFilePath(rep.name));
     if (!file.open(QIODevice::WriteOnly)) {
         emit error(QString("Could not open file for writing: %1").arg(file.errorString()));
         return false;
     }
 
     QJsonObject root;
-    root["name"] = rep.header.name;
-    root["forWhite"] = rep.header.forWhite;
-    root["description"] = rep.header.description;
-    root["author"] = rep.header.author;
-    root["createdAt"] = rep.header.createdAt.toString(Qt::ISODate);
+    root["name"] = rep.name;
+    root["forWhite"] = rep.forWhite;
+    root["createdAt"] = rep.createdAt.toString(Qt::ISODate);
+    root["Author"] = rep.author;
 
     QJsonArray positions;
-    for (auto it = rep.move_db.positions.begin(); it != rep.move_db.positions.end(); ++it) {
+    for (auto it = rep.positions.begin(); it != rep.positions.end(); ++it) {
         QJsonObject pos;
         pos["fen"] = it.key();
-        pos["comment"] = it.value().info.comment;
-        pos["lastPlayed"] = it.value().info.lastPlayed.toString(Qt::ISODate);
-        pos["createdAt"] = it.value().info.createdAt.toString(Qt::ISODate);
-        pos["openingEco"] = it.value().info.opening.eco;
-        pos["openingName"] = it.value().info.opening.name;
+        QJsonObject pos_data;
+        pos_data["recommendedMove"] =it.value().recommendedMove;
+        pos_data["timesPlayed"] = it.value().myPositionData.games;
+        pos_data["whiteWins"] = it.value().myPositionData.white_wins;
+        pos_data["draws"] = it.value().myPositionData.draws;
+        pos_data["blackWins"] = it.value().myPositionData.black_wins;
+        pos_data["openingName"] = it.value().myPositionData.opening.name;
+        pos["myPositionData"] = pos_data;
+        pos["comment"] = it.value().comment;
+        pos["lastPlayed"] = it.value().lastPlayed.toString(Qt::ISODate);
 
-        // Save user stats
-        QJsonObject userStats;
-        userStats["timesPlayed"] = it.value().info.user_stats.games;
-        userStats["whiteWins"] = it.value().info.user_stats.white_wins;
-        userStats["draws"] = it.value().info.user_stats.draws;
-        userStats["blackWins"] = it.value().info.user_stats.black_wins;
-        pos["userStats"] = userStats;
-
-        // Save API stats
-        QJsonObject apiStats;
-        apiStats["timesPlayed"] = it.value().info.api_stats.games;
-        apiStats["whiteWins"] = it.value().info.api_stats.white_wins;
-        apiStats["draws"] = it.value().info.api_stats.draws;
-        apiStats["blackWins"] = it.value().info.api_stats.black_wins;
-        apiStats["openingEco"] = it.value().info.api_stats.opening.eco;
-        apiStats["openingName"] = it.value().info.api_stats.opening.name;
-        pos["apiStats"] = apiStats;
-
-        // Save moves
-        QJsonArray moves;
-        for (const auto &move : it.value().moves) {
-            QJsonObject moveObj;
-            moveObj["uci"] = move.move.uci;
-            moveObj["san"] = move.move.san;
-            moveObj["comment"] = move.comment;
-            moveObj["toPosition"] = move.targetPosition->fen;
-            moves.append(moveObj);
+        QJsonObject responses;
+        for (auto respIt = it.value().responses.begin(); respIt != it.value().responses.end(); ++respIt) {
+            responses[respIt.key()] = respIt.value();
         }
-        pos["moves"] = moves;
+        pos["responses"] = responses;
 
         positions.append(pos);
     }
@@ -91,139 +105,51 @@ bool RepertoireService::saveRepertoire() {
         return false;
     }
 
-    m_cache[rep.header.name] = rep;
-    emit repertoireChanged(rep.header.name);
+    m_cached_repertoires[rep.name] = rep;
+    emit repertoireChanged(rep.name);
     return true;
 }
-
-Models::Repertoire RepertoireService::getRepertoire() {
-
-    auto it = m_cache.find(name);
-    if (it != m_cache.end()) {
-        return it.value();
-    }
-    return read_repertoire_file(name);
-}
-
-// SIGNAL 0
-
-void RepertoireService::repertoireListChanged() {
-
-    QMetaObject::activate(this, &staticMetaObject, 0, nullptr);
-}
-
-// SIGNAL 1
-
-void RepertoireService::repertoireChanged(const QString & _t1) {
-
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
-    QMetaObject::activate(this, &staticMetaObject, 1, _a);
-}
-
-// SIGNAL 2
-
-void RepertoireService::newRepertoireLoaded() {
-
-    QMetaObject::activate(this, &staticMetaObject, 2, nullptr);
-}
-
-// SIGNAL 3
-
-void RepertoireService::error(const QString & _t1) {
-
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
-    QMetaObject::activate(this, &staticMetaObject, 3, _a);
-}
-
-void RepertoireService::onDirectoryChanged() {
-
-    updateRepertoireList();
-    m_cache.clear();
-    qDebug() << "Repertoire directory modified. repertoire cache cleared";
-    emit repertoireListChanged();
-}
-
-QString RepertoireService::getRepoDir()
-{
-
-    // TODO: Consider moving to a config class
-    return R"(C:\Users\Lecka\CLionProjects\ChessReop\RepoDir)";
-}
-
-QString RepertoireService::getRepertoireFilePath()
-{
-
-    return QDir(getRepoDir()).filePath(name + ".json");
-}
-
-void RepertoireService::updateRepertoireList() {
-
-    m_repertoire_title_list = QDir(getRepoDir()).entryList({"*.json"}, QDir::Files)
-        .replaceInStrings(".json", "");
-}
-
-Models::Repertoire RepertoireService::read_repertoire_file() {
-
+Models::Repertoire RepertoireService::read_repertoire_file(const QString &name) {
     QFile file(getRepertoireFilePath(name));
     if (!file.open(QIODevice::ReadOnly)) {
         emit error(QString("Could not open file for reading: %1").arg(file.errorString()));
-        return {};
+        return {}; // Return empty repertoire for white - should discard if this is returned
     }
 
     const QJsonDocument doc = QJsonDocument::fromJson(file.readAll());
     QJsonObject root = doc.object();
 
-    Models::Repertoire repertoire;
-    repertoire.header = Models::RepertoireInfo(
+    Models::RepertoireInfo rep(
         root["name"].toString(),
-        root["forWhite"].toBool(),
-        root["description"].toString(),
-        root["author"].toString()
+        root["forWhite"].toBool()
     );
-    repertoire.header.createdAt = QDateTime::fromString(root["createdAt"].toString(), Qt::ISODate);
+    rep.createdAt = QDateTime::fromString(root["createdAt"].toString(), Qt::ISODate);
+    rep.author = root["author"].toString();
 
     QJsonArray positions = root["positions"].toArray();
-    for (const auto &posRef : positions) {
+    for (const auto& posRef : positions) {
         QJsonObject pos = posRef.toObject();
-        Models::FEN fen(pos["fen"].toString());
-        Models::Position position(fen);
+        Models::Position position(Models::FEN(pos["fen"].toString()));
 
-        position.info.comment = pos["comment"].toString();
-        position.info.lastPlayed = QDateTime::fromString(pos["lastPlayed"].toString(), Qt::ISODate);
-        position.info.createdAt = QDateTime::fromString(pos["createdAt"].toString(), Qt::ISODate);
-        position.info.opening.eco = pos["openingEco"].toString();
-        position.info.opening.name = pos["openingName"].toString();
+        Models::PositionStats pos_data;
+        pos_data.white_wins = pos["whiteWins"].toInt();
+        pos_data.draws = pos["draws"].toInt();
+        pos_data.black_wins = pos["blackWins"].toInt();
+        pos_data.games = pos["timesPlayed"].toInt();
+        Models::PositionInfo pos_info;
+        position.stats.user_stats = pos_data;
 
-        // Load user stats
-        auto userStatsObj = pos["userStats"].toObject();
-        position.info.user_stats.games = userStatsObj["timesPlayed"].toInt();
-        position.info.user_stats.white_wins = userStatsObj["whiteWins"].toInt();
-        position.info.user_stats.draws = userStatsObj["draws"].toInt();
-        position.info.user_stats.black_wins = userStatsObj["blackWins"].toInt();
+        pos_info.comment = pos["comment"].toString();
+        pos_info.lastPlayed = QDateTime::fromString(pos["lastPlayed"].toString(), Qt::ISODate);
 
-
-        // Load API stats
-        auto apiStatsObj = pos["apiStats"].toObject();
-        position.info.api_stats.games = apiStatsObj["timesPlayed"].toInt();
-        position.info.api_stats.white_wins = apiStatsObj["whiteWins"].toInt();
-        position.info.api_stats.draws = apiStatsObj["draws"].toInt();
-        position.info.api_stats.black_wins = apiStatsObj["blackWins"].toInt();
-        position.info.api_stats.opening.eco = apiStatsObj["openingEco"].toString();
-        position.info.api_stats.opening.name = apiStatsObj["openingName"].toString();
-
-        // Load moves
-        QJsonArray movesArray = pos["moves"].toArray();
-        for (const auto &moveRef : movesArray) {
-            QJsonObject moveObj = moveRef.toObject();
-            Models::Move move(moveObj["uci"].toString(), moveObj["san"].toString());
-            Models::FEN toPos(moveObj["toPosition"].toString());
-            position.moves.append(Models::MoveEdge(move, nullptr, moveObj["comment"].toString()));
+        QJsonObject responses = pos["responses"].toObject();
+        for (auto it = responses.begin(); it != responses.end(); ++it) {
+            position.responses[Models::UCIMove(it.key())] = Models::FEN(it.value().toString());
         }
 
-        repertoire.move_db.positions[fen] = position;
+        rep.positions[position.position] = position;
     }
 
-    m_cache[name] = repertoire;
-    return repertoire;
+    m_cached_repertoires[name] = rep;
+    return rep;
 }
-

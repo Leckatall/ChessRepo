@@ -1,30 +1,34 @@
-#ifndef _REPERTOIRE_TREE_H
-#define _REPERTOIRE_TREE_H
+//
+// Created by Lecka on 13/06/2025.
+//
+
+#ifndef REPERTOIRETREE_H
+#define REPERTOIRETREE_H
+#include <QTreeView>
+#include <QWidget>
+
+#include "models/repertoires/repotreemodel.h"
 
 
-namespace Models { struct Repertoire; } 
-namespace Models { struct Move; } 
-class RepoTreeModel;
+class RepertoireTree : public QWidget {
+Q_OBJECT
+public:
+    explicit RepertoireTree(QWidget *parent = nullptr);
 
-typedef QWidget typedef40;
-class RepertoireTree : public typedef40 {
-  Q_OBJECT
-  public:
-    explicit RepertoireTree(QWidget * parent = nullptr);
+    void set_repertoire(const Models::Repertoire &repertoire) const;
 
-    void set_repertoire(const Models::Repertoire & repertoire) const;
+signals:
+    void moveClicked(Models::Move);
 
-  signals:    void moveClicked(Models::Move _t1);
+    void moveHovered(Models::Move);
+private slots:
+    void treeViewClicked(const QModelIndex& index);
 
-    void moveHovered(Models::Move _t1);
-
-  private slots:
-  private:
-    void treeViewClicked(const QModelIndex & index);
-
-    RepoTreeModel * m_tree_model;
-
-    QTreeView * m_tree_view;
-
+private:
+    RepoTreeModel* m_tree_model;
+    QTreeView* m_tree_view;
 };
-#endif
+
+
+
+#endif //REPERTOIRETREE_H

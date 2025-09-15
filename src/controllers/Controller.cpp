@@ -1,16 +1,11 @@
+//
+// Created by Lecka on 13/06/2025.
+//
 
-#include "Controller.h"
-#include "application.h"
 
-Controller::Controller(application::Application * app) : QObject(app) {
+#include "controller.h"
+#include "app/application.h"
 
-}
-
-// SIGNAL 0
-
-void Controller::routeToPage(application::Page _t1) {
-
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
-    QMetaObject::activate(this, &staticMetaObject, 0, _a);
+Controller::Controller(application::Application* app) : QObject(app) {
 }
 

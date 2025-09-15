@@ -1,19 +1,17 @@
+//
+// Created by Lecka on 14/08/2025.
+//
 
 #include "chess_primitives.h"
 
-#include <QRegularExpression>
-
 namespace Models {
-
-bool UCIMove::isValid()
-{
-        if (std::move.isEmpty()) return false;
+    bool UCIMove::isValid(const QString &move) {
+        if (move.isEmpty()) return false;
         static const QRegularExpression uciFormat("^[a-h][1-8][a-h][1-8][nbrq]?$");
-        return uciFormat.match(std::move).hasMatch();
-}
+        return uciFormat.match(move).hasMatch();
+    }
 
-bool FEN::isValid(const QString & fen)
-{
+    bool FEN::isValid(const QString &fen) {
         // Basic FEN validation
         if (fen.isEmpty()) return false;
 
@@ -26,7 +24,5 @@ bool FEN::isValid(const QString & fen)
 
         // More validation could be added...
         return true;
-}
-
-
-} // namespace Models
+    }
+} // Models

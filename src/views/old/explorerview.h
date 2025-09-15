@@ -1,13 +1,20 @@
-#ifndef _EXPLORERVIEW_H
-#define _EXPLORERVIEW_H
+//
+// Created by Lecka on 09/03/2025.
+//
+
+#ifndef EXPLORERVIEW_H
+#define EXPLORERVIEW_H
+#include <QFrame>
 
 
-#include "ChessDisplay.h"
-
-class explorerview : public typedef56 {
-  Q_OBJECT
-  public:
-    inline explicit explorerview(QWidget * parent = nullptr) {};
+class explorerview: public QFrame {
+    Q_OBJECT
+public:
+    explicit explorerview(QWidget *parent = nullptr) {}
+private:
 
 };
-#endif
+
+
+
+#endif //EXPLORERVIEW_H

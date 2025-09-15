@@ -1,8 +1,8 @@
+//
+// Created by Lecka on 14/08/2025.
+//
 
 #include "move.h"
-#include "position.h"
 
 namespace Models {
-
-
-} // namespace Models
+} // Models

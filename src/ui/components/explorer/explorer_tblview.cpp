@@ -1,15 +1,20 @@
+//
+// Created by Lecka on 09/03/2025.
+//
 
 #include "explorer_tblview.h"
 
+#include <QHeaderView>
+#include <QMouseEvent>
+
+#include "winrate_delegate.h"
+
 namespace explorer {
+    TblView::TblView(QWidget *parent) : QTableView(parent) {
 
-TblView::TblView(QWidget * parent) : QTableView(parent) {
+    }
 
-
-}
-
-void TblView::initUI() {
-
+    void TblView::initUI() {
         this->setShowGrid(false);
         setFrameStyle(Box);
         setLineWidth(1);
@@ -32,7 +37,7 @@ void TblView::initUI() {
 
         setEditTriggers(NoEditTriggers);
         setItemDelegateForColumn(2, new WinrateDelegate(this));
+    }
 }
 
 
-} // namespace explorer

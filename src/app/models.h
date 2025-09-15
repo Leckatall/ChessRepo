@@ -1,14 +1,17 @@
-#ifndef APPLICATION_MODELS_H
-#define APPLICATION_MODELS_H
+//
+// Created by Lecka on 13/06/2025.
+//
 
+#ifndef MODELS_H
+#define MODELS_H
 
 namespace application {
+    enum class Page {
+        LIST,
+        STUDY,
+        EDIT
+    };
+}
 
-enum class Page {
-  LIST,
-  STUDY,
-  EDIT
-};
 
-} // namespace application
-#endif
+#endif //MODELS_H

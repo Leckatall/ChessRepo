@@ -1,9 +1,12 @@
+//
+// Created by Lecka on 21/04/2025.
+//
 
 #include "createrepomodal.h"
-#include "repertoire.h"
 
-// TODO: Don't allow creation of repos with names that already exist
-CreateRepoModal::CreateRepoModal(QWidget * parent)
+#include <QPushButton>
+
+CreateRepoModal::CreateRepoModal(QWidget *parent)
     : QDialog(parent),
       m_layout(this),
       m_name_edit(this),
@@ -11,28 +14,16 @@ CreateRepoModal::CreateRepoModal(QWidget * parent)
       m_auth_edit(this),
       m_for_white_check_box(this),
       m_button_box({QDialogButtonBox::Ok | QDialogButtonBox::Cancel}, this) {
-
     setWindowTitle("Create New Repertoire");
     initUI();
 }
 
-Models::Repertoire CreateRepoModal::getRepertoire() const {
-
-    return {
-        m_name_edit.text(),
-        m_for_white_check_box.isChecked(),
-        m_desc_edit.toPlainText(),
-        m_auth_edit.text()
-    };
-}
 
 void CreateRepoModal::validateForm() const {
-
     m_button_box.button(QDialogButtonBox::Ok)->setEnabled(!m_name_edit.text().trimmed().isEmpty());
 }
 
 void CreateRepoModal::initUI() {
-
     const auto confirm_btn = m_button_box.button(QDialogButtonBox::Ok);
     confirm_btn->setText("Save");
     confirm_btn->setEnabled(false);
@@ -52,3 +43,11 @@ void CreateRepoModal::initUI() {
     connect(&m_button_box, &QDialogButtonBox::rejected, this, &QDialog::reject);
 }
 
+Models::Repertoire CreateRepoModal::getRepertoire() const {
+    return {
+        m_name_edit.text(),
+        m_for_white_check_box.isChecked(),
+        m_desc_edit.toPlainText(),
+        m_auth_edit.text()
+    };
+}

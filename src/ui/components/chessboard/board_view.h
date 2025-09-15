@@ -1,40 +1,44 @@
-#ifndef CHESSBOARD_BOARD_VIEW_H
-#define CHESSBOARD_BOARD_VIEW_H
+//
+// Created by Lecka on 13/06/2025.
+//
 
+#ifndef BOARD_VIEW_H
+#define BOARD_VIEW_H
+#include <qboxlayout.h>
+#include <QFrame>
+#include <QLabel>
+#include <QPushButton>
+#include <QWidget>
 
-namespace chessboard { class TblView; } 
+#include "board_tblview.h"
+#include "models/chessboard/board_proxytblmodel.h"
 
 namespace chessboard {
+    class View : public QWidget {
+        Q_OBJECT
 
-typedef QWidget typedef42;
-class View : public typedef42 {
-  Q_OBJECT
-  public:
-    explicit View(QWidget * parent = nullptr);
+    public:
+        explicit View(QWidget *parent = nullptr);
 
-    inline void setTblModel(QAbstractItemModel * model) const {m_tblView->setModel(model);};
+        void setTblModel(QAbstractItemModel *model) const {m_tblView->setModel(model);}
 
-    void setHistoryLabel(const QString & pgn_str) const;
+        void setHistoryLabel(const QString &pgn_str) const;
 
-  signals:    void square_clicked(QModelIndex _t1);
+    signals:
+        void square_clicked(QModelIndex proxy_index);
 
-    void flipRequested();
+        void flipRequested();
 
-    void undoMoveRequested();
+        void undoMoveRequested();
 
+    private:
+        void initConnections();
 
-  private:
-    void initConnections();
+        QPushButton *m_flip_btn;
+        QPushButton *m_undo_btn;
+        QLabel *m_move_history_lbl;
+        TblView *m_tblView;
+    };
+} // chess_board
 
-    QPushButton * m_flip_btn;
-
-    QPushButton * m_undo_btn;
-
-    QLabel * m_move_history_lbl;
-
-    TblView * m_tblView;
-
-};
-
-} // namespace chessboard
-#endif
+#endif //BOARD_VIEW_H

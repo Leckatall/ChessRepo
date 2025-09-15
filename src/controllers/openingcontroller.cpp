@@ -1,13 +1,12 @@
+//
+// Created by Lecka on 06/04/2025.
+//
 
 #include "openingcontroller.h"
-#include "chess_primitives.h"
 
-// TODO: Add lines to currently selected openers
-// TODO: Modal popup if there are unsaved changes
-// TODO: Display info within selected repo well
-// TODO: responses for fen
-// TODO: L8r add repo evaluator (coverage, strength, soundness)
-OpeningController::OpeningController(QWidget * parent)
+#include "ui/components/createrepomodal.h"
+
+OpeningController::OpeningController(QWidget *parent)
     : QObject(parent),
       m_container(new QFrame(parent)),
       m_layout(m_container),
@@ -17,63 +16,11 @@ OpeningController::OpeningController(QWidget * parent)
       m_add_line_btn("Add Line", m_container),
       m_repo_service(this),
       m_openers(getOpeners() << m_add_opener_selection) {
-
     initUI();
     initConnections();
 }
 
-QWidget OpeningController::view() const {
-
-    return m_container;
-}
-
-QList<Models::UCIMove> OpeningController::responses_for_pos() {
-
-    return m_current_repo.positions[pos].responses.keys();
-}
-
-void OpeningController::annotateForPosition() {
-
-}
-
-bool OpeningController::createRepo() {
-
-    if (const auto modal = new CreateRepoModal(m_container); modal->exec() == QDialog::Accepted) {
-        m_current_repo = modal->getRepertoire();
-        saveRepo();
-        return true;
-    }
-    return false;
-}
-
-// SIGNAL 0
-
-void OpeningController::boardChanged(const QString & _t1) {
-
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
-    QMetaObject::activate(this, &staticMetaObject, 0, _a);
-}
-
-// SIGNAL 1
-
-void OpeningController::openerChaned() {
-
-    QMetaObject::activate(this, &staticMetaObject, 1, nullptr);
-}
-
-void OpeningController::saveRepo() {
-
-    m_repo_service.saveRepertoire(m_current_repo);
-}
-
-QList<QString> OpeningController::getOpeners()
-{
-
-    return {"Whatever"};
-}
-
 void OpeningController::initUI() {
-
     m_container->setFrameStyle(QFrame::Box);
 
     m_opener_select.setPlaceholderText("No repo selected");
@@ -88,13 +35,11 @@ void OpeningController::initUI() {
 }
 
 void OpeningController::initConnections() {
-
     connect(&m_opener_select, &QComboBox::currentIndexChanged,
             this, selectedOpenerChanged);
 }
 
 void OpeningController::update_combo_box() {
-
     const QSignalBlocker blocker(m_opener_select);
 
     m_opener_select.clear();
@@ -106,3 +51,40 @@ void OpeningController::update_combo_box() {
     }
 }
 
+QWidget *OpeningController::view() const {
+    return m_container;
+}
+
+QList<Models::UCIMove> OpeningController::responses_for_pos(const Models::FEN &pos) {
+    return m_current_repo.positions[pos].responses.keys();
+}
+
+void OpeningController::saveRepo() {
+    m_repo_service.saveRepertoire(m_current_repo);
+}
+
+void OpeningController::selectedOpenerChanged(const int new_index) {
+    if (new_index == m_opener_select.count() - 1) {
+        // Create new repo
+        createRepo();
+        update_combo_box();
+        return;
+    }
+    m_current_repo = m_repo_service.getRepertoire(m_opener_select.currentText());
+}
+
+QList<QString> OpeningController::getOpeners() {
+    return {"Whatever"};
+}
+
+void OpeningController::annotateForPosition(Models::FEN pos) {
+}
+
+bool OpeningController::createRepo() {
+    if (const auto modal = new CreateRepoModal(m_container); modal->exec() == QDialog::Accepted) {
+        m_current_repo = modal->getRepertoire();
+        saveRepo();
+        return true;
+    }
+    return false;
+}

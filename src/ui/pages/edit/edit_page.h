@@ -1,74 +1,74 @@
-#ifndef _EDIT_PAGE_H
-#define _EDIT_PAGE_H
+//
+// Created by Lecka on 13/06/2025.
+//
+
+#ifndef EDIT_PAGE_H
+#define EDIT_PAGE_H
+#include <QTextEdit>
+#include <QLineEdit>
+#include <QPushButton>
+#include <QWidget>
+
+#include "moves_deck.h"
+#include "controllers/boardcontroller.h"
+#include "controllers/board_controller.h"
+#include "controllers/explorer_controller.h"
+#include "controllers/repertoire_viewer_controller.h"
+#include "models/datatypes.h"
+#include "ui/components/repertoire_tree.h"
 
 
-#include "repertoire.h"
+class EditPage : public QWidget {
+    Q_OBJECT
 
-namespace chessboard { class View; } 
-namespace explorer { class View; } 
-namespace repertoire_viewer { class View; } 
-namespace Models { class FEN; } 
-namespace Models { class UCIMove; } 
-class MovesDeck;
-
-typedef QWidget typedef52;
-class EditPage : public typedef52 {
-  Q_OBJECT
-  public:
+public:
     struct Components {
-        chessboard::View * boardView;
-
-        explorer::View * explorerView;
-
-        repertoire_viewer::View * repView;
-
+        chessboard::View* boardView;
+        explorer::View* explorerView;
+        repertoire_viewer::View* repView;
     };
-    
-    explicit EditPage(const Components & components, QWidget * parent = nullptr);
+    explicit EditPage(const Components& components, QWidget *parent = nullptr);
 
-    void set_repertoire(const Models::Repertoire & repertoire) const;
+    void set_repertoire(const Models::Repertoire &repertoire) const;
 
-    inline Models::Repertoire get_repertoire() { return m_current_repertoire; };
+    Models::Repertoire get_repertoire() { return m_current_repertoire; }
 
     void updateExplorer();
 
-  signals:    void saveRequested();
+signals:
+    void saveRequested();
 
-    void addCurrentLine(QString _t1 = "");
+    void addCurrentLine(QString comment = "");
 
-    void moveAdded(const Models::FEN & _t1, const Models::UCIMove & _t2);
+    void moveAdded(const Models::FEN &fromPos, const Models::UCIMove &move);
 
-    void moveDeleted(const Models::FEN & _t1);
+    void moveDeleted(const Models::FEN &position);
 
-    void commentUpdated(const Models::FEN & _t1, const QString & _t2);
+    void commentUpdated(const Models::FEN &position, const QString &comment);
 
     void routeToListRequested();
 
-    void explorerUpdateRequested(const Models::FEN & _t1);
+    void explorerUpdateRequested(const Models::FEN &position);
 
-
-  private:
+private:
     void initLayout();
 
     void initConnections();
 
-    QFrame * m_side_panel;
-
+    QFrame *m_side_panel;
     // RepertoireTree *m_rep_tree;
-    
-    MovesDeck * m_moves_deck;
+    MovesDeck *m_moves_deck;
 
-    QLineEdit * m_rep_name_edit;
+    QLineEdit *m_rep_name_edit;
+    QTextEdit *m_comment_edit;
 
-    QTextEdit * m_comment_edit;
+    QPushButton *m_delete_line_btn;
+    QPushButton *m_save_line_btn;
 
-    QPushButton * m_delete_line_btn;
-
-    QPushButton * m_save_line_btn;
-
-    QPushButton * m_back_btn;
+    QPushButton *m_back_btn;
 
     Models::Repertoire m_current_repertoire;
-
 };
-#endif
+
+
+#endif //EDIT_PAGE_H

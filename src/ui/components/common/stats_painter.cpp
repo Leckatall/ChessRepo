@@ -1,9 +1,12 @@
+//
+// Created by Lecka on 13/06/2025.
+//
 
 #include "stats_painter.h"
 
-void StatsPainter::paint()
-{
+#include <QPainterPath>
 
+void StatsPainter::paint(QPainter *painter, QRect rect, const Models::PositionData &stats) {
     if (stats.games == 0) {
         painter->drawText(rect, Qt::AlignCenter, "No games");
         return;
@@ -20,24 +23,14 @@ void StatsPainter::paint()
     draw_segment_text(painter, rect_b, Models::formatPercentage(stats.black_wr()), Qt::white);
 }
 
-constexpr int StatsPainter::PADDING;
-
-constexpr int StatsPainter::CORNER_RADIUS;
-
-constexpr double StatsPainter::MIN_DRAW_RATE_DISPLAY;
-
-StatsPainter::BarWidths StatsPainter::calculate_widths()
-{
-
+StatsPainter::BarWidths StatsPainter::calculate_widths(int totalWidth, const Models::PositionData &data) {
     const int width_w = static_cast<int>(totalWidth * data.white_wr());
     const int width_b = static_cast<int>(totalWidth * data.black_wr());
     const int width_d = totalWidth - width_w - width_b;
     return {width_w, width_d, width_b};
 }
 
-std::tuple<QRect, QRect, QRect> StatsPainter::createRects()
-{
-
+std::tuple<QRect, QRect, QRect> StatsPainter::createRects(const QRect &baseRect, const BarWidths &widths) {
     QRect rect_w = baseRect.adjusted(PADDING, PADDING,
                                      -baseRect.width() + widths.white + PADDING, -PADDING);
     QRect rect_d = baseRect.adjusted(widths.white, PADDING,
@@ -47,9 +40,7 @@ std::tuple<QRect, QRect, QRect> StatsPainter::createRects()
     return {rect_w, rect_d, rect_b};
 }
 
-void StatsPainter::draw_segment_background()
-{
-
+void StatsPainter::draw_segment_background(QPainter *painter, const QRect &rect, const QColor &color, bool rounded) {
     painter->setPen(Qt::NoPen);
     QPainterPath path;
     if (rounded) {
@@ -60,13 +51,10 @@ void StatsPainter::draw_segment_background()
     painter->fillPath(path, color);
 }
 
-void StatsPainter::draw_segment_text()
-{
-
+void StatsPainter::draw_segment_text(QPainter *painter, const QRect &rect, const QString &text, const QColor &color) {
     painter->setPen(color);
     // Ensure text fits in rectangle
     const QFontMetrics fm(painter->font());
     const QString elidedText = fm.elidedText(text, Qt::ElideRight, rect.width());
     painter->drawText(rect, Qt::AlignCenter, elidedText);
 }
-

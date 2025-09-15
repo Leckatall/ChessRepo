@@ -1,7 +1,13 @@
-#ifndef _REPO_MODEL_H
-#define _REPO_MODEL_H
+//
+// Created by Lecka on 14/08/2025.
+//
+
+#ifndef CHESSREPO_REPO_MODEL_H
+#define CHESSREPO_REPO_MODEL_H
 
 
 class repo_model {
 };
-#endif
+
+
+#endif //CHESSREPO_REPO_MODEL_H

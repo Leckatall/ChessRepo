@@ -1,13 +1,18 @@
+//
+// Created by Lecka on 15/06/2025.
+//
 
 #include "card_widget.h"
 
-namespace common {
+#include <QMouseEvent>
 
-CardWidget::CardWidget(const QString & title, QWidget * parent)
+#include <utility>
+
+namespace common {
+    CardWidget::CardWidget(const QString &title, QWidget *parent)
         : QFrame(parent),
           m_title_lbl(new QLabel(title, this)),
           m_content_layout(new QGridLayout()) {
-
         initStyle();
         auto *main_layout = new QVBoxLayout(this);
         auto *content_conatiner = new QFrame(this);
@@ -21,25 +26,16 @@ CardWidget::CardWidget(const QString & title, QWidget * parent)
         main_layout->addWidget(m_title_lbl, 0, Qt::AlignCenter);
         main_layout->addWidget(content_conatiner);
         setLayout(main_layout);
-}
+    }
 
-// SIGNAL 0
-
-void CardWidget::clicked() {
-
-    QMetaObject::activate(this, &staticMetaObject, 0, nullptr);
-}
-
-void CardWidget::mousePressEvent() {
-
+    void CardWidget::mousePressEvent(QMouseEvent *event) {
         QFrame::mousePressEvent(event);
         if (event->button() == Qt::LeftButton) {
             emit clicked();
         }
-}
+    }
 
-void CardWidget::initStyle() {
-
+    void CardWidget::initStyle() {
         setFrameStyle(StyledPanel | Raised);
         setStyleSheet(
             "CardWidget {"
@@ -51,7 +47,5 @@ void CardWidget::initStyle() {
             "border: 2px solid #c0c0c0;"
             "  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);"
             "}");
+    }
 }
-
-
-} // namespace common

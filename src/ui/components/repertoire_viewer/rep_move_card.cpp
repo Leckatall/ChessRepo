@@ -1,13 +1,14 @@
+//
+// Created by Lecka on 15/06/2025.
+//
 
 #include "rep_move_card.h"
 
-namespace repertoire_viewer {
+#include <utility>
 
-MoveCard::MoveCard(Models::Move move, QWidget * parent)
+namespace repertoire_viewer {
+    MoveCard::MoveCard(Models::Move move, QWidget *parent)
         : m_move(std::move(move)),
           CardWidget(m_move.san, parent) {
-
+    }
 }
-
-
-} // namespace repertoire_viewer

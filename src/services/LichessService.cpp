@@ -1,23 +1,39 @@
+//
+// Created by Lecka on 09/03/2025.
+//
 
 #include "LichessService.h"
-#include "chess_primitives.h"
-#include "move.h"
 
-Configs LichessService::config() {
- return m_config;
+#include <QNetworkRequest>
+#include <QNetworkReply>
+#include <QUrlQuery>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
+#include <utility>
+
+LichessService::LichessService(QObject *parent)
+    : QObject(parent),
+      m_net_client(this) {
+    initConnections();
 }
 
-// get config of 1 setting
-LichessService LichessService::config() {
+LichessService::LichessService(Configs config, QObject *parent): QObject(parent),
+                                                                 m_net_client(this),
+                                                                 m_config(std::move(config)) {
+    initConnections();
+}
 
+LichessService::Configs &LichessService::config() { return m_config; }
+
+QString LichessService::config(const Config key) const { return m_config[key]; }
+
+LichessService &LichessService::config(Config key, const QString &value) {
     m_config[key] = value;
     return *this;
 }
 
-// set config of 1 setting
-// get config of multiple settings
-QMap<Config, QString> LichessService::config() const {
-
+QMap<LichessService::Config, QString> LichessService::config(std::initializer_list<Config> keys) const {
     QMap<Config, QString> result;
     for (const auto &key: keys) {
         result[key] = m_config[key];
@@ -25,32 +41,14 @@ QMap<Config, QString> LichessService::config() const {
     return result;
 }
 
-// set config of multiple settings
-LichessService LichessService::config() {
-
+LichessService &LichessService::config(std::initializer_list<std::pair<Config, QString> > configs) {
     for (const auto &[key, value]: configs) {
         m_config[key] = value;
     }
     return *this;
 }
 
-// Setting up service
-LichessService::LichessService(QObject * parent)
-    : QObject(parent),
-      m_net_client(this) {
-
-    initConnections();
-}
-
-LichessService::LichessService(Configs config, QObject * parent): QObject(parent),
-                                                                 m_net_client(this),
-                                                                 m_config(std::move(config)) {
-
-    initConnections();
-}
-
-void LichessService::fetch_opening_data() {
-
+void LichessService::fetch_opening_data(const Models::FEN &fen, const QString &play) {
     const QUrl url = buildApiUrl(fen, play);
     QNetworkRequest request(url);
     request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
@@ -63,62 +61,7 @@ void LichessService::fetch_opening_data() {
             });
 }
 
-// SIGNAL 0
-
-void LichessService::gotPositionData(Models::PositionData _t1) {
-
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
-    QMetaObject::activate(this, &staticMetaObject, 0, _a);
-}
-
-// SIGNAL 1
-
-void LichessService::gotMovesData(QList<Models::MoveData> _t1) {
-
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
-    QMetaObject::activate(this, &staticMetaObject, 1, _a);
-}
-
-// SIGNAL 2
-
-void LichessService::errorOccurred(QString _t1) {
-
-    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
-    QMetaObject::activate(this, &staticMetaObject, 2, _a);
-}
-
-void LichessService::handleOpeningReply() {
-
-    if (reply->error() == QNetworkReply::NoError) {
-        const auto doc = QJsonDocument::fromJson(reply->readAll()).object();
-
-        Models::PositionData current_position = parsePositionJson(doc);
-        emit gotPositionData(current_position);
-        auto jsonMoves = doc.value("moves").toArray();
-        QList<Models::MoveData> moves;
-
-        for (auto jsonMove: jsonMoves) {
-            auto jsonObj = jsonMove.toObject();
-            moves.append(parseMoveJson(jsonObj));
-        }
-        emit gotMovesData(moves);
-    } else {
-        emit errorOccurred(reply->errorString());
-    }
-}
-
-void LichessService::handleNetworkError() {
-
-    qDebug() << QString("Network error: %1").arg(errorMessage);
-}
-
-void LichessService::initConnections() {
-
-    connect(this, errorOccurred, this, handleNetworkError);
-}
-
-QUrl LichessService::buildApiUrl() const {
-
+QUrl LichessService::buildApiUrl(const Models::FEN &fen, const QString &play) const {
     QUrl url(LICHESS_URL);
     QUrlQuery query;
 
@@ -142,9 +85,7 @@ QUrl LichessService::buildApiUrl() const {
     return url;
 }
 
-Models::PositionData LichessService::parsePositionJson()
-{
-
+Models::PositionData LichessService::parsePositionJson(const QJsonObject &json) {
     std::int64_t white_wins = json.value("white").toInt();
     std::int64_t draws = json.value("draws").toInt();
     std::int64_t black_wins = json.value("black").toInt();
@@ -159,12 +100,38 @@ Models::PositionData LichessService::parsePositionJson()
     return {games, white_wins, draws, black_wins, opener};
 }
 
-Models::MoveData LichessService::parseMoveJson()
-{
 
+Models::MoveData LichessService::parseMoveJson(const QJsonObject &json) {
     QString uci = json.value("uci").toString();
     QString san = json.value("san").toString();
 
     return {{uci, san}, parsePositionJson(json)};
 }
 
+
+void LichessService::handleOpeningReply(QNetworkReply *reply) {
+    if (reply->error() == QNetworkReply::NoError) {
+        const auto doc = QJsonDocument::fromJson(reply->readAll()).object();
+
+        Models::PositionData current_position = parsePositionJson(doc);
+        emit gotPositionData(current_position);
+        auto jsonMoves = doc.value("moves").toArray();
+        QList<Models::MoveData> moves;
+
+        for (auto jsonMove: jsonMoves) {
+            auto jsonObj = jsonMove.toObject();
+            moves.append(parseMoveJson(jsonObj));
+        }
+        emit gotMovesData(moves);
+    } else {
+        emit errorOccurred(reply->errorString());
+    }
+}
+
+void LichessService::handleNetworkError(const QString& errorMessage) {
+    qDebug() << QString("Network error: %1").arg(errorMessage);
+}
+
+void LichessService::initConnections() {
+    connect(this, errorOccurred, this, handleNetworkError);
+}

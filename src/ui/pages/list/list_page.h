@@ -1,40 +1,49 @@
-#ifndef _LIST_PAGE_H
-#define _LIST_PAGE_H
+//
+// Created by Lecka on 11/06/2025.
+//
+
+#ifndef REPOTOIRELIST_PAGE_H
+#define REPOTOIRELIST_PAGE_H
+#include <qboxlayout.h>
+#include <QPushButton>
+#include <qtmetamacros.h>
+#include <QWidget>
+#include <QScrollArea>
+
+#include "models/datatypes.h"
+#include "ui/components/common/list_widget.h"
 
 
-namespace common { class WidgetList; } 
+class ListPage : public QWidget {
+    Q_OBJECT
 
-typedef QWidget typedef54;
-class ListPage : public typedef54 {
-  Q_OBJECT
-  public:
-    explicit ListPage(QWidget * parent = nullptr);
+public:
+    explicit ListPage(QWidget *parent = nullptr);
 
     // Methods to update UI state
-    void updateRepertoireList(const QStringList & reps);
+    void updateRepertoireList(const QStringList &reps);
 
-  signals:    // Events from user interactions
-    void repertoireSelected(int _t1);
+signals:
+    // Events from user interactions
+    void repertoireSelected(int id);
 
     void createRequested();
 
-    void deleteRequested(QString _t1);
+    void deleteRequested(QString rep_name);
 
-    void editRequested(QString _t1);
+    void editRequested(QString rep_name);
 
-    void studyRequested(QString _t1);
+    void studyRequested(QString rep_name);
 
-
-  private:
+private:
     void initLayout();
 
     void initConnections();
 
-    common::WidgetList * m_widget_list;
-
-    QWidget * m_container;
-
-    QPushButton * m_create_rep_btn;
-
+    common::WidgetList* m_widget_list;
+    QWidget *m_container;
+    QPushButton *m_create_rep_btn;
 };
-#endif
+
+
+#endif //REPOTOIRELIST_PAGE_H

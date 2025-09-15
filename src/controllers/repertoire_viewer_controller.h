@@ -1,39 +1,41 @@
-#ifndef REPERTOIRE_VIEWER_REPERTOIRE_VIEWER_CONTROLLER_H
-#define REPERTOIRE_VIEWER_REPERTOIRE_VIEWER_CONTROLLER_H
+//
+// Created by Lecka on 15/06/2025.
+//
 
+#ifndef REPERTOIRE_VIEWER_CONTROLLER_H
+#define REPERTOIRE_VIEWER_CONTROLLER_H
+#include <QObject>
 
-class RepertoireService;
-namespace repertoire_viewer { class View; } 
-namespace Models { class FEN; } 
-namespace Models { class UCIMove; } 
+#include "services/repertoire_service.h"
+#include "ui/components/repertoire_viewer/repertoire_view.h"
+
 
 namespace repertoire_viewer {
+    class Controller : public QObject {
+        Q_OBJECT
 
-typedef QObject typedef29;
-class Controller : public typedef29 {
-  Q_OBJECT
-  public:
-    explicit Controller(::RepertoireService & service, QObject * parent = nullptr);
+    public:
+        explicit Controller(RepertoireService &service, QObject *parent = nullptr);
 
-    inline View * view() const { return m_view; };
+        [[nodiscard]] View *view() const { return m_view; }
 
-  public slots:    void getUciMovesForFEN(const Models::FEN & fen);
+    public slots:
+        void getUciMovesForFEN(const Models::FEN& fen);
 
-    void showMoves(const QList<Models::Move> & moves) const;
+        void showMoves(const QList<Models::Move> &moves) const;
 
-  signals:    void moveClicked(Models::UCIMove _t1);
+    signals:
+        void moveClicked(Models::UCIMove uci);
 
-    void requestMoveModels(QList<Models::UCIMove> _t1);
+        void requestMoveModels(QList<Models::UCIMove> uci_moves);
+
+    private:
+        void initConnections();
+
+        RepertoireService &m_rep_service;
+        View *m_view;
+    };
+}
 
 
-  private:
-    void initConnections();
-
-    ::RepertoireService & m_rep_service;
-
-    View * m_view;
-
-};
-
-} // namespace repertoire_viewer
-#endif
+#endif //REPERTOIRE_VIEWER_CONTROLLER_H

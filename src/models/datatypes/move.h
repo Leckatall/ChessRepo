@@ -1,67 +1,67 @@
-#ifndef MODELS_MOVE_H
-#define MODELS_MOVE_H
+//
+// Created by Lecka on 14/08/2025.
+//
 
-
+#ifndef CHESSREPO_MOVE_H
+#define CHESSREPO_MOVE_H
 #include "chess_primitives.h"
 #include "position.h"
 
-namespace Models { struct Position; } 
-
 namespace Models {
+    struct Move {
+        UCIMove uci;
+        QString san;
 
-struct Move {
-    UCIMove uci;
+        Move() = default;
 
-    QString san;
+        Move(const QString &uci_str,
+                      const QString &san_str)
+            : uci(uci_str),
+              san(san_str) {
+        }
 
-    Move() = default;
+        QString toString() const { return san + " (" + uci + ")"; }
 
-    inline Move(const QString & uci_str, const QString & san_str) : uci(uci_str),
-                  san(san_str) {
-            };
+        bool operator==(const Move &other) const {
+            if (uci != other.uci) {
+                return false;
+            }
+            if (san != other.san) {
+                return false;
+            }
+            return true;
+        }
 
-    inline QString toString() const { return san + " (" + uci + ")"; };
+        bool operator<(const Move &other) const {
+            return uci < other.uci;
+        }
+    };
 
-    inline bool operator ==(const Move & other) const {
-                if (uci != other.uci) {
-                    return false;
-                }
-                if (san != other.san) {
-                    return false;
-                }
-                return true;
-            };
+    struct MoveEdge {
+        Move move;
+        Position *result;
+        QString comment;
 
-    inline bool operator <(const Move & other) const {
-                return uci < other.uci;
-            };
+        MoveEdge(Move m, Position *p, QString c = {})
+            : move(std::move(m)), result(p), comment(std::move(c)) {
+        }
 
-};
-struct MoveEdge {
-    Move move;
+        bool operator==(const MoveEdge &other) const {
+            return move == other.move;
+        }
+    };
 
-    Position * result;
+    struct MoveData {
+        Move move;
+        PositionStats position_data;
 
-    QString comment;
+        MoveData(Move move_struct, PositionStats position)
+            : move(std::move(move_struct)),
+              position_data(std::move(position)) {
+        }
+    };
+} // Models
 
-    inline MoveEdge(Move m, Position * p, QString c = {}) : move(std::move(m)), result(p), comment(std::move(c)) {
-            };
+Q_DECLARE_METATYPE(Models::MoveData);
 
-    inline bool operator ==(const MoveEdge & other) const {
-                return move == other.move;
-            };
-
-};
-struct MoveData {
-    Move move;
-
-    PositionStats stats;
-
-    inline MoveData(Move move_struct, PositionStats position) : move(std::move(move_struct)),
-                  stats(std::move(position)) {
-            };
-
-};
-
-} // namespace Models
-#endif
+#endif //CHESSREPO_MOVE_H

@@ -1,49 +1,47 @@
-#ifndef APPLICATION_APPLICATION_H
-#define APPLICATION_APPLICATION_H
+//
+// Created by Lecka on 11/06/2025.
+//
 
+#ifndef APPLICATION_H
+#define APPLICATION_H
+#include <qtmetamacros.h>
+#include <QWidget>
+#include <QMainWindow>
 
-#include "models.h"
-#include "repertoire_service.h"
-#include "LichessService.h"
-
-class Controller;
-namespace application { class Router; } 
-namespace chessboard { class Controller; } 
-namespace explorer { class Controller; } 
+#include "router.h"
+#include "controllers/board_controller.h"
+#include "controllers/explorer_controller.h"
+#include "controllers/repertoire_list_controller.h"
+#include "ui/components/explorer/explorer_view.h"
 
 namespace application {
+    class Application : public QObject {
+        Q_OBJECT
 
-typedef QObject typedef24;
-class Application : public typedef24 {
-  Q_OBJECT
-  public:
-    explicit Application();
+    public:
+        explicit Application();
 
-    void start() const;
+        void start() const;
 
-  private slots:
-  private:
-    void updatePage(Page page);
+    private slots:
+        void updatePage(application::Page page);
 
-    void addView(Page page, ::Controller * controller);
+    private:
+        void addView(Page page, Controller* controller);
 
-    void initConnections();
+        void initConnections();
 
-    QMainWindow * m_window;
+        QMainWindow* m_window;
+        Router* m_router;
 
-    Router * m_router;
+        RepertoireService m_repertoireService;
+        LichessService m_lichessApi;
 
-    ::RepertoireService m_repertoireService;
+        QMap<Page, Controller*> m_controllers;
+        chessboard::Controller* m_board_controller;
+        explorer::Controller* m_explorer_controller;
 
-    ::LichessService m_lichessApi;
+    };
+}
 
-    QMap<Page,Controller*> m_controllers;
-
-    chessboard::Controller * m_board_controller;
-
-    explorer::Controller * m_explorer_controller;
-
-};
-
-} // namespace application
-#endif
+#endif //APPLICATION_H
