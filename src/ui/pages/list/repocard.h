@@ -1,32 +1,23 @@
-//
-// Created by Lecka on 11/06/2025.
-//
+#ifndef _REPOCARD_H
+#define _REPOCARD_H
 
-#ifndef REPOCARD_H
-#define REPOCARD_H
-#include <QFrame>
-#include <QWidget>
 
-#include "models/datatypes.h"
-#include "ui/components/common/card_widget.h"
-
+#include "card_widget.h"
 
 class RepoCard : public common::CardWidget {
-    Q_OBJECT
+  Q_OBJECT
+  public:
+    explicit RepoCard(QString repotoire_name, QWidget * parent = nullptr);
 
-public:
-    explicit RepoCard(QString repotoire_name, QWidget *parent = nullptr);
+  signals:    void editClicked(QString _t1);
 
-signals:
-    void editClicked(QString rep_name);
+    void studyClicked(QString _t1);
 
-    void studyClicked(QString rep_name);
+    void deleteClicked(QString _t1);
 
-    void deleteClicked(QString rep_name);
 
-private:
+  private:
     const QString m_rep;
+
 };
-
-
-#endif //REPOCARD_H
+#endif

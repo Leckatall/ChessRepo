@@ -1,16 +1,10 @@
-//
-// Created by Lecka on 07/03/2025.
-//
 
 #include "square_delegate.h"
 
-#include <QPainter>
-
-#include "models/chessboard/board_tblmodel.h"
-
-
 namespace chessboard {
-    void SquareDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
+
+void SquareDelegate::paint() const {
+
     const QRect rect = option.rect;
     const auto data = index.data().value<SquareData>();
     // TODO: This should really be like 5 methods lol
@@ -67,5 +61,6 @@ namespace chessboard {
         painter->drawText(top_left_rect, Qt::AlignCenter, rank);
     }
 }
-}
 
+
+} // namespace chessboard

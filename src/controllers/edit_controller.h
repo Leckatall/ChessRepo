@@ -1,44 +1,49 @@
-//
-// Created by Lecka on 13/06/2025.
-//
+#ifndef _EDIT_CONTROLLER_H
+#define _EDIT_CONTROLLER_H
 
-#ifndef EDIT_CONTROLLER_H
-#define EDIT_CONTROLLER_H
+
 #include "Controller.h"
-#include "repertoire_viewer_controller.h"
-#include "services/repertoire_service.h"
-#include "ui/pages/edit/edit_page.h"
+#include "repertoire.h"
+
+namespace application { class Application; } 
+class RepertoireService;
+class LichessService;
+namespace chessboard { class Controller; } 
+namespace explorer { class Controller; } 
+namespace repertoire_viewer { class Controller; } 
+class EditPage;
 
 class EditController : public Controller {
-    Q_OBJECT
+  Q_OBJECT
+  public:
+    explicit EditController(application::Application * app, QWidget * router_widget, RepertoireService & rep_service, LichessService & lichess_service);
 
-public:
-    explicit EditController(application::Application *app,
-        QWidget *router_widget,
-        RepertoireService &rep_service,
-        LichessService &lichess_service);
+    inline QWidget * view() const override { return m_view; };
 
-    [[nodiscard]] QWidget *view() const override { return m_view; }
-
-public slots:
-    void updateView() override;
+  public slots:    void updateView() override;
 
     void updateData() override;
 
     void add_current_line();
 
+
+  private:
     // void onEditRequest(QString rep_name);
-
-private:
     void initConnections();
-    RepertoireService &m_repertoire_service;
+
+    RepertoireService & m_repertoire_service;
+
     Models::Repertoire m_current_repertoire;
-    chessboard::Controller *m_board_controller;
-    explorer::Controller *m_explorer_controller;
-    repertoire_viewer::Controller *m_rep_controller;
-    EditPage *m_view;
 
-    bool m_is_view_outdated{true};
+    chessboard::Controller * m_board_controller;
+
+    explorer::Controller * m_explorer_controller;
+
+    repertoire_viewer::Controller * m_rep_controller;
+
+    EditPage * m_view;
+
+    bool m_is_view_outdated {true};
+
 };
-
-#endif //EDIT_CONTROLLER_H
+#endif

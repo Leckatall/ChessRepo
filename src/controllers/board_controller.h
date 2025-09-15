@@ -1,58 +1,52 @@
-//
-// Created by Lecka on 13/06/2025.
-//
-
-#ifndef BOARD_CONTROLLER_H
-#define BOARD_CONTROLLER_H
-
-#include "models/chessboard/board_proxytblmodel.h"
-#include "models/chessboard/board_tblmodel.h"
-#include "ui/components/chessboard/board_view.h"
+#ifndef CHESSBOARD_BOARD_CONTROLLER_H
+#define CHESSBOARD_BOARD_CONTROLLER_H
 
 
-namespace application {
-    class Application;
-}
+#include "explorer_tblmodel.h"
+#include "board_proxytblmodel.h"
+
+namespace chessboard { class View; } 
+namespace Models { class FEN; } 
 
 namespace chessboard {
-    class Controller : public QObject {
-        Q_OBJECT
 
-    public:
-        explicit Controller(QObject *parent);
+typedef QObject typedef26;
+class Controller : public typedef26 {
+  Q_OBJECT
+  public:
+    explicit Controller(QObject * parent);
 
-        [[nodiscard]] View *view() const { return m_view; }
+    inline View * view() const { return m_view; };
 
-        [[nodiscard]] QString get_current_fen() const;
+    QString get_current_fen() const;
 
-    public slots:
-        void makeUciMove(const QString &uci);
+  public slots:    void makeUciMove(const QString & uci);
 
-        void emitModelsFromUcis(QList<Models::UCIMove> uci_moves);
+    void emitModelsFromUcis(QList<Models::UCIMove> uci_moves);
 
+  signals:    void boardChanged(const Models::FEN & _t1);
 
-    signals:
-        void boardChanged(const Models::FEN &fen);
+    void convertedUcis(QList<Models::Move> _t1);
 
-        void convertedUcis(QList<Models::Move> moves);
+  private slots:
+  private:
+    void handleSquareClicked(const QModelIndex & proxy_index);
 
-    private slots:
-        void handleSquareClicked(const QModelIndex &proxy_index);
+    void updateMoveHistory();
 
-        void updateMoveHistory();
+    void flipBoard();
 
-        void flipBoard();
+    void undoMove();
 
-        void undoMove();
+    void initConnections();
 
-    private:
-        void initConnections();
+    TblModel m_boardTblModel;
 
-        TblModel m_boardTblModel;
-        ProxyTblModel m_boardProxyModel;
-        View *m_view;
-    };
-}
+    ProxyTblModel m_boardProxyModel;
 
+    View * m_view;
 
-#endif //BOARD_CONTROLLER_H
+};
+
+} // namespace chessboard
+#endif

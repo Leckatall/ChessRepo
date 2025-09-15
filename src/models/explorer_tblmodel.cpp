@@ -1,24 +1,17 @@
-//
-// Created by Lecka on 04/04/2025.
-//
 
 #include "explorer_tblmodel.h"
-#include "QMetaEnum"
+#include "move.h"
 
 namespace explorer {
-    const QMap<TblModel::Column, QString> TblModel::COLUMN_NAMES = {
-    {MoveName, "Move"},
-    {Popularity, "Popularity"},
-    {Winrates, "Win Rates"},
-    {Evaluation, "Evaluation"}
-};
 
-TblModel::TblModel(QObject *parent, const Qt::Orientation &orientation)
+TblModel::TblModel(QObject * parent, const Qt::Orientation & orientation)
     : QAbstractTableModel(parent),
       m_orientation(orientation) {
+
 }
 
-QVariant TblModel::headerData(int section, Qt::Orientation orientation, int role) const {
+QVariant TblModel::headerData() const {
+
     if (role != Qt::DisplayRole) {
         return {};
     }
@@ -32,19 +25,22 @@ QVariant TblModel::headerData(int section, Qt::Orientation orientation, int role
     return {};
 }
 
-int TblModel::columnCount(const QModelIndex &parent) const {
+int TblModel::columnCount() const {
+
     if(parent.isValid())
         return 0;
     return ColumnCount;
 }
 
-int TblModel::rowCount(const QModelIndex &parent) const {
+int TblModel::rowCount() const {
+
     if(parent.isValid())
         return 0;
     return m_moves.size();
 }
 
-QVariant TblModel::data(const QModelIndex &index, int role) const {
+QVariant TblModel::data() const {
+
     if (!index.isValid() || index.row() >= m_moves.size()) {
         return {};
     }
@@ -77,11 +73,28 @@ QVariant TblModel::data(const QModelIndex &index, int role) const {
 
 }
 
-void TblModel::handleClick(const QModelIndex &index) {
+void TblModel::handleClick() {
+
     if (!index.isValid() || index.row() >= m_moves.size())
         return;
 
     emit moveClicked(m_moves[index.row()]);
 }
+
+// SIGNAL 0
+
+void TblModel::moveClicked(const Models::MoveData & _t1) {
+
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    QMetaObject::activate(this, &staticMetaObject, 0, _a);
 }
 
+const QMap<TblModel::Column,QString> TblModel::COLUMN_NAMES= {
+    {MoveName, "Move"},
+    {Popularity, "Popularity"},
+    {Winrates, "Win Rates"},
+    {Evaluation, "Evaluation"}
+};
+
+
+} // namespace explorer

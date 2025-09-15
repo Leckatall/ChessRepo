@@ -1,21 +1,11 @@
-//
-// Created by Lecka on 14/08/2025.
-//
 
 #include "position.h"
-
-#include "utils/utils.h"
+#include "move.h"
 
 namespace Models {
-    PositionStats::PositionStats(const std::int64_t g, const std::int64_t w, const std::int64_t d, const std::int64_t b,
-        OpeningTitle o): games(g),
-                         white_wins(w),
-                         draws(d),
-                         black_wins(b),
-                         opening(std::move(o)) {
-    }
 
-    QString PositionStats::toToolTip() const {
+QString PositionStats::toToolTip() const {
+
         return QString("Total games: %1\nWhite wins: %2 (%3)\nDraws: %4 (%5)\nBlack wins: %6 (%7)")
                 .arg(games)
 
@@ -27,9 +17,10 @@ namespace Models {
 
                 .arg(black_wins)
                 .arg(Utils::formatPercentage(black_wr()));
-    }
+}
 
-    bool Position::operator==(const Position &other) const {
+bool Position::operator ==() const {
+
         if (this->fen != other.fen) {
             return false;
         }
@@ -37,5 +28,7 @@ namespace Models {
             return false;
         }
         return true;
-    }
-} // Models
+}
+
+
+} // namespace Models

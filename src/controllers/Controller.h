@@ -1,31 +1,24 @@
-//
-// Created by Lecka on 11/06/2025.
-//
+#ifndef _CONTROLLER_H
+#define _CONTROLLER_H
 
-#ifndef CONTROLLER_H
-#define CONTROLLER_H
-#include <QObject>
 
-namespace application {
-    enum class Page;
-    class Application;  // Forward declaration only
-}
+#include "models.h"
 
-class Controller : public QObject {
-    Q_OBJECT
+namespace application { class Application; } 
 
-public:
-    explicit Controller(application::Application *app);
-    [[nodiscard]] virtual QWidget *view() const = 0;
+typedef QObject typedef27;
+class Controller : public typedef27 {
+  Q_OBJECT
+  public:
+    explicit Controller(application::Application * app);
 
-signals:
-    void routeToPage(application::Page page);
+    virtual QWidget * view() const = 0;
 
-public slots:
-    virtual void updateData() = 0;
+  signals:    void routeToPage(application::Page _t1);
+
+  public slots:    virtual void updateData() = 0;
 
     virtual void updateView() = 0;
+
 };
-
-
-#endif //CONTROLLER_H
+#endif

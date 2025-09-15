@@ -1,17 +1,10 @@
-//
-// Created by Lecka on 08/03/2025.
-//
 
 #include "board_tblview.h"
 
-#include <QHeaderView>
-#include <QPainter>
-#include <QMouseEvent>
-
-#include "square_delegate.h"
-
 namespace chessboard {
-    TblView::TblView(QWidget *parent) : QTableView(parent) {
+
+TblView::TblView(QWidget * parent) : QTableView(parent) {
+
         // Meta-cell styling
         this->setShowGrid(true);
         setFrameStyle(Box);
@@ -37,23 +30,31 @@ namespace chessboard {
         setEditTriggers(NoEditTriggers);
 
         setItemDelegate(new SquareDelegate(this));
-    }
+}
 
+// SIGNAL 0
 
-    void TblView::mousePressEvent(QMouseEvent *event) {
+void TblView::geometryChanged() {
+
+    QMetaObject::activate(this, &staticMetaObject, 0, nullptr);
+}
+
+void TblView::mousePressEvent() {
+
         QModelIndex index = indexAt(event->pos());
         if (index.isValid()) {
             emit squareClicked(index);
         }
         // QTableView::mousePressEvent(event);
-    }
+}
 
-    // Paints coords
-    // void BoardTblView::paintEvent(QPaintEvent *event) {
-    //     QTableView::paintEvent(event);
-    // }
+// Paints coords
+// void BoardTblView::paintEvent(QPaintEvent *event) {
+//     QTableView::paintEvent(event);
+// }
 
-    void TblView::resizeEvent(QResizeEvent *event) {
+void TblView::resizeEvent(QResizeEvent * event) {
+
         QTableView::resizeEvent(event);
 
         // height, width = min(height, width)
@@ -70,8 +71,15 @@ namespace chessboard {
             setRowHeight(i, squareSize);
         }
         emit geometryChanged();
-    }
+}
+
+// SIGNAL 1
+
+void TblView::squareClicked(QModelIndex _t1) {
+
+    void *_a[] = { nullptr, const_cast<void*>(reinterpret_cast<const void*>(std::addressof(_t1))) };
+    QMetaObject::activate(this, &staticMetaObject, 1, _a);
 }
 
 
-
+} // namespace chessboard

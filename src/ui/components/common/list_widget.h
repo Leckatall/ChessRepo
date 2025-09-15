@@ -1,30 +1,25 @@
-//
-// Created by Lecka on 15/06/2025.
-//
+#ifndef COMMON_LIST_WIDGET_H
+#define COMMON_LIST_WIDGET_H
 
-#ifndef DECK_WIDGET_H
-#define DECK_WIDGET_H
-#include <QScrollArea>
-#include <QWidget>
-#include <QVBoxLayout>
-
-
-class QVBoxLayout;
 
 namespace common {
-    class WidgetList : public QScrollArea {
-    public:
-        explicit WidgetList(QWidget *parent);
 
-        void add_widget(QWidget *widget) const;
+typedef QScrollArea typedef45;
+class WidgetList : public typedef45 {
+  public:
+    explicit WidgetList(QWidget * parent);
 
-        void clear_widgets() const;
+    void add_widget(QWidget * widget) const;
 
-    protected:
-        QWidget *m_container;
-        QVBoxLayout *m_layout;
-    };
-}
+    void clear_widgets() const;
 
 
-#endif //DECK_WIDGET_H
+  protected:
+    QWidget * m_container;
+
+    QVBoxLayout * m_layout;
+
+};
+
+} // namespace common
+#endif

@@ -1,32 +1,8 @@
-//
-// Created by Lecka on 05/03/2025.
-//
-
 
 #include "tablemodel.h"
-#include <algorithm>
 
+int TableModel::rowCount() const {
 
-QVariant TableModel::get_cell(const int row, const QString& column) const {
-    if (row >= 0 && row < m_data.length()) {
-        return m_data[row][column];
-    }
-    return {};
-}
-
-QVariant TableModel::get_cell(const QString& column, const int row) const {
-    return get_cell(row, column);
-}
-
-void TableModel::add_row(const QMap<QString, QVariant>& row) {
-    beginInsertRows(QModelIndex(), rowCount(), rowCount());
-    m_data.append(row);
-    endInsertRows();
-    emit dataChanged(createIndex(rowCount() - 1, 0),
-        createIndex(rowCount() - 1, columnCount() - 1));
-}
-
-int TableModel::rowCount(const QModelIndex& parent) const {
     Q_UNUSED(parent);
     if (m_orientation == Qt::Horizontal) {
         return m_data.length();
@@ -38,7 +14,8 @@ int TableModel::rowCount(const QModelIndex& parent) const {
     return 0;
 }
 
-int TableModel::columnCount(const QModelIndex& parent) const {
+int TableModel::columnCount() const {
+
     Q_UNUSED(parent);
     if (m_orientation == Qt::Horizontal) {
         return m_headers.length();
@@ -50,7 +27,8 @@ int TableModel::columnCount(const QModelIndex& parent) const {
     return 0;
 }
 
-QVariant TableModel::data(const QModelIndex& index, int role) const {
+QVariant TableModel::data() const {
+
     if (!index.isValid()) {
         return {};
     }
@@ -67,19 +45,8 @@ QVariant TableModel::data(const QModelIndex& index, int role) const {
     return {};
 }
 
-QVariant TableModel::headerData(const int section, const Qt::Orientation orient, const int role) const {
-    if (role != Qt::DisplayRole) {
-        return {};
-    }
+bool TableModel::setData() {
 
-    if (orient != m_orientation) {
-        return QString("Row %1").arg(section);
-    }
-
-    return m_headers[section];
-}
-
-bool TableModel::setData(const QModelIndex& index, const QVariant& value, int role) {
     if (role == Qt::EditRole) {
         if (m_orientation == Qt::Horizontal) {
             m_data[index.row()][m_headers[index.column()]] = value;
@@ -91,3 +58,13 @@ bool TableModel::setData(const QModelIndex& index, const QVariant& value, int ro
     }
     return false;
 }
+
+void TableModel::add_row() {
+
+    beginInsertRows(QModelIndex(), rowCount(), rowCount());
+    m_data.append(row);
+    endInsertRows();
+    emit dataChanged(createIndex(rowCount() - 1, 0),
+        createIndex(rowCount() - 1, columnCount() - 1));
+}
+

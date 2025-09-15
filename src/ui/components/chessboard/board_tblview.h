@@ -1,41 +1,33 @@
-//
-// Created by Lecka on 08/03/2025.
-//
+#ifndef CHESSBOARD_BOARD_TBLVIEW_H
+#define CHESSBOARD_BOARD_TBLVIEW_H
 
-#ifndef BOARDTBLVIEW_H
-#define BOARDTBLVIEW_H
-#include <QTableView>
-
-#include "models/chessboard/board_tblmodel.h"
 
 namespace chessboard {
-    class TblView : public QTableView {
-        Q_OBJECT
 
-    public:
-        explicit TblView(QWidget *parent = nullptr);
+typedef QTableView typedef41;
+class TblView : public typedef41 {
+  Q_OBJECT
+  public:
+    explicit TblView(QWidget * parent = nullptr);
 
-        signals:
-            void geometryChanged();
-
-    protected:
-        void mousePressEvent(QMouseEvent *event) override;
-
-        void mouseDoubleClickEvent(QMouseEvent *event) override {
-        }
-
-        void mouseReleaseEvent(QMouseEvent *event) override {
-        }
-
-        // void paintEvent(QPaintEvent *event) override;
-
-        void resizeEvent(QResizeEvent *event) override;
-
-        signals:
-            void squareClicked(QModelIndex index);
-    };
-}
+  signals:    void geometryChanged();
 
 
+  protected:
+    void mousePressEvent(QMouseEvent * event) override;
 
-#endif //BOARDTBLVIEW_H
+    inline void mouseDoubleClickEvent(QMouseEvent * event) override {
+            };
+
+    inline void mouseReleaseEvent(QMouseEvent * event) override {
+            };
+
+    // void paintEvent(QPaintEvent *event) override;
+    void resizeEvent(QResizeEvent * event) override;
+
+  signals:    void squareClicked(QModelIndex _t1);
+
+};
+
+} // namespace chessboard
+#endif

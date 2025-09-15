@@ -1,51 +1,47 @@
-//
-// Created by Lecka on 09/03/2025.
-//
+#ifndef EXPLORER_EXPLORER_CONTROLLER_H
+#define EXPLORER_EXPLORER_CONTROLLER_H
 
-#ifndef EXPLORERCONTROLLER_H
-#define EXPLORERCONTROLLER_H
-#include <QGridLayout>
-#include <QObject>
-#include <QStringList>
-#include <QLabel>
 
-#include "models/explorer_tblmodel.h"
-#include "services/LichessService.h"
-#include "ui/components/explorer/explorer_view.h"
+#include "explorer_tblmodel.h"
 
-namespace application {
-    class Application;
-}
+class LichessService;
+namespace explorer { class View; } 
+namespace Models { class FEN; } 
+namespace Models { class UCIMove; } 
 
 namespace explorer {
-    class Controller : public QObject {
-        Q_OBJECT
-        // TODO: Add engine support
-        // TODO: Add integration with openerController and highlight prepped moves
-    public:
-        explicit Controller(LichessService &service, QObject *parent = nullptr);
 
-        [[nodiscard]] View *view() const { return m_view; }
+typedef QObject typedef28;
+class Controller : public typedef28 {
+  Q_OBJECT
+  public:
+    // TODO: Add engine support
+    // TODO: Add integration with openerController and highlight prepped moves
+    explicit Controller(::LichessService & service, QObject * parent = nullptr);
 
-    public slots:
-        void exploreFen(const Models::FEN &fen) const;
+    inline View * view() const { return m_view; };
 
-        void updateMoves(const QList<Models::MoveData> &moves);
+  public slots:    void exploreFen(const Models::FEN & fen) const;
 
-        void updatePositionData(const Models::PositionData &position);
+    void updateMoves(const QList<Models::MoveData> & moves);
 
-    signals:
-        void moveClicked(Models::UCIMove uci);
+    void updatePositionData(const Models::PositionData & position);
 
-    private:
-        void initConnections();
-
-        LichessService &m_lichess_api;
-        Models::PositionData m_current_position{};
-        TblModel m_explorerTblModel;
-        View *m_view;
-    };
-}
+  signals:    void moveClicked(Models::UCIMove _t1);
 
 
-#endif //EXPLORERCONTROLLER_H
+  private:
+    void initConnections();
+
+    ::LichessService & m_lichess_api;
+
+    Models::PositionData m_current_position {};
+
+    TblModel m_explorerTblModel;
+
+    View * m_view;
+
+};
+
+} // namespace explorer
+#endif

@@ -1,36 +1,28 @@
-//
-// Created by Lecka on 11/06/2025.
-//
+#ifndef APPLICATION_ROUTER_H
+#define APPLICATION_ROUTER_H
 
-#ifndef ROUTER_H
-#define ROUTER_H
-#include <qboxlayout.h>
-#include <QMap>
-#include <QStack>
-#include <QStackedWidget>
-#include <QObject>
 
 #include "models.h"
 
-
 namespace application {
-    class Router : public QStackedWidget {
-        Q_OBJECT
 
-    public:
-        explicit Router(QWidget *parent = nullptr);
+typedef QStackedWidget typedef25;
+class Router : public typedef25 {
+  Q_OBJECT
+  public:
+    explicit Router(QWidget * parent = nullptr);
 
-        void navigateTo(Page page);
+    void navigateTo(Page page);
 
-        void addView(Page page, QWidget* view);
+    void addView(Page page, QWidget * view);
 
-    signals:
-        void pageChanged(application::Page);
-
-    private:
-        QMap<Page, QWidget*> m_pages;
-    };
-}
+  signals:    void pageChanged(Page _t1);
 
 
-#endif //ROUTER_H
+  private:
+    QMap<Page,QWidget*> m_pages;
+
+};
+
+} // namespace application
+#endif

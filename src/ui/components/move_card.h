@@ -1,38 +1,35 @@
-//
-// Created by Lecka on 13/06/2025.
-//
-
-#ifndef MOVE_CARD_H
-#define MOVE_CARD_H
-#include <QFrame>
-#include <QLabel>
-#include <QMouseEvent>
-
-#include "common/stats_painter.h"
-#include "models/datatypes.h"
+#ifndef _MOVE_CARD_H
+#define _MOVE_CARD_H
 
 
-class MoveCard : public QFrame {
-    Q_OBJECT
+#include "move.h"
 
-public:
-    explicit MoveCard(Models::MoveData move_data, bool recommended, QWidget *parent = nullptr);
+class StatsWidget;
 
-signals:
-    void clicked();
+typedef QFrame typedef39;
+class MoveCard : public typedef39 {
+  Q_OBJECT
+  public:
+    explicit MoveCard(Models::MoveData move_data, bool recommended, QWidget * parent = nullptr);
 
-private:
+  signals:    void clicked();
+
+
+  private:
     void initLayout();
-    void mousePressEvent(QMouseEvent* event) override {
-        if (event->button() == Qt::LeftButton)
-            emit clicked();
-    }
+
+    inline void mousePressEvent(QMouseEvent * event) override {
+            if (event->button() == Qt::LeftButton)
+                emit clicked();
+        };
+
     Models::MoveData m_move_data;
+
     bool m_recommended;
 
-    QLabel* m_move_lbl;
-    StatsWidget* m_move_stats;
+    QLabel * m_move_lbl;
+
+    StatsWidget * m_move_stats;
+
 };
-
-
-#endif //MOVE_CARD_H
+#endif

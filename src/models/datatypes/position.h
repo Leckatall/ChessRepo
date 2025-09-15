@@ -1,76 +1,86 @@
-//
-// Created by Lecka on 14/08/2025.
-//
+#ifndef MODELS_POSITION_H
+#define MODELS_POSITION_H
 
-#ifndef CHESSREPO_POSITION_H
-#define CHESSREPO_POSITION_H
-#include <qdatetime.h>
 
 #include "chess_primitives.h"
-#include "move.h"
+
+namespace Models { struct MoveEdge; } 
 
 namespace Models {
-    struct OpeningTitle {
-        QString eco;
-        QString name;
 
-        OpeningTitle(QString eco_str, QString name_str) : eco(std::move(eco_str)), name(std::move(name_str)) {
-        }
+struct OpeningTitle {
+    QString eco;
 
-        OpeningTitle() = default;
+    QString name;
 
-        explicit operator bool() const { return !(eco.isEmpty() and name.isEmpty()); }
-    };
+    inline OpeningTitle(QString eco_str, QString name_str) : eco(std::move(eco_str)), name(std::move(name_str)) {
+            };
 
-    struct PositionStats {
-        std::int64_t games{};
-        std::int64_t white_wins{};
-        std::int64_t draws{};
-        std::int64_t black_wins{};
-        OpeningTitle opening{};
+    OpeningTitle() = default;
 
-        PositionStats(std::int64_t g, std::int64_t w, std::int64_t d, std::int64_t b,
-                      OpeningTitle o = {});
+    inline explicit operator bool() const { return !(eco.isEmpty() and name.isEmpty()); };
 
-        PositionStats() = default;
+};
+struct PositionStats {
+    std::int64_t games {};
 
-        // helper methods
-        [[nodiscard]] double win_rate(const std::int64_t wins) const {
-            return games > 0 ? static_cast<double>(wins) / static_cast<double>(games) : 0.0;
-        }
+    std::int64_t white_wins {};
 
-        [[nodiscard]] double white_wr() const { return win_rate(white_wins); }
+    std::int64_t draws {};
 
-        [[nodiscard]] double black_wr() const { return win_rate(black_wins); }
+    std::int64_t black_wins {};
 
-        [[nodiscard]] double draw_rate() const { return win_rate(draws); }
+    PositionStats(std::int64_t g, std::int64_t w, std::int64_t d, std::int64_t b);
 
-        [[nodiscard]] QString toToolTip() const;
-    };
+    PositionStats() = default;
 
-    struct PositionInfo {
-        QString comment;
-        QDateTime lastPlayed;
-        QDateTime createdAt{QDateTime::currentDateTime()};
-        PositionStats user_stats; // W/L of the user
-        PositionStats api_stats; // W/L from the API
-    };
+    // helper methods
+    inline double white_wr() const { return win_rate(white_wins); };
+
+    inline double black_wr() const { return win_rate(black_wins); };
+
+    inline double draw_rate() const { return win_rate(draws); };
+
+    QString toToolTip() const;
 
 
-    struct Position {
-        FEN fen;
-        QList<MoveEdge> moves;
-        // A mapping of the UCIMoves our opponent could make (after we play the recommended move) to the resulting FEN
-        PositionInfo stats;
+  private:
+    inline double win_rate(const std::int64_t wins) const {
+                return games > 0 ? static_cast<double>(wins) / static_cast<double>(games) : 0.0;
+            };
 
-        explicit Position(FEN pos = FEN::startingPosition())
-            : fen(std::move(pos)) {
-        }
+};
+struct PositionInfo {
+    QString comment;
 
-        bool operator==(const Position &other) const;
-    };
-} // Models
+    QDateTime lastPlayed;
 
-Q_DECLARE_METATYPE(Models::Position);
+    QDateTime createdAt {QDateTime::currentDateTime()};
 
-#endif //CHESSREPO_POSITION_H
+    OpeningTitle opening {};
+
+    // W/L of the user
+    PositionStats user_stats;
+
+    // W/L from the API
+    PositionStats api_stats;
+
+};
+struct Position {
+    FEN fen;
+
+    QList<MoveEdge> moves;
+
+    // A mapping of the UCIMoves our opponent could make (after we play the recommended move) to the resulting FEN
+    
+    PositionInfo info;
+
+    inline explicit Position(FEN pos = FEN::startingPosition()) : fen(std::move(pos)) {
+            };
+
+    bool operator ==(const Position & other) const;
+
+};
+
+} // namespace Models
+#endif

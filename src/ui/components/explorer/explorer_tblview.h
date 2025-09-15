@@ -1,33 +1,18 @@
-//
-// Created by Lecka on 09/03/2025.
-//
-
-#ifndef EXPLORERTBLVIEW_H
-#define EXPLORERTBLVIEW_H
-#include <QTableView>
-#include <qtmetamacros.h>
-
-namespace explorer{
-    class TblView : public QTableView {
-        Q_OBJECT
-    public:
-        explicit TblView(QWidget *parent = nullptr);
-
-        void initUI();
-        //
-        // protected:
-        //     void mousePressEvent(QMouseEvent *event) override;
-        //
-        //     void mouseDoubleClickEvent(QMouseEvent *event) override {}
-        //
-        //     void mouseReleaseEvent(QMouseEvent *event) override {}
-        //
-        //     // void paintEvent(QPaintEvent *event) override;
-
-    };
-}
+#ifndef EXPLORER_EXPLORER_TBLVIEW_H
+#define EXPLORER_EXPLORER_TBLVIEW_H
 
 
+namespace explorer {
 
+typedef QTableView typedef47;
+class TblView : public typedef47 {
+  Q_OBJECT
+  public:
+    explicit TblView(QWidget * parent = nullptr);
 
-#endif //EXPLORERTBLVIEW_H
+    void initUI();
+
+};
+
+} // namespace explorer
+#endif

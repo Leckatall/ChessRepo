@@ -1,16 +1,8 @@
-//
-// Created by Lecka on 11/06/2025.
-//
-
-#ifndef PAGE_H
-#define PAGE_H
-#include <QWidget>
+#ifndef _PAGE_H
+#define _PAGE_H
 
 
-class PageOLD : public QWidget {
-
+typedef QWidget typedef51;
+class PageOLD : public typedef51 {
 };
-
-
-
-#endif //PAGE_H
+#endif

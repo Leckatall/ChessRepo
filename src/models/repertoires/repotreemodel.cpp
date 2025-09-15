@@ -1,29 +1,11 @@
-//
-// Created by Lecka on 22/04/2025.
-//
 
 #include "repotreemodel.h"
-#include "QMetaEnum"
+#include "chess_primitives.h"
+#include "move.h"
+#include "position.h"
 
-const QMap<RepoTreeModel::Column, QString> RepoTreeModel::COLUMN_NAMES = {
-    {MoveSAN, "Move"},
-    {Comment, "Comment"}
-};
+QModelIndex RepoTreeModel::parent() const {
 
-QModelIndex RepoTreeModel::index(const int row, const int column, const QModelIndex &parent) const {
-    if (!hasIndex(row, column, parent))
-        return {};
-
-    TreeNode *parentNode = parent.isValid() ? getNode(parent) : m_root;
-    if (!parentNode) return {};
-
-    if (row < parentNode->children.size())
-        return createIndex(row, column, &parentNode->children[row]);
-
-    return {};
-}
-
-QModelIndex RepoTreeModel::parent(const QModelIndex &child) const {
     if (!child.isValid())
         return {};
 
@@ -44,7 +26,8 @@ QModelIndex RepoTreeModel::parent(const QModelIndex &child) const {
     return createIndex(row, 0, parentNode);
 }
 
-int RepoTreeModel::rowCount(const QModelIndex &parent) const {
+int RepoTreeModel::rowCount() const {
+
     if (parent.column() > 0)
         return 0;
 
@@ -52,11 +35,13 @@ int RepoTreeModel::rowCount(const QModelIndex &parent) const {
     return parentNode ? parentNode->children.size() : 0;
 }
 
-int RepoTreeModel::columnCount(const QModelIndex &parent) const {
+int RepoTreeModel::columnCount() const {
+
     return ColumnCount;
 }
 
-QVariant RepoTreeModel::data(const QModelIndex &index, int role) const {
+QVariant RepoTreeModel::data() const {
+
     if (!index.isValid())
         return {};
 
@@ -77,7 +62,8 @@ QVariant RepoTreeModel::data(const QModelIndex &index, int role) const {
     return {};
 }
 
-QVariant RepoTreeModel::headerData(int section, Qt::Orientation orientation, int role) const {
+QVariant RepoTreeModel::headerData() const {
+
     if (role != Qt::DisplayRole) {
         return {};
     }
@@ -91,22 +77,27 @@ QVariant RepoTreeModel::headerData(int section, Qt::Orientation orientation, int
     return {};
 }
 
-void RepoTreeModel::set_repertoire(const Models::Repertoire &rep) {
+// Helper Methods
+void RepoTreeModel::set_repertoire() {
+
     beginResetModel();
     m_repertoire = rep;
     buildTree();
     endResetModel();
 }
 
-Models::FEN RepoTreeModel::positionAt(const QModelIndex &index) const {
+Models::FEN RepoTreeModel::positionAt() const {
+
     return Models::FEN::startingPosition();
 }
 
-Models::Move RepoTreeModel::moveAt(const QModelIndex &index) const {
+Models::Move RepoTreeModel::moveAt() const {
+
     return {"e2e4", "nice type checking nerd"};
 }
 
 void RepoTreeModel::buildTree() {
+
     clearTree();
     m_root = new TreeNode(Models::FEN::startingPosition());
 
@@ -156,10 +147,18 @@ void RepoTreeModel::buildTree() {
 }
 
 void RepoTreeModel::clearTree() {
+
     delete m_root;
     m_root = nullptr;
 }
 
-RepoTreeModel::TreeNode * RepoTreeModel::getNode(const QModelIndex &index) const {
+TreeNode RepoTreeModel::getNode() const {
+
     return static_cast<TreeNode*>(index.internalPointer());
 }
+
+const QMap<RepoTreeModel::Column,QString> RepoTreeModel::COLUMN_NAMES= {
+    {MoveSAN, "Move"},
+    {Comment, "Comment"}
+};
+

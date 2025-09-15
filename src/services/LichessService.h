@@ -1,101 +1,73 @@
-//
-// Created by Lecka on 09/03/2025.
-//
-
-#ifndef LICHESSSERVICE_H
-#define LICHESSSERVICE_H
-#include <QObject>
-#include <QNetworkAccessManager>
-#include <utility>
-
-#include "models/datatypes.h"
+#ifndef _LICHESSSERVICE_H
+#define _LICHESSSERVICE_H
 
 
-class LichessService : public QObject {
-    Q_OBJECT
+namespace Models { class FEN; } 
+namespace Models { struct MoveData; } 
 
-public:
-    // Setting up configs
+typedef QObject typedef37;
+class LichessService : public typedef37 {
+  Q_OBJECT
+  public:
     enum class Config {
-        Variant,
-        Modes,
-        Speeds,
-        Ratings,
-        Since,
-        Until
+      Variant,
+      Modes,
+      Speeds,
+      Ratings,
+      Since,
+      Until
     };
 
-    Q_ENUM(Config)
+    Configs & config();
 
-    // Struct to hold request parameters
-    struct Configs {
-        QMap<QString, QString> params{
-            {"variant", "standard"},
-            {"modes", "rated"},
-            {"speeds", "rapid,blitz"},
-            {"ratings", ""},
-            {"since", ""},
-            {"until", ""}
-        };
-        const QMap<Config, QString> keys{
-            {Config::Variant, "variant"},
-            {Config::Modes, "modes"},
-            {Config::Speeds, "speeds"},
-            {Config::Ratings, "ratings"},
-            {Config::Since, "since"},
-            {Config::Until, "until"}
-        };
-        QString &operator[](const Config opt) { return params[keys[opt]]; }
-        const QString &operator[](const Config opt) const { return std::move(params[keys[opt]]); }
+    // get configuration
+    QString config(Config key) const;
 
-        [[nodiscard]] bool isSet(const Config opt) const { return !params[keys[opt]].isEmpty(); }
-    };
+    // get config of 1 setting
+    LichessService & config(Config key, const QString & value);
 
-    Configs &config(); // get configuration
-    [[nodiscard]] QString config(Config key) const; // get config of 1 setting
-    LichessService &config(Config key, const QString &value); // set config of 1 setting
+    // set config of 1 setting
     // get config of multiple settings
-    [[nodiscard]] QMap<Config, QString> config(std::initializer_list<Config> keys) const;
+    QMap<Config, QString> config(std::initializer_list<Config> keys) const;
 
     // set config of multiple settings
-    LichessService &config(std::initializer_list<std::pair<Config, QString> > configs);
+    LichessService & config(std::initializer_list<std::pair<Config, QString> > configs);
 
     // Setting up service
+    explicit LichessService(QObject * parent = nullptr);
 
-    explicit LichessService(QObject *parent = nullptr);
+    explicit LichessService(Configs config, QObject * parent = nullptr);
 
-    explicit LichessService(Configs config, QObject *parent = nullptr);
+    void fetch_opening_data(const Models::FEN & fen, const QString & play = {});
 
-    void fetch_opening_data(const Models::FEN &fen, const QString &play = {});
-
-signals:
-    // LichessService:: isn't redundant in signals
+  signals:    // LichessService:: isn't redundant in signals
     // ReSharper disable once CppRedundantQualifier
-    void gotPositionData(Models::PositionData position);
+    void gotPositionData(Models::PositionData _t1);
 
     // ReSharper disable once CppRedundantQualifier
-    void gotMovesData(QList<Models::MoveData> moves);
+    void gotMovesData(QList<Models::MoveData> _t1);
 
-    void errorOccurred(QString errorMsg);
+    void errorOccurred(QString _t1);
 
-private slots:
-    void handleOpeningReply(QNetworkReply *reply);
+  private slots:
+  private:
+    void handleOpeningReply(QNetworkReply * reply);
 
-    void handleNetworkError(const QString &errorMessage);
+    void handleNetworkError(const QString & errorMessage);
 
-private:
     void initConnections();
 
-    [[nodiscard]] QUrl buildApiUrl(const Models::FEN &fen, const QString &play) const;
+    QUrl buildApiUrl(const Models::FEN & fen, const QString & play) const;
 
-    [[nodiscard]] static Models::PositionData parsePositionJson(const QJsonObject &json);
+    static Models::PositionData parsePositionJson(const QJsonObject & json);
 
-    [[nodiscard]] static Models::MoveData parseMoveJson(const QJsonObject &json);
+    static Models::MoveData parseMoveJson(const QJsonObject & json);
 
     QNetworkAccessManager m_net_client;
+
     Configs m_config;
-    const QString LICHESS_URL = "https://explorer.lichess.ovh/lichess";
+
+    const QString LICHESS_URL=  "https://explorer.lichess.ovh/lichess";
+
 };
-
-
-#endif //LICHESSSERVICE_H
+#endif
