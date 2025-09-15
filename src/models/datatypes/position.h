@@ -35,7 +35,7 @@ struct PositionStats {
     PositionStats() = default;
 
     // helper methods
-    inline double white_wr() const { return win_rate(white_wins); };
+    [[nodiscard]] double white_wr() const { return win_rate(white_wins); };
 
     inline double black_wr() const { return win_rate(black_wins); };
 

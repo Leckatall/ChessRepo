@@ -1,19 +1,19 @@
 
 #include "chess_primitives.h"
 
+#include <QRegularExpression>
+
 namespace Models {
 
 bool UCIMove::isValid()
 {
-
-        if (move.isEmpty()) return false;
+        if (std::move.isEmpty()) return false;
         static const QRegularExpression uciFormat("^[a-h][1-8][a-h][1-8][nbrq]?$");
-        return uciFormat.match(move).hasMatch();
+        return uciFormat.match(std::move).hasMatch();
 }
 
-bool FEN::isValid()
+bool FEN::isValid(const QString & fen)
 {
-
         // Basic FEN validation
         if (fen.isEmpty()) return false;
 
