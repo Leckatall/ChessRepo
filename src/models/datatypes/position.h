@@ -7,7 +7,6 @@
 #include <qdatetime.h>
 
 #include "chess_primitives.h"
-#include "move.h"
 
 namespace Models {
     struct OpeningTitle {
@@ -56,21 +55,6 @@ namespace Models {
         PositionStats api_stats; // W/L from the API
     };
 
-
-    struct Position {
-        FEN fen;
-        QList<MoveEdge> moves;
-        // A mapping of the UCIMoves our opponent could make (after we play the recommended move) to the resulting FEN
-        PositionInfo stats;
-
-        explicit Position(FEN pos = FEN::startingPosition())
-            : fen(std::move(pos)) {
-        }
-
-        bool operator==(const Position &other) const;
-    };
 } // Models
-
-Q_DECLARE_METATYPE(Models::Position);
 
 #endif //CHESSREPO_POSITION_H

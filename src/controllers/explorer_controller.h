@@ -32,7 +32,7 @@ namespace explorer {
 
         void updateMoves(const QList<Models::MoveData> &moves);
 
-        void updatePositionData(const Models::PositionData &position);
+        void updatePositionData(const Models::PositionStats &position);
 
     signals:
         void moveClicked(Models::UCIMove uci);
@@ -41,7 +41,7 @@ namespace explorer {
         void initConnections();
 
         LichessService &m_lichess_api;
-        Models::PositionData m_current_position{};
+        Models::PositionStats m_current_position{};
         TblModel m_explorerTblModel;
         View *m_view;
     };

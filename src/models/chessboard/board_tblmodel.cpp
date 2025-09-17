@@ -137,7 +137,7 @@ namespace chessboard {
         makeMove(move);
     }
 
-    void TblModel::make_move(Models::Move m) {
+    void TblModel::make_move(const Models::Move& m) {
         makeMove(m);
     }
 

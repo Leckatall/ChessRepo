@@ -29,13 +29,4 @@ namespace Models {
                 .arg(Utils::formatPercentage(black_wr()));
     }
 
-    bool Position::operator==(const Position &other) const {
-        if (this->fen != other.fen) {
-            return false;
-        }
-        if (this->moves != other.moves) {
-            return false;
-        }
-        return true;
-    }
 } // Models

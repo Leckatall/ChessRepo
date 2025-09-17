@@ -42,7 +42,7 @@ namespace explorer {
         m_explorerTblModel.put_data(moves);
     }
 
-    void Controller::updatePositionData(const Models::PositionData &position) {
+    void Controller::updatePositionData(const Models::PositionStats &position) {
         m_current_position = position;
         QString new_text = "Games: " + QString::number(position.games) +
                            "\nWhite Wins: " + QString::number(position.white_wins) +

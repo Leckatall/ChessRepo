@@ -14,7 +14,7 @@ RepertoireTree::RepertoireTree(QWidget *parent)
 
 }
 
-void RepertoireTree::set_repertoire(const Models::Repertoire &repertoire) const {
+void RepertoireTree::set_repertoire(const Models::RepTree &repertoire) const {
     m_tree_model->set_repertoire(repertoire);
     qDebug() << "Model rows:" << m_tree_model->rowCount(QModelIndex());
 }

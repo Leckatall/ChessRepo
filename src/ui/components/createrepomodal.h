@@ -12,7 +12,8 @@
 #include <QDialogButtonBox>
 #include <QFormLayout>
 
-#include "models/datatypes.h"
+#include "models/datatypes/repertoire.h"
+
 
 class CreateRepoModal: public QDialog {
 Q_OBJECT

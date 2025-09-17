@@ -7,7 +7,7 @@
 #include <qtmetamacros.h>
 #include <QWidget>
 
-#include "models/datatypes.h"
+#include "models/datatypes/move.h"
 #include "ui/components/common/list_widget.h"
 
 

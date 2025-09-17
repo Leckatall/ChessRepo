@@ -85,7 +85,7 @@ QUrl LichessService::buildApiUrl(const Models::FEN &fen, const QString &play) co
     return url;
 }
 
-Models::PositionData LichessService::parsePositionJson(const QJsonObject &json) {
+Models::PositionStats LichessService::parsePositionJson(const QJsonObject &json) {
     std::int64_t white_wins = json.value("white").toInt();
     std::int64_t draws = json.value("draws").toInt();
     std::int64_t black_wins = json.value("black").toInt();
@@ -113,7 +113,7 @@ void LichessService::handleOpeningReply(QNetworkReply *reply) {
     if (reply->error() == QNetworkReply::NoError) {
         const auto doc = QJsonDocument::fromJson(reply->readAll()).object();
 
-        Models::PositionData current_position = parsePositionJson(doc);
+        Models::PositionStats current_position = parsePositionJson(doc);
         emit gotPositionData(current_position);
         auto jsonMoves = doc.value("moves").toArray();
         QList<Models::MoveData> moves;

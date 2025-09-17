@@ -6,7 +6,9 @@
 
 #include <QPainterPath>
 
-void StatsPainter::paint(QPainter *painter, QRect rect, const Models::PositionData &stats) {
+#include "utils/utils.h"
+
+void StatsPainter::paint(QPainter *painter, QRect rect, const domain::PositionStats &stats) {
     if (stats.games == 0) {
         painter->drawText(rect, Qt::AlignCenter, "No games");
         return;
@@ -18,12 +20,18 @@ void StatsPainter::paint(QPainter *painter, QRect rect, const Models::PositionDa
     draw_segment_background(painter, rect_b, Qt::black, true);
     draw_segment_background(painter, rect_d, QColor(150, 150, 150), false);
 
-    draw_segment_text(painter, rect_w, Models::formatPercentage(stats.white_wr()), Qt::black);
-    draw_segment_text(painter, rect_d, Models::formatPercentage(stats.draw_rate()), Qt::white);
-    draw_segment_text(painter, rect_b, Models::formatPercentage(stats.black_wr()), Qt::white);
+    draw_segment_text(painter, rect_w, Utils::formatPercentage(stats.white_wr()), Qt::black);
+    draw_segment_text(painter, rect_d, Utils::formatPercentage(stats.draw_rate()), Qt::white);
+    draw_segment_text(painter, rect_b, Utils::formatPercentage(stats.black_wr()), Qt::white);
 }
 
-StatsPainter::BarWidths StatsPainter::calculate_widths(int totalWidth, const Models::PositionData &data) {
+void StatsPainter::paint(QPainter *painter, QRect rect, const Models::PositionStats &stats) {
+    // Forwarding overload to allow existing call sites
+    domain::PositionStats d{stats.games, stats.white_wins, stats.draws, stats.black_wins};
+    paint(painter, rect, d);
+}
+
+StatsPainter::BarWidths StatsPainter::calculate_widths(int totalWidth, const domain::PositionStats &data) {
     const int width_w = static_cast<int>(totalWidth * data.white_wr());
     const int width_b = static_cast<int>(totalWidth * data.black_wr());
     const int width_d = totalWidth - width_w - width_b;

@@ -27,7 +27,7 @@ public:
 
     [[nodiscard]] QStringList get_repertoire_list();
 
-    Models::Repertoire get_current_repertoire() { return m_current_repertoire; }
+    const Models::Repertoire& get_current_repertoire() const { return m_current_repertoire; }
 
     QList<Models::Move> get_moves_from_fen(const Models::FEN &fen);
 

@@ -44,10 +44,9 @@ void CreateRepoModal::initUI() {
 }
 
 Models::Repertoire CreateRepoModal::getRepertoire() const {
-    return {
-        m_name_edit.text(),
-        m_for_white_check_box.isChecked(),
-        m_desc_edit.toPlainText(),
-        m_auth_edit.text()
-    };
+    Models::RepertoireInfo repertoire_header = {m_name_edit.text(),
+               m_for_white_check_box.isChecked(),
+               m_desc_edit.toPlainText(),
+               m_auth_edit.text()};
+    return Models::Repertoire{repertoire_header, {Models::RepTree::RepertoireTree()}};
 }

@@ -11,7 +11,7 @@
 #include <qitemselectionmodel.h>
 #include <QComboBox>
 
-#include "models/datatypes.h"
+#include "models/datatypes/chess_primitives.h"
 #include "services/repertoire_service.h"
 
 

@@ -51,6 +51,8 @@ set(MODELS
         src/models/datatypes/chess_primitives.h
         src/models/datatypes/move.cpp
         src/models/datatypes/move.h
+        src/models/datatypes/repertoire_tree.cpp
+        src/models/datatypes/repertoire_tree.h
 )
 set(VIEWS
         src/ui/components/chessboard/square_delegate.cpp

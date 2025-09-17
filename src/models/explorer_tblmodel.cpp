@@ -4,6 +4,7 @@
 
 #include "explorer_tblmodel.h"
 #include "QMetaEnum"
+#include "utils/utils.h"
 
 namespace explorer {
     const QMap<TblModel::Column, QString> TblModel::COLUMN_NAMES = {
@@ -54,7 +55,7 @@ QVariant TblModel::data(const QModelIndex &index, int role) const {
             case MoveName:
                 return move_data.move.san;
             case Popularity:
-                return Models::formatPercentage(static_cast<double>(move_data.position_data.games) / static_cast<double>(m_root_position.games));
+                return Utils::formatPercentage(static_cast<double>(move_data.position_data.games) / static_cast<double>(m_position.games));
             case Winrates:
                 return {};
             case Evaluation:

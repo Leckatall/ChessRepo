@@ -1,27 +1,19 @@
 //
 // Created by Lecka on 15/06/2025.
+// Compatibility shim during refactor: use ui/components/move_card.h
 //
-
 #ifndef REP_MOVE_CARD_H
 #define REP_MOVE_CARD_H
-#include "models/datatypes.h"
-#include "ui/components/common/card_widget.h"
-#include "ui/components/common/stats_painter.h"
 
+#include "ui/components/move_card.h"
 
 namespace repertoire_viewer {
-    class MoveCard: public common::CardWidget {
-        Q_OBJECT
-    public:
-        explicit MoveCard(Models::Move move, QWidget *parent=nullptr);
-
-    private:
-        Models::Move m_move;
-        // StatsWidget* m_stats_widget;
-    };
+    // Deprecated alias to the canonical MoveCard widget
+#if defined(_MSC_VER)
+    using MoveCard = ::MoveCard; // __declspec(deprecated("Use ::MoveCard and include <ui/components/move_card.h>"))
+#else
+    using MoveCard = ::MoveCard; // [[deprecated("Use ::MoveCard and include <ui/components/move_card.h>")]]
+#endif
 }
-
-
-
 
 #endif //REP_MOVE_CARD_H

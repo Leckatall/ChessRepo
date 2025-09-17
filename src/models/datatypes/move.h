@@ -20,7 +20,7 @@ namespace Models {
               san(san_str) {
         }
 
-        QString toString() const { return san + " (" + uci + ")"; }
+        [[nodiscard]] QString toString() const { return san + " (" + uci + ")"; }
 
         bool operator==(const Move &other) const {
             if (uci != other.uci) {
@@ -37,20 +37,6 @@ namespace Models {
         }
     };
 
-    struct MoveEdge {
-        Move move;
-        Position *result;
-        QString comment;
-
-        MoveEdge(Move m, Position *p, QString c = {})
-            : move(std::move(m)), result(p), comment(std::move(c)) {
-        }
-
-        bool operator==(const MoveEdge &other) const {
-            return move == other.move;
-        }
-    };
-
     struct MoveData {
         Move move;
         PositionStats position_data;
@@ -63,5 +49,8 @@ namespace Models {
 } // Models
 
 Q_DECLARE_METATYPE(Models::MoveData);
+
+
+
 
 #endif //CHESSREPO_MOVE_H

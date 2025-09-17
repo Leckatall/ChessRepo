@@ -14,7 +14,6 @@
 #include "controllers/board_controller.h"
 #include "controllers/explorer_controller.h"
 #include "controllers/repertoire_viewer_controller.h"
-#include "models/datatypes.h"
 #include "ui/components/repertoire_tree.h"
 
 

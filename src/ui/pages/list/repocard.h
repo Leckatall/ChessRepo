@@ -7,7 +7,6 @@
 #include <QFrame>
 #include <QWidget>
 
-#include "models/datatypes.h"
 #include "ui/components/common/card_widget.h"
 
 

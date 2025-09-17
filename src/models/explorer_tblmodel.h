@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "tablemodel.h"
+#include "datatypes/move.h"
 #include "datatypes/position.h"
 
 namespace explorer {
@@ -44,8 +45,8 @@ namespace explorer {
                              createIndex(rowCount() - 1, columnCount() - 1));
         }
 
-        void set_root_position(const Models::Position &root_position) {
-            m_root_position = root_position;
+        void set_root_position(const Models::PositionStats &root_position) {
+            m_position = root_position;
         }
 
         public slots:
@@ -58,7 +59,7 @@ namespace explorer {
         Qt::Orientation m_orientation;
         static const QMap<Column, QString> COLUMN_NAMES;
         QList<Models::MoveData> m_moves;
-        Models::Position m_root_position;
+        Models::PositionStats m_position;
     };
 }
 

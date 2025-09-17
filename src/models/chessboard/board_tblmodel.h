@@ -9,10 +9,9 @@
 #include <utility>
 
 #include "board_wrapper.h"
-#include "models/datatypes.h"
 
 struct SquareData {
-    int piece;
+    chess::Piece piece;
     bool isLight;
     bool isSelected = false;
     bool isHighlighted = false;
@@ -72,7 +71,7 @@ namespace chessboard {
 
         void try_move_to(const QModelIndex &index);
 
-        void make_move(Models::Move m);
+        void make_move(const Models::Move& m);
 
         void undo_move();
 

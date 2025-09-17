@@ -6,6 +6,8 @@
 #define CHESSREPO_REPERTOIRE_H
 #include <qdatetime.h>
 
+#include "repertoire_tree.h"
+
 namespace Models {
     struct Move;
     struct Position;
@@ -34,23 +36,9 @@ namespace Models {
 
     };
 
-    class RepertoireMoves {
-    public:
-        QMap<FEN, Position> positions{};
-
-        void addMove(const FEN &fromPosition, const Move &move, const FEN &toPosition,
-                     const QString &comment = QString());
-
-        [[nodiscard]] Move getRecommendedMove(const FEN &position) const;
-
-        bool operator==(const RepertoireMoves & other) const {
-            return positions == other.positions;
-        }
-    };
-
     struct Repertoire {
         RepertoireInfo header;
-        RepertoireMoves move_db;
+        RepTree::RepertoireTree tree;
 
         [[nodiscard]] bool operator==(const Repertoire &other) const {
             if (this->header.name != other.header.name) {
@@ -66,9 +54,6 @@ namespace Models {
                 return false;
             }
             if (this->header.createdAt != other.header.createdAt) {
-                return false;
-            }
-            if (this->move_db != other.move_db) {
                 return false;
             }
             return true;

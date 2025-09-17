@@ -10,7 +10,6 @@
 #include <QWidget>
 #include <QScrollArea>
 
-#include "models/datatypes.h"
 #include "ui/components/common/list_widget.h"
 
 

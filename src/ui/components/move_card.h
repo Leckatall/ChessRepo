@@ -8,25 +8,21 @@
 #include <QLabel>
 #include <QMouseEvent>
 
+#include "ui/components/common/card_widget.h"
 #include "common/stats_painter.h"
-#include "models/datatypes.h"
+#include "models/datatypes/move.h"
 
 
-class MoveCard : public QFrame {
+class MoveCard : public common::CardWidget {
     Q_OBJECT
 
 public:
     explicit MoveCard(Models::MoveData move_data, bool recommended, QWidget *parent = nullptr);
-
-signals:
-    void clicked();
+    // Compatibility ctor for legacy call sites using Models::Move
+    explicit MoveCard(const Models::Move& move, QWidget *parent = nullptr);
 
 private:
     void initLayout();
-    void mousePressEvent(QMouseEvent* event) override {
-        if (event->button() == Qt::LeftButton)
-            emit clicked();
-    }
     Models::MoveData m_move_data;
     bool m_recommended;
 

@@ -6,7 +6,7 @@
 #define SESSION_H
 #include <QObject>
 
-#include "models/datatypes.h"
+#include "models/datatypes/repertoire.h"
 
 
 class Session : public QObject {
@@ -30,9 +30,9 @@ public:
         emit sessionStarted(username);
     }
 
-    void setCurrentRepo(const Models::Repertoire &repo) {
-        m_currentRepo = repo;
-        emit repoChanged(repo);
+    void setCurrentRepo(Models::Repertoire repo) {
+        m_currentRepo = std::move(repo);
+        emit repoChanged(m_currentRepo);
     }
 
 signals:

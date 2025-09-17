@@ -8,7 +8,8 @@
 #include <QNetworkAccessManager>
 #include <utility>
 
-#include "models/datatypes.h"
+#include "models/datatypes/chess_primitives.h"
+#include "models/datatypes/move.h"
 
 
 class LichessService : public QObject {
@@ -71,7 +72,7 @@ public:
 signals:
     // LichessService:: isn't redundant in signals
     // ReSharper disable once CppRedundantQualifier
-    void gotPositionData(Models::PositionData position);
+    void gotPositionData(Models::PositionStats position);
 
     // ReSharper disable once CppRedundantQualifier
     void gotMovesData(QList<Models::MoveData> moves);
@@ -88,7 +89,7 @@ private:
 
     [[nodiscard]] QUrl buildApiUrl(const Models::FEN &fen, const QString &play) const;
 
-    [[nodiscard]] static Models::PositionData parsePositionJson(const QJsonObject &json);
+    [[nodiscard]] static Models::PositionStats parsePositionJson(const QJsonObject &json);
 
     [[nodiscard]] static Models::MoveData parseMoveJson(const QJsonObject &json);
 

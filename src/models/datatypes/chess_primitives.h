@@ -9,8 +9,6 @@
 #include <QString>
 
 namespace Models {
-    struct Position;
-
     class UCIMove : public QString {
     public:
         UCIMove() = default;
@@ -47,8 +45,5 @@ namespace Models {
 } // Models
 Q_DECLARE_METATYPE(Models::UCIMove);
 
-Q_DECLARE_METATYPE(Models::Move);
-
-Q_DECLARE_METATYPE(Models::MoveInfo);
 
 #endif //CHESSREPO_CHESS_PRIMITIVES_H

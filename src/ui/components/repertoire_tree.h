@@ -15,7 +15,7 @@ Q_OBJECT
 public:
     explicit RepertoireTree(QWidget *parent = nullptr);
 
-    void set_repertoire(const Models::Repertoire &repertoire) const;
+    void set_repertoire(const Models::RepTree::RepertoireTree &repertoire) const;
 
 signals:
     void moveClicked(Models::Move);
