@@ -5,7 +5,6 @@
 #ifndef MOVES_DECK_H
 #define MOVES_DECK_H
 #include <qboxlayout.h>
-#include <QFrame>
 #include <QScrollArea>
 
 #include "ui/components/move_card.h"

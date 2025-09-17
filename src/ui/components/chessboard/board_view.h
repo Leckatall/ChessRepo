@@ -11,7 +11,7 @@
 #include <QWidget>
 
 #include "board_tblview.h"
-#include "models/chessboard/board_proxytblmodel.h"
+#include "../../../presentation/models/chessboard/board_proxytblmodel.h"
 
 namespace chessboard {
     class View : public QWidget {

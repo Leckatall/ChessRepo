@@ -7,7 +7,7 @@
 
 #include "Controller.h"
 #include "app/models.h"
-#include "services/repertoire_service.h"
+#include "../infrastructure/persistence/repertoire_service.h"
 #include "ui/pages/list/list_page.h"
 
 

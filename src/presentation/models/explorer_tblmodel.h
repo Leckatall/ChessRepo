@@ -7,7 +7,7 @@
 #include <QAbstractTableModel>
 #include <utility>
 
-#include "datatypes.h"
+#include "../../models/datatypes.h"
 #include "tablemodel.h"
 
 namespace explorer {

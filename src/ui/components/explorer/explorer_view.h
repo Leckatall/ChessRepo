@@ -9,7 +9,7 @@
 #include <QWidget>
 
 #include "explorer_tblview.h"
-#include "models/explorer_tblmodel.h"
+#include "../../../presentation/models/explorer_tblmodel.h"
 
 namespace explorer {
     class View : public QWidget {

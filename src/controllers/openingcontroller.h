@@ -12,7 +12,7 @@
 #include <QComboBox>
 
 #include "models/datatypes.h"
-#include "services/repertoire_service.h"
+#include "../infrastructure/persistence/repertoire_service.h"
 
 
 class OpeningController : public QObject {

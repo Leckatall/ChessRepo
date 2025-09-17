@@ -6,7 +6,7 @@
 #define BOARDTBLVIEW_H
 #include <QTableView>
 
-#include "models/chessboard/board_tblmodel.h"
+#include "../../../presentation/models/chessboard/board_tblmodel.h"
 
 namespace chessboard {
     class TblView : public QTableView {

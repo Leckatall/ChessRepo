@@ -12,6 +12,7 @@
 #include "controllers/board_controller.h"
 #include "controllers/explorer_controller.h"
 #include "controllers/repertoire_list_controller.h"
+#include "infrastructure/explorer/lichess_service.h"
 #include "ui/components/explorer/explorer_view.h"
 
 namespace application {
@@ -35,7 +36,7 @@ namespace application {
         Router* m_router;
 
         RepertoireService m_repertoireService;
-        LichessService m_lichessApi;
+        Infrastructure::Explorer::LichessExplorerService m_lichessApi;
 
         QMap<Page, Controller*> m_controllers;
         chessboard::Controller* m_board_controller;

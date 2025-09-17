@@ -9,7 +9,7 @@
 #include <QString>
 
 namespace explorer {
-    Controller::Controller(LichessService &service, QObject *parent)
+    Controller::Controller(LichessExplorerService &service, QObject *parent)
         : QObject(parent),
           m_lichess_api(service),
           m_explorerTblModel(this),
@@ -21,9 +21,9 @@ namespace explorer {
 
     void Controller::initConnections() {
         // Updating the model
-        connect(&m_lichess_api, &LichessService::gotPositionData,
+        connect(&m_lichess_api, &LichessExplorerService::gotPositionData,
                 this, &Controller::updatePositionData);
-        connect(&m_lichess_api, &LichessService::gotMovesData,
+        connect(&m_lichess_api, &LichessExplorerService::gotMovesData,
                 this, &Controller::updateMoves);
         // Handling table clicks
         // View sends index to model to emit a signal of the data

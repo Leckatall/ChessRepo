@@ -13,10 +13,12 @@
 
 
 namespace Models {
+    // Move to presentation
     inline QString formatPercentage(double value, int precision = 2) {
         return QString::number(value * 100, 'f', precision) + "%";
     }
 
+    // DEPRECATED: use Domain::Types::UCIMove
     class UCIMove : public QString {
     public:
         explicit UCIMove(const QString &move = QString()) : QString(move) {
@@ -36,6 +38,7 @@ namespace Models {
         [[nodiscard]] QString promotion() const { return right(1); }
     };
 
+    // DEPRECATED: use Domain::Types::FEN
     class FEN : public QString {
     public:
         explicit FEN(const QString &fen = QString()) : QString(fen) {
@@ -185,7 +188,7 @@ namespace Models {
 
         explicit operator bool() const { return !(eco.isEmpty() and name.isEmpty()); }
     };
-
+    // DEPRECATED: use Domain::Types::PositionStats
     struct PositionData {
         std::int64_t games{};
         std::int64_t white_wins{};
@@ -231,7 +234,7 @@ namespace Models {
                     .arg(formatPercentage(black_wr()));
         }
     };
-
+    // DEPRECATED: Just use Domain::Types::UCIMove and generate san in presenter
     struct Move {
         UCIMove uci;
         QString san;
@@ -242,7 +245,7 @@ namespace Models {
               san(san_str) {
         }
     };
-
+    // DEPRECATED: Use Domain::Types::PositionStats of resulting position
     struct MoveData {
         Move move;
         PositionData position_data;

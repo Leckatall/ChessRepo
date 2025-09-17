@@ -6,7 +6,7 @@
 
 #include <QPainter>
 
-#include "models/chessboard/board_tblmodel.h"
+#include "../../../presentation/models/chessboard/board_tblmodel.h"
 
 
 namespace chessboard {

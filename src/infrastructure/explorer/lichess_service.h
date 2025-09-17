@@ -6,12 +6,18 @@
 #define LICHESSSERVICE_H
 #include <QObject>
 #include <QNetworkAccessManager>
+#include <QMap>
+#include <QHash>
+#include <QString>
+#include <QJsonObject>
 #include <utility>
 
+#include "domain/types/fen.h"
+#include "domain/types/stats.h"
 #include "models/datatypes.h"
 
-
-class LichessService : public QObject {
+namespace Infrastructure::Explorer {
+class LichessExplorerService : public QObject {
     Q_OBJECT
 
 public:
@@ -37,7 +43,7 @@ public:
             {"since", ""},
             {"until", ""}
         };
-        const QMap<Config, QString> keys{
+        const QHash<Config, QString> keys{
             {Config::Variant, "variant"},
             {Config::Modes, "modes"},
             {Config::Speeds, "speeds"},
@@ -45,28 +51,28 @@ public:
             {Config::Since, "since"},
             {Config::Until, "until"}
         };
-        QString &operator[](const Config opt) { return params[keys[opt]]; }
-        const QString &operator[](const Config opt) const { return std::move(params[keys[opt]]); }
+        QString &operator[](Config opt) { return params[keys.value(opt)]; }
+        QString operator[](Config opt) const { return params.value(keys.value(opt)); }
 
-        [[nodiscard]] bool isSet(const Config opt) const { return !params[keys[opt]].isEmpty(); }
+        [[nodiscard]] bool isSet(Config opt) const { return !params.value(keys.value(opt)).isEmpty(); }
     };
 
     Configs &config(); // get configuration
     [[nodiscard]] QString config(Config key) const; // get config of 1 setting
-    LichessService &config(Config key, const QString &value); // set config of 1 setting
+    LichessExplorerService &config(Config key, const QString &value); // set config of 1 setting
     // get config of multiple settings
     [[nodiscard]] QMap<Config, QString> config(std::initializer_list<Config> keys) const;
 
     // set config of multiple settings
-    LichessService &config(std::initializer_list<std::pair<Config, QString> > configs);
+    LichessExplorerService &config(std::initializer_list<std::pair<Config, QString> > configs);
 
     // Setting up service
 
-    explicit LichessService(QObject *parent = nullptr);
+    explicit LichessExplorerService(QObject *parent = nullptr);
 
-    explicit LichessService(Configs config, QObject *parent = nullptr);
+    explicit LichessExplorerService(Configs config, QObject *parent = nullptr);
 
-    void fetch_opening_data(QString fen, const QString &play = {});
+    void fetch_opening_data(const Domain::Types::FEN &fen, const QString &play = {});
 
 signals:
     // LichessService:: isn't redundant in signals
@@ -86,7 +92,7 @@ private slots:
 private:
     void initConnections();
 
-    [[nodiscard]] QUrl buildApiUrl(QString fen, const QString &play) const;
+    [[nodiscard]] QUrl buildApiUrl(const Domain::Types::FEN &fen) const;
 
     [[nodiscard]] static Models::PositionData parsePositionJson(const QJsonObject &json);
 
@@ -96,6 +102,8 @@ private:
     Configs m_config;
     const QString LICHESS_URL = "https://explorer.lichess.ovh/lichess";
 };
+}
+
 
 
 #endif //LICHESSSERVICE_H

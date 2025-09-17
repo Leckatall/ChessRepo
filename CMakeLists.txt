@@ -27,21 +27,28 @@ find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Network)
 
 
 set(MODELS
-        src/models/tablemodel.h
-        src/models/tablemodel.cpp
-        src/models/chessboard/board_tblmodel.h
-        src/models/chessboard/board_tblmodel.cpp
-        src/models/chessboard/board_wrapper.cpp
-        src/models/chessboard/board_wrapper.h
-        src/models/chessboard/board_proxytblmodel.cpp
-        src/models/chessboard/board_proxytblmodel.h
+        src/presentation/models/tablemodel.h
+        src/presentation/models/tablemodel.cpp
+        src/presentation/models/chessboard/board_tblmodel.h
+        src/presentation/models/chessboard/board_tblmodel.cpp
+        src/presentation/models/chessboard/board_wrapper.cpp
+        src/presentation/models/chessboard/board_wrapper.h
+        src/presentation/models/chessboard/board_proxytblmodel.cpp
+        src/presentation/models/chessboard/board_proxytblmodel.h
         src/models/datatypes.h
-        src/models/explorer_tblmodel.cpp
-        src/models/explorer_tblmodel.h
-        src/models/repertoires/repotreemodel.cpp
-        src/models/repertoires/repotreemodel.h
-        src/services/repertoire_navigator.cpp
-        src/services/repertoire_navigator.h
+        src/presentation/models/explorer_tblmodel.cpp
+        src/presentation/models/explorer_tblmodel.h
+        src/presentation/models/repertoires/repotreemodel.cpp
+        src/presentation/models/repertoires/repotreemodel.h
+        src/domain/types/stats.cpp
+        src/domain/types/stats.h
+        src/domain/types/fen.cpp
+        src/domain/types/fen.h
+        src/domain/types/uci_move.cpp
+        src/domain/types/uci_move.h
+        src/domain/types/value_objects.h
+        src/domain/types/position/position_key.cpp
+        src/domain/types/position/position_key.h
 )
 set(VIEWS
         src/ui/components/chessboard/square_delegate.cpp
@@ -76,8 +83,6 @@ set(VIEWS
 
 
 set(CONTROLLERS
-        src/controllers/boardcontroller.h
-        src/controllers/boardcontroller.cpp
         src/controllers/explorer_controller.cpp
         src/controllers/explorer_controller.h
         src/controllers/openingcontroller.cpp
@@ -94,6 +99,8 @@ set(CONTROLLERS
         src/controllers/board_controller.h
         src/ui/components/explorer/explorer_view.cpp
         src/ui/components/explorer/explorer_view.h
+        src/domain/types/position/position_stats.h
+        src/domain/types/position/position_aggregate.h
 )
 
 add_executable(myapp
@@ -101,19 +108,19 @@ add_executable(myapp
         ${MODELS}
         ${VIEWS}
         ${CONTROLLERS}
-        src/services/LichessService.cpp
-        src/services/LichessService.h
-        src/services/repertoire_service.cpp
-        src/services/repertoire_service.h
+        src/infrastructure/explorer/lichess_service.cpp
+        src/infrastructure/explorer/lichess_service.h
+        src/infrastructure/persistence/repertoire_service.cpp
+        src/infrastructure/persistence/repertoire_service.h
         src/app/application.cpp
         src/app/application.h
         src/ui/pages/page.cpp
         src/ui/pages/page.h
-        src/services/session.cpp
-        src/services/session.h
+        src/app/session.cpp
+        src/app/session.h
         src/app/models.h
-        src/services/repertoire_repository.cpp
-        src/services/repertoire_repository.h
+        src/domain/explorer/iexplorer_service.cpp
+        src/domain/explorer/iexplorer_service.h
 )
 
 # Link Qt6 libraries

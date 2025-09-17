@@ -5,8 +5,8 @@
 #ifndef BOARD_CONTROLLER_H
 #define BOARD_CONTROLLER_H
 
-#include "models/chessboard/board_proxytblmodel.h"
-#include "models/chessboard/board_tblmodel.h"
+#include "../presentation/models/chessboard/board_proxytblmodel.h"
+#include "../presentation/models/chessboard/board_tblmodel.h"
 #include "ui/components/chessboard/board_view.h"
 
 

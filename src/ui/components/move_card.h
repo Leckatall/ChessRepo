@@ -4,7 +4,6 @@
 
 #ifndef MOVE_CARD_H
 #define MOVE_CARD_H
-#include <QFrame>
 #include <QLabel>
 #include <QMouseEvent>
 

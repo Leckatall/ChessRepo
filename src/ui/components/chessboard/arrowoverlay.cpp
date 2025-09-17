@@ -7,7 +7,7 @@
 #include <QPainter>
 #include <QPainterPath>
 
-#include "models/chessboard/board_proxytblmodel.h"
+#include "../../../presentation/models/chessboard/board_proxytblmodel.h"
 
 // void ArrowOverlay::add_arrow(const Arrow &arrow) {
 //     m_arrows.append(arrow);

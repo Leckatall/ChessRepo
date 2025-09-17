@@ -9,8 +9,8 @@
 #include <QStringList>
 #include <QLabel>
 
-#include "models/explorer_tblmodel.h"
-#include "services/LichessService.h"
+#include "../presentation/models/explorer_tblmodel.h"
+#include "../infrastructure/explorer/LichessService.h"
 #include "ui/components/explorer/explorer_view.h"
 
 namespace application {
