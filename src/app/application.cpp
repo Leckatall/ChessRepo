@@ -12,7 +12,7 @@ namespace application {
     m_window(new QMainWindow()),
     m_router(new Router()),
     m_repertoireService(new RepertoireService(this)),
-    m_lichessApi(new LichessExplorerService(this))
+    m_lichessApi(new Infrastructure::Explorer::LichessExplorerService(this))
     {
         m_window->setWindowTitle("ChessRepo");
         m_window->setGeometry(0, 0, 1200, 800);

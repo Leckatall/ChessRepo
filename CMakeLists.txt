@@ -49,6 +49,8 @@ set(MODELS
         src/domain/types/value_objects.h
         src/domain/types/position/position_key.cpp
         src/domain/types/position/position_key.h
+        src/domain/types/position/position_graph.cpp
+        src/domain/types/position/position_graph.h
 )
 set(VIEWS
         src/ui/components/chessboard/square_delegate.cpp
@@ -100,7 +102,9 @@ set(CONTROLLERS
         src/ui/components/explorer/explorer_view.cpp
         src/ui/components/explorer/explorer_view.h
         src/domain/types/position/position_stats.h
-        src/domain/types/position/position_aggregate.h
+        src/domain/types/position/position_record.h
+        src/infrastructure/explorer/lichess_request_builder.cpp
+        src/infrastructure/explorer/lichess_request_builder.h
 )
 
 add_executable(myapp
@@ -108,8 +112,8 @@ add_executable(myapp
         ${MODELS}
         ${VIEWS}
         ${CONTROLLERS}
-        src/infrastructure/explorer/lichess_service.cpp
-        src/infrastructure/explorer/lichess_service.h
+        src/infrastructure/explorer/lichess_explorer_service.cpp
+        src/infrastructure/explorer/lichess_explorer_service.h
         src/infrastructure/persistence/repertoire_service.cpp
         src/infrastructure/persistence/repertoire_service.h
         src/app/application.cpp
@@ -121,6 +125,9 @@ add_executable(myapp
         src/app/models.h
         src/domain/explorer/iexplorer_service.cpp
         src/domain/explorer/iexplorer_service.h
+        src/infrastructure/explorer/lichess_explorer_parser.cpp
+        src/infrastructure/explorer/lichess_explorer_parser.h
+        src/utils/chess.h
 )
 
 # Link Qt6 libraries

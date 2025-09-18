@@ -11,11 +11,11 @@
 namespace Domain::Types {
     enum class StatsSource { LocalRepertoire, OnlineExplorer, EngineEval };
 
-    struct PositionAggregate {
+    struct PositionRecord {
         PositionKey key;
-        PositionStats stats;      // the stats snapshot for a given source
-        StatsSource source;       // where the stats came from
-        std::string tag;          // optional context (e.g., time control, date range)
+        PositionStats stats;
+        StatsSource source;
+        std::string tag;
     };
 }
 #endif //CHESSREPO_POSITION_AGGREGATE_H

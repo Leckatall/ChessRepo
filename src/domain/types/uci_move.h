@@ -27,4 +27,10 @@ namespace Domain::Types {
     };
 }
 
+namespace std {
+    template<> struct hash<Domain::Types::UCIMove> {
+        size_t operator()(const Domain::Types::UCIMove& uci) const noexcept;
+    };
+}
+
 #endif //CHESSREPO_UCI_MOVE_H

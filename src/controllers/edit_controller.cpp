@@ -10,7 +10,7 @@
 EditController::EditController(application::Application *app,
                                QWidget *router_widget,
                                RepertoireService &rep_service,
-                               LichessExplorerService &lichess_service)
+                               Infrastructure::Explorer::LichessExplorerService &lichess_service)
     : Controller(app),
       m_repertoire_service(rep_service),
       m_board_controller(new chessboard::Controller(this)),

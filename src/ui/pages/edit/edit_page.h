@@ -6,15 +6,12 @@
 #define EDIT_PAGE_H
 #include <QTextEdit>
 #include <QLineEdit>
-#include <QPushButton>
 #include <QWidget>
 
 #include "moves_deck.h"
-#include "controllers/boardcontroller.h"
 #include "controllers/board_controller.h"
 #include "controllers/explorer_controller.h"
 #include "models/datatypes.h"
-#include "ui/components/repertoire_tree.h"
 
 
 class EditPage : public QWidget {

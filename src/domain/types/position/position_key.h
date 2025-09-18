@@ -11,10 +11,11 @@ namespace Domain::Types {
 
     class PositionKey {
     public:
-        explicit PositionKey(FEN fen, PositionIdentityPolicy policy = PositionIdentityPolicy::RulesAccurate);
+        explicit PositionKey(const FEN &fen, const PositionIdentityPolicy policy = PositionIdentityPolicy::Aggregated)
+            :m_fen(fen), m_policy(policy) {}
 
-        const FEN &fen() const noexcept { return m_fen; }
-        PositionIdentityPolicy policy() const noexcept { return m_policy; }
+        [[nodiscard]] const FEN &fen() const noexcept { return m_fen; }
+        [[nodiscard]] PositionIdentityPolicy policy() const noexcept { return m_policy; }
 
         // Equality/hash reflect the chosen policy (e.g., ignore halfmove/fullmove for Aggregated)
         bool operator==(const PositionKey &other) const noexcept;
@@ -25,11 +26,10 @@ namespace Domain::Types {
     };
 }
 
-// TODO: Implement hashing
-// namespace std {
-//     template<> struct hash<Domain::Types::PositionKey> {
-//         size_t operator()(const Domain::Types::PositionKey& k) const noexcept;
-//     };
-// }
+namespace std {
+    template<> struct hash<Domain::Types::PositionKey> {
+        size_t operator()(const Domain::Types::PositionKey& k) const noexcept;
+    };
+}
 
 #endif //CHESSREPO_POSITION_KEY_H

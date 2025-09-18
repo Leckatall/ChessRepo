@@ -10,7 +10,7 @@
 #include <QLabel>
 
 #include "../presentation/models/explorer_tblmodel.h"
-#include "../infrastructure/explorer/LichessService.h"
+#include "../infrastructure/explorer/lichess_explorer_service.h"
 #include "ui/components/explorer/explorer_view.h"
 
 namespace application {
@@ -23,7 +23,7 @@ namespace explorer {
         // TODO: Add engine support
         // TODO: Add integration with openerController and highlight prepped moves
     public:
-        explicit Controller(LichessService &service, QObject *parent = nullptr);
+        explicit Controller(Infrastructure::Explorer::LichessExplorerService &service, QObject *parent = nullptr);
 
         [[nodiscard]] View *view() const { return m_view; }
 
@@ -40,7 +40,7 @@ namespace explorer {
     private:
         void initConnections();
 
-        LichessService &m_lichess_api;
+        Infrastructure::Explorer::LichessExplorerService &m_lichess_api;
         Models::PositionData m_current_position{};
         TblModel m_explorerTblModel;
         View *m_view;

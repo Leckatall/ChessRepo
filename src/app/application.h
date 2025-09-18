@@ -12,8 +12,7 @@
 #include "controllers/board_controller.h"
 #include "controllers/explorer_controller.h"
 #include "controllers/repertoire_list_controller.h"
-#include "infrastructure/explorer/lichess_service.h"
-#include "ui/components/explorer/explorer_view.h"
+#include "infrastructure/explorer/lichess_explorer_service.h"
 
 namespace application {
     class Application : public QObject {

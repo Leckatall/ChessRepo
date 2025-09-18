@@ -11,7 +11,7 @@
 #include <utility>
 #include "chess.hpp"
 
-
+// DEPRECATED
 namespace Models {
     // Move to presentation
     inline QString formatPercentage(double value, int precision = 2) {

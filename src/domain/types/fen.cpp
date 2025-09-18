@@ -28,4 +28,42 @@ namespace Domain::Types {
     FEN FEN::emptyBoard() {
         return FEN("8/8/8/8/8/8/8/8 w - - 0 1");
     }
+
+    std::vector<std::string> FEN::components() const {
+        std::vector<std::string> parts;
+        std::istringstream iss(*this);
+        std::string part;
+        while (iss >> part) {
+            parts.push_back(part);
+        }
+        return parts;
+    }
+    std::string FEN::boardState() const {
+        return components()[0];
+    }
+
+    std::string FEN::activeColor() const {
+        return components()[1];
+    }
+
+    std::string FEN::castlingRights() const {
+        return components()[2];
+    }
+
+    std::string FEN::enPassantTarget() const {
+        return components()[3];
+    }
+
+    int FEN::halfmoveClock() const {
+        return std::stoi(components()[4]);
+    }
+
+    int FEN::fullmoveNumber() const {
+        return std::stoi(components()[5]);
+    }
+
+    std::string FEN::aggregatedKey() const {
+        auto parts = components();
+        return parts[0] + " " + parts[1] + " " + parts[2] + " " + parts[3];
+    }
 }

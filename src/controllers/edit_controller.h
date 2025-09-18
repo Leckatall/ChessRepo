@@ -6,7 +6,7 @@
 #define EDIT_CONTROLLER_H
 #include "Controller.h"
 #include "../infrastructure/persistence/repertoire_service.h"
-#include "infrastructure/explorer/lichess_service.h"
+#include "infrastructure/explorer/lichess_explorer_service.h"
 #include "ui/pages/edit/edit_page.h"
 
 class EditController : public Controller {
@@ -16,7 +16,7 @@ public:
     explicit EditController(application::Application *app,
         QWidget *router_widget,
         RepertoireService &rep_service,
-        LichessExplorerService &lichess_service);
+        Infrastructure::Explorer::LichessExplorerService &lichess_service);
 
     [[nodiscard]] QWidget *view() const override { return m_view; }
 

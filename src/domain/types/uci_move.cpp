@@ -21,3 +21,7 @@ namespace Domain::Types {
 
     char UCIMove::promotion() const { return this->length() > 4 ? (*this)[4] : '\0'; }
 }
+
+std::size_t std::hash<Domain::Types::UCIMove>::operator()(const Domain::Types::UCIMove &uci) const noexcept {
+    return hash<std::string>{}(uci);
+}
