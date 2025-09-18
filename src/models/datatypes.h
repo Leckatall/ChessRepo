@@ -14,9 +14,7 @@
 // DEPRECATED
 namespace Models {
     // Move to presentation
-    inline QString formatPercentage(double value, int precision = 2) {
-        return QString::number(value * 100, 'f', precision) + "%";
-    }
+
 
     // DEPRECATED: use Domain::Types::UCIMove
     class UCIMove : public QString {
@@ -220,19 +218,19 @@ namespace Models {
             return games > 0 ? static_cast<double>(draws) / static_cast<double>(games) : 0.0;
         }
 
-        [[nodiscard]] QString toToolTip() const {
-            return QString("Total games: %1\nWhite wins: %2 (%3)\nDraws: %4 (%5)\nBlack wins: %6 (%7)")
-                    .arg(games)
-
-                    .arg(white_wins)
-                    .arg(formatPercentage(white_wr()))
-
-                    .arg(draws)
-                    .arg(formatPercentage(draw_rate()))
-
-                    .arg(black_wins)
-                    .arg(formatPercentage(black_wr()));
-        }
+        // [[nodiscard]] QString toToolTip() const {
+        //     return QString("Total games: %1\nWhite wins: %2 (%3)\nDraws: %4 (%5)\nBlack wins: %6 (%7)")
+        //             .arg(games)
+        //
+        //             .arg(white_wins)
+        //             .arg(formatPercentage(white_wr()))
+        //
+        //             .arg(draws)
+        //             .arg(formatPercentage(draw_rate()))
+        //
+        //             .arg(black_wins)
+        //             .arg(formatPercentage(black_wr()));
+        // }
     };
     // DEPRECATED: Just use Domain::Types::UCIMove and generate san in presenter
     struct Move {

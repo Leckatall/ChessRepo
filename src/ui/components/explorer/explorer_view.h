@@ -10,6 +10,7 @@
 
 #include "explorer_tblview.h"
 #include "../../../presentation/models/explorer_tblmodel.h"
+#include "presentation/viewmodels/explorer_viewmodel.h"
 
 namespace explorer {
     class View : public QWidget {
@@ -18,7 +19,7 @@ namespace explorer {
     public:
         explicit View(QWidget *parent = nullptr);
 
-        void setTblModel(TblModel *model) const { m_tblView->setModel(model); }
+        void setTblModel(Presentation::Features::Explorer::TableModel *model) const { m_tblView->setModel(model); }
 
         void initTblUi() const { m_tblView->initUI(); }
 

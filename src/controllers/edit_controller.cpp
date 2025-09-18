@@ -10,7 +10,7 @@
 EditController::EditController(application::Application *app,
                                QWidget *router_widget,
                                RepertoireService &rep_service,
-                               Infrastructure::Explorer::LichessExplorerService &lichess_service)
+                               Infrastructure::Features::Explorer::LichessExplorerService &lichess_service)
     : Controller(app),
       m_repertoire_service(rep_service),
       m_board_controller(new chessboard::Controller(this)),
@@ -45,5 +45,6 @@ void EditController::initConnections() {
     connect(m_view, &EditPage::uciMoveRequest,
             m_board_controller, &chessboard::Controller::makeUciMove);
     connect(m_view, &EditPage::explorerUpdateRequested, m_view, &EditPage::updateExplorer);
-
+    connect(m_board_controller, &chessboard::Controller::boardChanged,
+            m_explorer_controller, &explorer::Controller::exploreFen);
 }

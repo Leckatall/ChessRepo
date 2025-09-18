@@ -13,7 +13,7 @@
 #include "domain/types/fen.h"
 #include "models/datatypes.h"
 
-namespace Infrastructure::Explorer {
+namespace Infrastructure::Features::Explorer {
 class LichessExplorerService : public QObject {
     Q_OBJECT
 

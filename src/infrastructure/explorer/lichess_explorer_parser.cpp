@@ -13,7 +13,7 @@
 #include "domain/types/position/position_stats.h"
 #include "utils/chess.h"
 
-using namespace Infrastructure::Explorer;
+using namespace Infrastructure::Features::Explorer;
 using namespace Domain::Types;
 
 

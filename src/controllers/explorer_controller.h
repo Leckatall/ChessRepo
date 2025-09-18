@@ -11,6 +11,7 @@
 
 #include "../presentation/models/explorer_tblmodel.h"
 #include "../infrastructure/explorer/lichess_explorer_service.h"
+#include "presentation/models/tablemodel.h"
 #include "ui/components/explorer/explorer_view.h"
 
 namespace application {
@@ -18,31 +19,30 @@ namespace application {
 }
 
 namespace explorer {
+    // TODO: Make this deprecated
     class Controller : public QObject {
         Q_OBJECT
         // TODO: Add engine support
         // TODO: Add integration with openerController and highlight prepped moves
     public:
-        explicit Controller(Infrastructure::Explorer::LichessExplorerService &service, QObject *parent = nullptr);
+        explicit Controller(Infrastructure::Features::Explorer::LichessExplorerService &service, QObject *parent = nullptr);
 
         [[nodiscard]] View *view() const { return m_view; }
 
     public slots:
-        void exploreFen(const QString &fen) const;
-
-        void updateMoves(const QList<Models::MoveData> &moves);
+        void exploreFen(const QString &fen);
 
         void updatePositionData(const Models::PositionData &position);
 
     signals:
-        void moveClicked(Models::UCIMove uci);
+        void moveClicked(Domain::Types::UCIMove uci);
 
     private:
         void initConnections();
 
-        Infrastructure::Explorer::LichessExplorerService &m_lichess_api;
+        Infrastructure::Features::Explorer::LichessExplorerService &m_lichess_api;
         Models::PositionData m_current_position{};
-        TblModel m_explorerTblModel;
+        Presentation::Features::Explorer::ExplorerViewModel m_explorerViewModel;
         View *m_view;
     };
 }

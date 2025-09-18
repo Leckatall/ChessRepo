@@ -9,11 +9,12 @@
 #include <utility>
 
 #include "models/datatypes.h"
+#include "presentation/models/explorer_tblmodel.h"
 
 
 class StatsPainter {
 public:
-    static void paint(QPainter *painter, QRect rect, const Models::PositionData &stats);
+    static void paint(QPainter *painter, QRect rect, const Domain::Types::PositionStats &stats);
 
 private:
     static constexpr int PADDING = 5;
@@ -27,7 +28,7 @@ private:
         int black;
     };
 
-    [[nodiscard]] static BarWidths calculate_widths(int totalWidth, const Models::PositionData& data);
+    [[nodiscard]] static BarWidths calculate_widths(int totalWidth, const Domain::Types::PositionStats& data);
 
     static std::tuple<QRect, QRect, QRect> createRects(const QRect& baseRect, const BarWidths& widths);
 
@@ -40,7 +41,7 @@ class StatsWidget : public QWidget {
     Q_OBJECT
 
 public:
-    explicit StatsWidget(Models::PositionData stats, QWidget *parent = nullptr)
+    explicit StatsWidget(Domain::Types::PositionStats stats, QWidget *parent = nullptr)
         : QWidget(parent),
           m_stats(std::move(stats)) {
     }
@@ -52,7 +53,7 @@ protected:
     }
 
 private:
-    Models::PositionData m_stats;
+    Domain::Types::PositionStats m_stats;
 };
 
 

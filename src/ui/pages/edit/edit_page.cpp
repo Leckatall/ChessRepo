@@ -48,4 +48,5 @@ void EditPage::set_repertoire(const Models::Repertoire &repertoire) const {
 }
 
 void EditPage::updateExplorer() {
+
 }

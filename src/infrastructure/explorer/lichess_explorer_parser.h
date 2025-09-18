@@ -4,14 +4,10 @@
 
 #ifndef CHESSREPO_LICHESS_EXPLORER_PARSER_H
 #define CHESSREPO_LICHESS_EXPLORER_PARSER_H
-#include <qjsondocument.h>
+
+#include <QJsonObject>
 
 #include "domain/types/position/position_stats.h"
-
-
-class QJsonObject;
-class QJsonArray;
-class QByteArray;
 
 namespace Domain::Types {
     class FEN;
@@ -19,7 +15,7 @@ namespace Domain::Types {
     class PositionGraph;
 }
 
-namespace Infrastructure::Explorer {
+namespace Infrastructure::Features::Explorer {
     class LichessExplorerParser {
     public:
         static Domain::Types::PositionGraph handle_reponse(const Domain::Types::FEN &fen, const QByteArray &response);

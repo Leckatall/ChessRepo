@@ -25,6 +25,7 @@ namespace Domain::Types {
         PositionIdentityPolicy m_policy;
     };
 }
+Q_DECLARE_METATYPE(Domain::Types::PositionKey);
 
 namespace std {
     template<> struct hash<Domain::Types::PositionKey> {

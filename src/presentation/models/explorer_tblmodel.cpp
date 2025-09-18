@@ -4,21 +4,23 @@
 
 #include "explorer_tblmodel.h"
 #include "QMetaEnum"
+#include "presentation/uitls.h"
+#include "presentation/viewmodels/explorer_viewmodel.h"
 
-namespace explorer {
-    const QMap<TblModel::Column, QString> TblModel::COLUMN_NAMES = {
+namespace Presentation::Features::Explorer {
+    const QMap<TableModel::Column, QString> TableModel::COLUMN_NAMES = {
     {MoveName, "Move"},
     {Popularity, "Popularity"},
     {Winrates, "Win Rates"},
     {Evaluation, "Evaluation"}
 };
 
-TblModel::TblModel(QObject *parent, const Qt::Orientation &orientation)
+TableModel::TableModel(QObject *parent, const Qt::Orientation &orientation)
     : QAbstractTableModel(parent),
-      m_orientation(orientation) {
+      m_orientation(orientation), m_root_FEN(Domain::Types::FEN::startingPosition()) {
 }
 
-QVariant TblModel::headerData(int section, Qt::Orientation orientation, int role) const {
+QVariant TableModel::headerData(int section, const Qt::Orientation orientation, const int role) const {
     if (role != Qt::DisplayRole) {
         return {};
     }
@@ -32,29 +34,29 @@ QVariant TblModel::headerData(int section, Qt::Orientation orientation, int role
     return {};
 }
 
-int TblModel::columnCount(const QModelIndex &parent) const {
+int TableModel::columnCount(const QModelIndex &parent) const {
     if(parent.isValid())
         return 0;
     return ColumnCount;
 }
 
-int TblModel::rowCount(const QModelIndex &parent) const {
+int TableModel::rowCount(const QModelIndex &parent) const {
     if(parent.isValid())
         return 0;
     return m_moves.size();
 }
 
-QVariant TblModel::data(const QModelIndex &index, int role) const {
+QVariant TableModel::data(const QModelIndex &index, int role) const {
     if (!index.isValid() || index.row() >= m_moves.size()) {
         return {};
     }
-    const Models::MoveData &move_data = m_moves[index.row()];
+    const auto &[uci_move, stats] = m_moves[index.row()];
     if (role == Qt::DisplayRole || role == Qt::EditRole) {
         switch (static_cast<Column>(index.column())) {
             case MoveName:
-                return move_data.move.san;
+                return uci_move;
             case Popularity:
-                return Models::formatPercentage(static_cast<double>(move_data.position_data.games) / static_cast<double>(m_root_position.games));
+                return Presentation::Utils::toPercentage(stats.games, m_root_stats.games);
             case Winrates:
                 return {};
             case Evaluation:
@@ -64,24 +66,36 @@ QVariant TblModel::data(const QModelIndex &index, int role) const {
         }
     } else if (role == Qt::UserRole) {
         if(static_cast<Column>(index.column()) == Winrates) {
-            return QVariant::fromValue(move_data.position_data);
+            return QVariant::fromValue(stats);
         }
-    } else if (role == Qt::ToolTipRole) {
-        if(static_cast<Column>(index.column()) == Winrates) {
-            return move_data.position_data.toToolTip();
-        }
-    }else if (role == Qt::TextAlignmentRole )
+    } else if (role == Qt::TextAlignmentRole )
         return Qt::AlignCenter;
 
     return {};
 
 }
 
-void TblModel::handleClick(const QModelIndex &index) {
+void TableModel::setGraph(const Domain::Types::PositionGraph &graph) {
+    beginResetModel();
+    const auto root_node = graph.getNode(graph.getRootKey());
+    m_root_FEN = root_node->getFen();
+    m_root_stats = root_node->stats;
+    const auto move_edges = root_node->edges;
+    m_moves.clear();
+    m_moves.reserve(move_edges.size());
+    for (const auto &edge : move_edges) {
+        m_moves.push_back(RowEntry{QString::fromStdString(edge.uci), graph.getStats(edge)});
+    }
+    endResetModel();
+    emit dataChanged(createIndex(0, 0),
+                     createIndex(rowCount() - 1, columnCount() - 1));
+}
+
+void TableModel::handleClick(const QModelIndex &index) {
     if (!index.isValid() || index.row() >= m_moves.size())
         return;
 
-    emit moveClicked(m_moves[index.row()]);
+    emit moveClicked(Domain::Types::UCIMove(m_moves[index.row()].uci_move.toStdString()));
 }
 }
 

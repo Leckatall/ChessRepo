@@ -21,7 +21,7 @@ signals:
     void clicked();
 
 private:
-    void initLayout();
+    // void initLayout();
     void mousePressEvent(QMouseEvent* event) override {
         if (event->button() == Qt::LeftButton)
             emit clicked();

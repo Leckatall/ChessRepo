@@ -8,11 +8,12 @@
 #include <QPainter>
 #include <QPainterPath>
 
-#include "models/datatypes.h"
+#include "domain/types/position/position_stats.h"
+#include "presentation/uitls.h"
 
 void WinrateDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
     painter->save();
-    const auto pos_data = index.data(Qt::UserRole).value<Models::PositionData>();
+    const auto pos_data = index.data(Qt::UserRole).value<Domain::Types::PositionStats>();
 
     if (pos_data.games == 0) {
         painter->drawText(option.rect, Qt::AlignCenter, "No games");
@@ -25,9 +26,9 @@ void WinrateDelegate::paint(QPainter *painter, const QStyleOptionViewItem &optio
     draw_segment_background(painter, rect_b, Qt::black, true);
     draw_segment_background(painter, rect_d, QColor(150, 150, 150), false);
 
-    draw_segment_text(painter, rect_w, Models::formatPercentage(pos_data.white_wr()), Qt::black);
-    draw_segment_text(painter, rect_d, Models::formatPercentage(pos_data.draw_rate()), Qt::white);
-    draw_segment_text(painter, rect_b, Models::formatPercentage(pos_data.black_wr()), Qt::white);
+    draw_segment_text(painter, rect_w, Presentation::Utils::formatPercentage(pos_data.white_wr()), Qt::black);
+    draw_segment_text(painter, rect_d, Presentation::Utils::formatPercentage(pos_data.draw_rate()), Qt::white);
+    draw_segment_text(painter, rect_b, Presentation::Utils::formatPercentage(pos_data.black_wr()), Qt::white);
     painter->restore();
 }
 
@@ -35,7 +36,7 @@ QSize WinrateDelegate::sizeHint(const QStyleOptionViewItem &option, const QModel
     return QStyledItemDelegate::sizeHint(option, index);
 }
 
-WinrateDelegate::BarWidths WinrateDelegate::calculate_widths(const int totalWidth, const Models::PositionData &data) {
+WinrateDelegate::BarWidths WinrateDelegate::calculate_widths(const int totalWidth, const Domain::Types::PositionStats &data) {
     const int width_w = static_cast<int>(totalWidth * data.white_wr());
     const int width_b = static_cast<int>(totalWidth * data.black_wr());
     const int width_d = totalWidth - width_w - width_b;

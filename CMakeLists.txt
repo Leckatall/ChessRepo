@@ -19,7 +19,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
 # Import Qt6
-set(Qt6_DIR "C:\\Qt\\6.8.2\\mingw_64\\lib\\cmake\\Qt6")
+# set(Qt6_DIR "C:\\Qt\\6.9.2\\mingw_64\\lib\\cmake\\Qt6")
 find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Network)
 
 # Building the execuatble
@@ -81,6 +81,9 @@ set(VIEWS
         src/ui/pages/edit/moves_deck.h
         src/ui/components/chessboard/board_view.cpp
         src/ui/components/chessboard/board_view.h
+        src/presentation/viewmodels/explorer_viewmodel.cpp
+        src/presentation/viewmodels/explorer_viewmodel.h
+        src/presentation/uitls.h
 )
 
 

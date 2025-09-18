@@ -4,6 +4,7 @@
 
 #ifndef CHESSREPO_FEN_H
 #define CHESSREPO_FEN_H
+#include <qmetatype.h>
 #include <string>
 #include <vector>
 
@@ -33,5 +34,6 @@ namespace Domain::Types {
         [[nodiscard]] std::vector<std::string> components() const;
     };
 }
+Q_DECLARE_METATYPE(Domain::Types::FEN);
 
 #endif //CHESSREPO_FEN_H

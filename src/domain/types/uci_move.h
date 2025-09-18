@@ -4,6 +4,7 @@
 
 #ifndef CHESSREPO_UCI_MOVE_H
 #define CHESSREPO_UCI_MOVE_H
+#include <qmetatype.h>
 #include <stdexcept>
 #include <string>
 
@@ -26,6 +27,7 @@ namespace Domain::Types {
         [[nodiscard]] char promotion() const;
     };
 }
+Q_DECLARE_METATYPE(Domain::Types::UCIMove)
 
 namespace std {
     template<> struct hash<Domain::Types::UCIMove> {

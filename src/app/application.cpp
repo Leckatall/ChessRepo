@@ -12,7 +12,7 @@ namespace application {
     m_window(new QMainWindow()),
     m_router(new Router()),
     m_repertoireService(new RepertoireService(this)),
-    m_lichessApi(new Infrastructure::Explorer::LichessExplorerService(this))
+    m_lichessApi(new Infrastructure::Features::Explorer::LichessExplorerService(this))
     {
         m_window->setWindowTitle("ChessRepo");
         m_window->setGeometry(0, 0, 1200, 800);
@@ -42,7 +42,7 @@ namespace application {
     }
 
     void Application::start() const {
-        m_router->navigateTo(Page::LIST);
+        m_router->navigateTo(Page::EDIT);
         m_window->show();
     }
 
@@ -51,6 +51,8 @@ namespace application {
                 this, &Application::updatePage);
         connect(&m_repertoireService, &RepertoireService::repertoireListChanged,
                 m_controllers[Page::LIST], &Controller::updateData);
+        connect(&m_repertoireService, &RepertoireService::newRepertoireLoaded,
+                m_controllers[Page::EDIT], &Controller::updateData);
         connect(&m_repertoireService, &RepertoireService::newRepertoireLoaded,
                 m_controllers[Page::EDIT], &Controller::updateData);
     }

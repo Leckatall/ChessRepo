@@ -9,12 +9,12 @@
 #include <QString>
 
 namespace explorer {
-    Controller::Controller(Infrastructure::Explorer::LichessExplorerService &service, QObject *parent)
+    Controller::Controller(Infrastructure::Features::Explorer::LichessExplorerService &service, QObject *parent)
         : QObject(parent),
           m_lichess_api(service),
-          m_explorerTblModel(this),
+          m_explorerViewModel(service, this),
           m_view(new View()) {
-        m_view->setTblModel(&m_explorerTblModel);
+        m_view->setTblModel(m_explorerViewModel.tableModel());
         m_view->initTblUi();
         initConnections();
     }
@@ -27,19 +27,17 @@ namespace explorer {
         //         this, &Controller::updateMoves);
         // Handling table clicks
         // View sends index to model to emit a signal of the data
-        connect(m_view, &View::moveIndexClicked,
-                &m_explorerTblModel, &TblModel::handleClick);
-        connect(&m_explorerTblModel, &TblModel::moveClicked,
-                this, [this](const Models::MoveData &move) { emit moveClicked(move.move.uci); });
+        // connect(m_view, &View::moveIndexClicked,
+        //         &m_explorerTblModel, &Presentation::Features::Explorer::TableModel::handleClick);
+        // connect(&m_explorerTblModel, &Presentation::Features::Explorer::TableModel::moveClicked,
+        //         this, [this](const Domain::Types::UCIMove &uci) { emit moveClicked(uci); });
     }
 
-    void Controller::exploreFen(const QString &fen) const {
+    void Controller::exploreFen(const QString &fen) {
         // will emit signals to connected to: updatePositionData(pos) and updateMoves(moves)
-        m_lichess_api.fetch_opening_data(Domain::Types::FEN(fen.toStdString()));
-    }
-
-    void Controller::updateMoves(const QList<Models::MoveData> &moves) {
-        m_explorerTblModel.put_data(moves);
+        // m_lichess_api.fetch_opening_data(Domain::Types::FEN(fen.toStdString()));
+        qDebug() << "Explore fen: " << fen;
+        m_explorerViewModel.setFen(fen);
     }
 
     void Controller::updatePositionData(const Models::PositionData &position) {
@@ -51,7 +49,6 @@ namespace explorer {
         if (position.opening) {
             new_text += QString("\nOpening(name: \"%1\" eco: \"%2\")").arg(position.opening.name, position.opening.eco);
         }
-        m_view->updatePositionLabel(new_text);
-        m_explorerTblModel.set_root_position(position);
+        //m_view->updatePositionLabel(new_text);
     }
 }

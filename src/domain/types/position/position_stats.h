@@ -27,4 +27,7 @@ namespace Domain::Types {
         }
     };
 }
+
+Q_DECLARE_METATYPE(Domain::Types::PositionStats)
+
 #endif //CHESSREPO_POSITION_STATS_H

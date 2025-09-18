@@ -11,7 +11,7 @@
 
 #include "domain/types/position/position_graph.h"
 
-namespace Infrastructure::Explorer {
+namespace Infrastructure::Features::Explorer {
     LichessExplorerService::LichessExplorerService(QObject *parent)
         : QObject(parent),
           m_net_client(this) {

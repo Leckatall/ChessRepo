@@ -4,10 +4,9 @@
 
 
 #include "tablemodel.h"
-#include <algorithm>
 
-
-QVariant TableModel::get_cell(const int row, const QString& column) const {
+namespace Presentation::Common {
+    QVariant TableModel::get_cell(const int row, const QString& column) const {
     if (row >= 0 && row < m_data.length()) {
         return m_data[row][column];
     }
@@ -90,4 +89,5 @@ bool TableModel::setData(const QModelIndex& index, const QVariant& value, int ro
         return true;
     }
     return false;
+}
 }

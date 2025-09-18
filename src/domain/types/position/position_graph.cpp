@@ -4,6 +4,8 @@
 
 #include "position_graph.h"
 
+#include <span>
+
 namespace Domain::Types {
     PositionGraph::PositionGraph(const PositionNode &root)
     : m_rootKey(root.key) {
@@ -16,20 +18,20 @@ namespace Domain::Types {
     }
 
     const PositionNode * PositionGraph::getNode(const PositionKey &key) const {
-        if (const auto it = m_nodes.find(key); it != m_nodes.end()) return it->second.get();
+        if (const auto it = m_nodes.find(key); it != m_nodes.end()) return it->second;
         return nullptr;
     }
 
     PositionNode * PositionGraph::getNode(const PositionKey &key) {
-        if (const auto it = m_nodes.find(key); it != m_nodes.end()) return it->second.get();
+        if (const auto it = m_nodes.find(key); it != m_nodes.end()) return it->second;
         return nullptr;
     }
 
     void PositionGraph::addNode(const PositionNode& node) {
-        m_nodes[node.key] = std::make_unique<PositionNode>(node);
+        m_nodes[node.key] = new PositionNode(node);
     }
-    void PositionGraph::addNode(PositionKey key, PositionStats stats) {
-        m_nodes[key] = std::make_unique<PositionNode>(key, stats);
+    void PositionGraph::addNode(const PositionKey& key, const PositionStats &stats) {
+        m_nodes[key] = new PositionNode(key, stats);
     }
     // Utility methods
     bool PositionGraph::hasNode(const PositionKey &key) const {
@@ -72,10 +74,28 @@ namespace Domain::Types {
     }
 
     // Get edges from a position
-    const std::vector<MoveEdge> &PositionGraph::getEdges(const PositionKey &key) const {
-        static const std::vector<MoveEdge> kEmpty;
+    std::span<const MoveEdge> PositionGraph::getEdges(const PositionKey &key) const {
+        // Old vector implementation
+        // static const std::vector<MoveEdge> kEmpty;
+        // const auto* node = getNode(key);
+        // return node ? node->edges : kEmpty;
         const auto* node = getNode(key);
-        return node ? node->edges : kEmpty;
+        return node ? std::span(node->edges) : std::span<const MoveEdge>();
+    }
+
+    PositionStats PositionGraph::getMoveStats(const PositionKey &from, const UCIMove &move) const {
+        const auto origin = getNode(from);
+        if (!origin) return {};
+        const auto moveEdge = origin->findMove(move);
+        if (!moveEdge) return {};
+
+        return getStats(*moveEdge);
+    }
+
+    PositionStats PositionGraph::getStats(const MoveEdge &moveEdge) const {
+        const auto target = getNode(moveEdge.target);
+        if (!target) return {};
+        return target->stats;
     }
 }
 

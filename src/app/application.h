@@ -27,20 +27,19 @@ namespace application {
         void updatePage(application::Page page);
 
     private:
-        void addView(Page page, Controller* controller);
+        void addView(Page page, Controller *controller);
 
         void initConnections();
 
-        QMainWindow* m_window;
-        Router* m_router;
+        QMainWindow *m_window;
+        Router *m_router;
 
         RepertoireService m_repertoireService;
-        Infrastructure::Explorer::LichessExplorerService m_lichessApi;
+        Infrastructure::Features::Explorer::LichessExplorerService m_lichessApi;
 
-        QMap<Page, Controller*> m_controllers;
-        chessboard::Controller* m_board_controller;
-        explorer::Controller* m_explorer_controller;
-
+        QMap<Page, Controller *> m_controllers;
+        chessboard::Controller *m_board_controller;
+        explorer::Controller *m_explorer_controller;
     };
 }
 

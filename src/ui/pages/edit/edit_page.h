@@ -46,8 +46,6 @@ signals:
     void explorerUpdateRequested(const Models::FEN &position);
 
 private:
-    void initLayout();
-
     void initConnections();
 
     QFrame *m_side_panel;

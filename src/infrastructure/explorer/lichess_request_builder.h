@@ -16,7 +16,7 @@ namespace Domain::Types {
 
 class QUrl;
 
-namespace Infrastructure::Explorer {
+namespace Infrastructure::Features::Explorer {
     struct LichessRequestBuilder {
         const std::string LICHESS_URL = "https://explorer.lichess.ovh/lichess";
 

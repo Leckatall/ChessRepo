@@ -16,7 +16,7 @@ public:
     explicit EditController(application::Application *app,
         QWidget *router_widget,
         RepertoireService &rep_service,
-        Infrastructure::Explorer::LichessExplorerService &lichess_service);
+        Infrastructure::Features::Explorer::LichessExplorerService &lichess_service);
 
     [[nodiscard]] QWidget *view() const override { return m_view; }
 

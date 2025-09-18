@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <memory>
 #include <optional>
+#include <span>
 #include <unordered_map>
 
 #include "position_key.h"
@@ -46,7 +47,7 @@ namespace Domain::Types {
             return addEdge({move, std::move(target), std::move(comment)});
         }
 
-        const MoveEdge *findMove(const UCIMove &move) const {
+        [[nodiscard]] const MoveEdge *findMove(const UCIMove &move) const {
             const auto it = std::ranges::find_if(edges, [&](const MoveEdge &e) { return e.uci == move; });
             return (it != edges.end()) ? &*it : nullptr;
         }
@@ -63,8 +64,10 @@ namespace Domain::Types {
             return true;
         }
 
-        bool hasMove(const UCIMove &move) const { return findMove(move) != nullptr; }
-        size_t edgeCount() const { return edges.size(); }
+        [[nodiscard]] bool hasMove(const UCIMove &move) const { return findMove(move) != nullptr; }
+        [[nodiscard]] size_t edgeCount() const { return edges.size(); }
+
+        [[nodiscard]] FEN getFen() const {return key.fen();}
     };
 
     class PositionGraph {
@@ -79,7 +82,7 @@ namespace Domain::Types {
 
         void addNode(const PositionNode &node);
 
-        void addNode(PositionKey key, PositionStats stats);
+        void addNode(const PositionKey& key, const PositionStats &stats);
 
         bool hasNode(const PositionKey &key) const;
 
@@ -95,13 +98,19 @@ namespace Domain::Types {
 
         bool addEdge(const PositionKey &from, const PositionNode &to, const UCIMove &move, std::string comment);
 
-        const std::vector<MoveEdge> &getEdges(const PositionKey &key) const;
+        std::span<const MoveEdge> getEdges(const PositionKey &key) const;
+
+        PositionStats getMoveStats(const PositionKey &from, const UCIMove &move) const;
+
+        PositionStats getStats(const MoveEdge &moveEdge) const;
 
     private:
-        std::unordered_map<PositionKey, std::unique_ptr<PositionNode> > m_nodes{};
+        std::unordered_map<PositionKey, PositionNode* > m_nodes{};
         PositionKey m_rootKey;
     };
 }
+
+Q_DECLARE_METATYPE(Domain::Types::PositionGraph);
 
 
 #endif //CHESSREPO_POSITION_GRAPH_H

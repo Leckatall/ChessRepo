@@ -6,7 +6,8 @@
 
 #include <QUrlQuery>
 
-QUrl Infrastructure::Explorer::LichessRequestBuilder::buildApiUrl(const Domain::Types::FEN &fen) const {
+using namespace Infrastructure::Features::Explorer;
+QUrl LichessRequestBuilder::buildApiUrl(const Domain::Types::FEN &fen) const {
     QUrl url(QString::fromStdString(LICHESS_URL));
     QUrlQuery query;
 
