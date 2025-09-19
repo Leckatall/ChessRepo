@@ -72,6 +72,7 @@ namespace Domain::Types {
 
     class PositionGraph {
     public:
+        PositionGraph() = default;
         explicit PositionGraph(const PositionNode &root);
 
         explicit PositionGraph(const PositionKey &rootKey, const PositionStats &rootStats = {});
@@ -106,7 +107,7 @@ namespace Domain::Types {
 
     private:
         std::unordered_map<PositionKey, PositionNode* > m_nodes{};
-        PositionKey m_rootKey;
+        PositionKey m_rootKey{};
     };
 }
 

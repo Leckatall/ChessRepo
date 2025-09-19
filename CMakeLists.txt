@@ -54,6 +54,8 @@ set(MODELS
         src/domain/chess/primitives.h
         src/domain/chess/Board.cpp
         src/domain/chess/Board.h
+        src/domain/repertoire/repertoire.cpp
+        src/domain/repertoire/repertoire.h
 )
 set(VIEWS
         src/ui/components/chessboard/square_delegate.cpp
@@ -70,10 +72,10 @@ set(VIEWS
         src/ui/components/createrepomodal.h
         src/ui/pages/list/repocard.cpp
         src/ui/pages/list/repocard.h
-        src/app/router.cpp
-        src/app/router.h
-        src/ui/pages/edit/edit_page.cpp
-        src/ui/pages/edit/edit_page.h
+#        src/app/router.cpp
+#        src/app/router.h
+#        src/ui/pages/edit/edit_page.cpp
+#        src/ui/pages/edit/edit_page.h
         src/ui/components/repertoire_tree.cpp
         src/ui/components/repertoire_tree.h
         src/ui/components/move_card.cpp
@@ -97,18 +99,18 @@ set(VIEWS
 
 
 set(CONTROLLERS
-        src/controllers/explorer_controller.cpp
-        src/controllers/explorer_controller.h
-        src/controllers/openingcontroller.cpp
-        src/controllers/openingcontroller.h
-        src/ui/pages/list/list_page.cpp
-        src/ui/pages/list/list_page.h
-        src/controllers/repertoire_list_controller.cpp
-        src/controllers/repertoire_list_controller.h
-        src/controllers/Controller.h
-        src/controllers/Controller.cpp
-        src/controllers/edit_controller.cpp
-        src/controllers/edit_controller.h
+#        src/controllers/explorer_controller.cpp
+#        src/controllers/explorer_controller.h
+#        src/controllers/openingcontroller.cpp
+#        src/controllers/openingcontroller.h
+#        src/ui/pages/list/list_page.cpp
+#        src/ui/pages/list/list_page.h
+#        src/controllers/repertoire_list_controller.cpp
+#        src/controllers/repertoire_list_controller.h
+#        src/controllers/Controller.h
+#        src/controllers/Controller.cpp
+#        src/controllers/edit_controller.cpp
+#        src/controllers/edit_controller.h
         src/controllers/board_controller.cpp
         src/controllers/board_controller.h
         src/ui/components/explorer/explorer_view.cpp
@@ -136,18 +138,20 @@ add_executable(myapp
         src/infrastructure/explorer/lichess_explorer_service.h
         src/infrastructure/persistence/repertoire_service.cpp
         src/infrastructure/persistence/repertoire_service.h
-        src/app/application.cpp
-        src/app/application.h
-        src/ui/pages/page.cpp
-        src/ui/pages/page.h
-        src/app/session.cpp
-        src/app/session.h
+#        src/app/application.cpp
+#        src/app/application.h
+#        src/ui/pages/page.cpp
+#        src/ui/pages/page.h
+#        src/app/session.cpp
+#        src/app/session.h
         src/app/models.h
         src/domain/explorer/iexplorer_service.cpp
         src/domain/explorer/iexplorer_service.h
         src/infrastructure/explorer/lichess_explorer_parser.cpp
         src/infrastructure/explorer/lichess_explorer_parser.h
         src/utils/chess.h
+        src/infrastructure/persistence/repertoire_persistence.cpp
+        src/infrastructure/persistence/repertoire_persistence.h
 )
 
 # Link Qt6 libraries

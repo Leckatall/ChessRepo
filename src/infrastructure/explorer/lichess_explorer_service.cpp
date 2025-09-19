@@ -41,6 +41,7 @@ namespace Infrastructure::Features::Explorer {
         if (reply->error() == QNetworkReply::NoError) {
             emit gotOpeningGraph(LichessExplorerParser::handle_reponse(fen, reply->readAll()));
         } else {
+            qDebug() << "error!!";
             emit errorOccurred(reply->errorString());
         }
     }

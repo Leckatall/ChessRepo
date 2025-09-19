@@ -7,7 +7,6 @@
 
 #include <QGridLayout>
 #include <QString>
-
 namespace explorer {
     Controller::Controller(Infrastructure::Features::Explorer::LichessExplorerService &service, QObject *parent)
         : QObject(parent),

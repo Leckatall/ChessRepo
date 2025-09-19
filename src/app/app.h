@@ -7,6 +7,7 @@
 #include <QMainWindow>
 
 #include "controllers/board_controller.h"
+#include "infrastructure/persistence/repertoire_persistence.h"
 #include "presentation/models/explorer_tblmodel.h"
 #include "presentation/viewmodels/explorer_viewmodel.h"
 #include "ui/components/chessboard/board_view.h"
@@ -24,15 +25,13 @@ namespace Application {
         void initConnections();
 
         Infrastructure::Features::Explorer::LichessExplorerService m_lichessApi;
+        Infrastructure::Features::Repertoire::RepertoirePersistence m_repertoirePersistence;
 
         QMainWindow *m_window;
         QFrame *m_container;
         Presentation::Features::Explorer::ExplorerViewModel m_explorerVM;
         chessboard::Controller *m_board_controller;
         explorer::View* m_explorerView;
-
-
-
     };
 }
 

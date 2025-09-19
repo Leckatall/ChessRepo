@@ -45,7 +45,6 @@ namespace Views::Features::Board {
     void BoardGraphicsScene::update_board(const QList<PieceData> &pieces) {
         for (auto &piece_data : pieces) {
             PieceGraphicsItem piece_item(m_piece_svg_cache[piece_data.type], m_square_size, m_squares[piece_data.square]);
-            piece_item.setParentItem()
         }
     }
     // DEPRECATED

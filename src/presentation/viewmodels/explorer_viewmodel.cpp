@@ -8,10 +8,12 @@ using namespace Infrastructure::Features::Explorer;
 
 namespace Presentation::Features::Explorer {
     ExplorerViewModel::ExplorerViewModel(LichessExplorerService &service,
+                                         Infrastructure::Features::Repertoire::RepertoirePersistence &persistence,
                                          QObject *parent)
-        : QObject(parent)
-          , m_service(service)
-          , m_tableModel(this) {
+        : QObject(parent),
+          m_service(service),
+          m_persistence(persistence),
+          m_tableModel(this) {
         initConnections();
 
         // Relay clicks from the table model upwards as UCIMove
@@ -25,9 +27,12 @@ namespace Presentation::Features::Explorer {
         // Connect to service outputs
 
         connect(&m_tableModel, &TableModel::moveClicked,
-                this, [this](const Domain::Types::UCIMove &uci) { qDebug() << "emitting move clicked"; emit moveClicked(uci); });
+                this, [this](const Domain::Types::UCIMove &uci) {
+                    qDebug() << "emitting move clicked";
+                    emit moveClicked(uci);
+                });
 
-        connect(this, &ExplorerViewModel::fenChanged,&m_service, &LichessExplorerService::fetch_opening_data);
+        connect(this, &ExplorerViewModel::fenChanged, &m_service, &LichessExplorerService::fetch_opening_data);
         connect(&m_service, &LichessExplorerService::gotOpeningGraph,
                 this, &ExplorerViewModel::onGotPositionData);
         connect(&m_service, &LichessExplorerService::errorOccurred,
@@ -65,7 +70,17 @@ namespace Presentation::Features::Explorer {
 
     void ExplorerViewModel::onGotPositionData(const Domain::Types::PositionGraph &position) {
         m_tableModel.setGraph(position);
-        updatePositionSummary(position.getNode(position.getRootKey())->stats);
+        qDebug() << "Got position data";
+        Domain::Types::Repertoire::Header header = {
+            "Repertoire",
+            true,
+            "Date",
+            "Description",
+            floor<std::chrono::seconds>(std::chrono::system_clock::now())
+        };
+        Domain::Types::Repertoire::RepertoireData repertoire{header, position};
+        Infrastructure::Features::Repertoire::RepertoirePersistence::toJson(repertoire);
+                updatePositionSummary(position.getNode(position.getRootKey())->stats);
     }
 
     void ExplorerViewModel::onNetworkError(const QString &message) {

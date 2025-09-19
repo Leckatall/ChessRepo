@@ -9,9 +9,10 @@
 namespace Application {
     App::App() : QObject(nullptr),
                  m_lichessApi(this),
+                 m_repertoirePersistence(this),
                  m_window(new QMainWindow()),
                  m_container(new QFrame()),
-                 m_explorerVM(m_lichessApi),
+                 m_explorerVM(m_lichessApi, m_repertoirePersistence),
                  m_board_controller(new chessboard::Controller(this)),
                  m_explorerView(new explorer::View(m_container)) {
         m_window->setWindowTitle("ChessRepo");

@@ -10,6 +10,7 @@
 #include <qtypes.h>
 
 #include "infrastructure/explorer/lichess_explorer_service.h"
+#include "infrastructure/persistence/repertoire_persistence.h"
 #include "presentation/models/explorer_tblmodel.h"
 
 namespace Presentation::Features::Explorer {
@@ -24,6 +25,7 @@ namespace Presentation::Features::Explorer {
 
     public:
         explicit ExplorerViewModel(Infrastructure::Features::Explorer::LichessExplorerService &service,
+                                   Infrastructure::Features::Repertoire::RepertoirePersistence &persistence,
                                    QObject *parent = nullptr);
 
         TableModel *tableModel() { return &m_tableModel; }
@@ -72,6 +74,7 @@ namespace Presentation::Features::Explorer {
         void updatePositionSummary(const Domain::Types::PositionStats &position);
 
         Infrastructure::Features::Explorer::LichessExplorerService &m_service;
+        Infrastructure::Features::Repertoire::RepertoirePersistence &m_persistence;
         TableModel m_tableModel;
 
         QString m_fen;
@@ -80,7 +83,6 @@ namespace Presentation::Features::Explorer {
         QString m_positionSummary;
     };
 };
-
 
 
 #endif //CHESSREPO_EXPLORER_VIEWMODEL_H

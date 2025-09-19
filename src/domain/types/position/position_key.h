@@ -11,6 +11,7 @@ namespace Domain::Types {
 
     class PositionKey {
     public:
+        PositionKey() = default;
         explicit PositionKey(const FEN &fen, const PositionIdentityPolicy policy = PositionIdentityPolicy::Aggregated)
             :m_fen(fen), m_policy(policy) {}
 
@@ -21,8 +22,8 @@ namespace Domain::Types {
         bool operator==(const PositionKey &other) const noexcept;
 
     private:
-        FEN m_fen;
-        PositionIdentityPolicy m_policy;
+        FEN m_fen{FEN::emptyBoard()};
+        PositionIdentityPolicy m_policy{};
     };
 }
 Q_DECLARE_METATYPE(Domain::Types::PositionKey);
