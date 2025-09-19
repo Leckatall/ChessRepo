@@ -9,7 +9,7 @@
 #include <QPainterPath>
 
 #include "domain/types/position/position_stats.h"
-#include "presentation/uitls.h"
+#include "presentation/utils.h"
 
 void WinrateDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const {
     painter->save();
@@ -22,8 +22,8 @@ void WinrateDelegate::paint(QPainter *painter, const QStyleOptionViewItem &optio
 
     auto [rect_w, rect_d, rect_b] = createRects(option.rect, calculate_widths(option.rect.width(), pos_data));
     // painter->setRenderHint(QPainter::Antialiasing);
-    draw_segment_background(painter, rect_w, Qt::white, true);
-    draw_segment_background(painter, rect_b, Qt::black, true);
+    draw_segment_background(painter, rect_w, QColor(255, 255, 255, 100), true);
+    draw_segment_background(painter, rect_b, QColor(0, 0, 0, 100), true);
     draw_segment_background(painter, rect_d, QColor(150, 150, 150), false);
 
     draw_segment_text(painter, rect_w, Presentation::Utils::formatPercentage(pos_data.white_wr()), Qt::black);

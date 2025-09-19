@@ -53,7 +53,7 @@ namespace Presentation::Features::Explorer {
         Qt::Orientation m_orientation;
         static const QMap<Column, QString> COLUMN_NAMES;
         struct RowEntry {
-            QString uci_move;
+            Domain::Types::UCIMove uci_move;
             Domain::Types::PositionStats stats;
         };
         Domain::Types::PositionStats m_root_stats;

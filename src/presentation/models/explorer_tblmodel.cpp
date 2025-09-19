@@ -4,7 +4,7 @@
 
 #include "explorer_tblmodel.h"
 #include "QMetaEnum"
-#include "presentation/uitls.h"
+#include "presentation/utils.h"
 #include "presentation/viewmodels/explorer_viewmodel.h"
 
 namespace Presentation::Features::Explorer {
@@ -54,9 +54,9 @@ QVariant TableModel::data(const QModelIndex &index, int role) const {
     if (role == Qt::DisplayRole || role == Qt::EditRole) {
         switch (static_cast<Column>(index.column())) {
             case MoveName:
-                return uci_move;
+                return Utils::uciToSan(m_root_FEN, uci_move);
             case Popularity:
-                return Presentation::Utils::toPercentage(stats.games, m_root_stats.games);
+                return Utils::toPercentage(stats.games, m_root_stats.games);
             case Winrates:
                 return {};
             case Evaluation:
@@ -84,7 +84,7 @@ void TableModel::setGraph(const Domain::Types::PositionGraph &graph) {
     m_moves.clear();
     m_moves.reserve(move_edges.size());
     for (const auto &edge : move_edges) {
-        m_moves.push_back(RowEntry{QString::fromStdString(edge.uci), graph.getStats(edge)});
+        m_moves.push_back(RowEntry{edge.uci, graph.getStats(edge)});
     }
     endResetModel();
     emit dataChanged(createIndex(0, 0),
@@ -94,8 +94,8 @@ void TableModel::setGraph(const Domain::Types::PositionGraph &graph) {
 void TableModel::handleClick(const QModelIndex &index) {
     if (!index.isValid() || index.row() >= m_moves.size())
         return;
-
-    emit moveClicked(Domain::Types::UCIMove(m_moves[index.row()].uci_move.toStdString()));
+    qDebug() << "Clicked on move: " << m_moves[index.row()].uci_move;
+    emit moveClicked(Domain::Types::UCIMove(m_moves[index.row()].uci_move));
 }
 }
 

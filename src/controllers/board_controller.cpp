@@ -38,6 +38,7 @@ namespace chessboard {
             // Case A: they're moving and they no longer apply
             // Case B: They're changing the piece to move and they no longer apply
             m_boardTblModel.clear_selection();
+            emit boardChanged(m_boardTblModel.get_fen());
         }
         m_boardTblModel.try_select(index);
         m_boardTblModel.end_update();
@@ -55,9 +56,11 @@ namespace chessboard {
         m_view->setHistoryLabel(pgn);
     }
 
-    void Controller::makeUciMove(const QString &uci) {
+    void Controller::makeUciMove(const Domain::Types::UCIMove &uci) {
+        qDebug() << "Make UCI move: " << uci;
         m_boardTblModel.makeUciMove(uci);
         m_boardTblModel.clear_selection();
+        emit boardChanged(m_boardTblModel.get_fen());
     }
 
     void Controller::flipBoard() {

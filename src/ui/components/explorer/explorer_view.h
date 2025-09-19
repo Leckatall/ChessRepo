@@ -20,7 +20,6 @@ namespace explorer {
         explicit View(QWidget *parent = nullptr);
 
         void setTblModel(Presentation::Features::Explorer::TableModel *model) const { m_tblView->setModel(model); }
-
         void initTblUi() const { m_tblView->initUI(); }
 
     signals:

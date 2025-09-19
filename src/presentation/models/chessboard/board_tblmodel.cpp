@@ -7,6 +7,8 @@
 #include <QColor>
 #include <QDebug>
 
+#include "domain/types/uci_move.h"
+
 namespace chessboard {
     QVariant TblModel::headerData(const int section, const Qt::Orientation orientation, const int role) const {
         if (role == Qt::DisplayRole) {
@@ -123,9 +125,10 @@ namespace chessboard {
         }
     }
 
-    void TblModel::makeUciMove(const QString &uci) {
+    void TblModel::makeUciMove(const Domain::Types::UCIMove &uci) {
         // UCI format is like "e2e4" or "e7e8q" for promotion
-        const auto move = chess::uci::uciToMove(m_board, uci.toStdString());
+        qDebug() << "Make UCI move in Model: " << uci;
+        const auto move = chess::uci::uciToMove(m_board, uci);
         makeMove(move);
     }
 

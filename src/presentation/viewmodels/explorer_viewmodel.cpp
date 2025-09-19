@@ -25,7 +25,7 @@ namespace Presentation::Features::Explorer {
         // Connect to service outputs
 
         connect(&m_tableModel, &TableModel::moveClicked,
-                this, [this](const Domain::Types::UCIMove &uci) { emit moveClicked(uci); });
+                this, [this](const Domain::Types::UCIMove &uci) { qDebug() << "emitting move clicked"; emit moveClicked(uci); });
 
         connect(this, &ExplorerViewModel::fenChanged,&m_service, &LichessExplorerService::fetch_opening_data);
         connect(&m_service, &LichessExplorerService::gotOpeningGraph,
@@ -35,8 +35,11 @@ namespace Presentation::Features::Explorer {
     }
 
     void ExplorerViewModel::setFen(const QString &fen) {
-        if (m_fen == fen)
+        qDebug() << "Set fen: " << fen;
+        if (m_fen == fen) {
+            qDebug() << "Cancelled emit bc fen unchanged";
             return;
+        }
         m_fen = fen;
         emit fenChanged(Domain::Types::FEN(m_fen.toStdString()));
     }
@@ -54,6 +57,10 @@ namespace Presentation::Features::Explorer {
 
     void ExplorerViewModel::refresh() {
         exploreCurrentFen();
+    }
+
+    void ExplorerViewModel::indexClicked(const QModelIndex &index) {
+        m_tableModel.handleClick(index);
     }
 
     void ExplorerViewModel::onGotPositionData(const Domain::Types::PositionGraph &position) {

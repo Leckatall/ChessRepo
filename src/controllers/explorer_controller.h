@@ -19,7 +19,7 @@ namespace application {
 }
 
 namespace explorer {
-    // TODO: Make this deprecated
+    // DEPRECATED: Use Presentation::Features::Explorer::ExplorerViewModel instead
     class Controller : public QObject {
         Q_OBJECT
         // TODO: Add engine support

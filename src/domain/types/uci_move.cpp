@@ -8,11 +8,10 @@
 
 namespace Domain::Types {
     bool UCIMove::isValid(const std::string &move) {
-        static const std::regex fen_regex(
-            R"(^([rnbqkpRNBQKP1-8]{1,8}/){7}[rnbqkpRNBQKP1-8]{1,8} [wb] (K?Q?k?q?|-) ([a-h][36]|-) \d+ \d+$)"
+        static const std::regex uci_regex(
+            R"(^[a-h][1-8][a-h][1-8][qrbn]?$)"
         );
-        return std::regex_match(move, fen_regex);
-
+        return std::regex_match(move, uci_regex);
     }
 
     std::string UCIMove::from() const { return this->substr(0, 2); }

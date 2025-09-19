@@ -6,7 +6,7 @@
 
 #include <QPainterPath>
 
-#include "presentation/uitls.h"
+#include "presentation/utils.h"
 #include "presentation/viewmodels/explorer_viewmodel.h"
 
 void StatsPainter::paint(QPainter *painter, QRect rect, const Domain::Types::PositionStats &stats) {
@@ -17,8 +17,8 @@ void StatsPainter::paint(QPainter *painter, QRect rect, const Domain::Types::Pos
 
     auto [rect_w, rect_d, rect_b] = createRects(rect, calculate_widths(rect.width(), stats));
     // painter->setRenderHint(QPainter::Antialiasing);
-    draw_segment_background(painter, rect_w, Qt::white, true);
-    draw_segment_background(painter, rect_b, Qt::black, true);
+    draw_segment_background(painter, rect_w, QColor(255, 255, 255), true);
+    draw_segment_background(painter, rect_b, QColor(0, 0, 0), true);
     draw_segment_background(painter, rect_d, QColor(150, 150, 150), false);
 
     draw_segment_text(painter, rect_w, Presentation::Utils::formatPercentage(stats.white_wr()), Qt::black);

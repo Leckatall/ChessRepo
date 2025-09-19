@@ -4,6 +4,7 @@
 
 #include <QApplication>
 
+#include "app/app.h"
 #include "app/application.h"
 
 
@@ -21,9 +22,10 @@ int main(int argc, char *argv[]) {
 
     // MainWindow window;             // Create MainWindow object
     // window.show(); // Display window
-    application::Application mainApp;
-    mainApp.start();
+    // application::Application mainApp;
+    // mainApp.start();
+    Application::App v2;
+    v2.start();
 
     return app.exec();             // Run the application event loop
-
 }

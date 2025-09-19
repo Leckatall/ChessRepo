@@ -7,6 +7,7 @@
 
 #include "../presentation/models/chessboard/board_proxytblmodel.h"
 #include "../presentation/models/chessboard/board_tblmodel.h"
+#include "domain/types/uci_move.h"
 #include "ui/components/chessboard/board_view.h"
 
 
@@ -26,7 +27,7 @@ namespace chessboard {
         [[nodiscard]] QString get_current_fen() const;
 
     public slots:
-        void makeUciMove(const QString &uci);
+        void makeUciMove(const Domain::Types::UCIMove &uci);
 
     signals:
         void boardChanged(const QString &fen);

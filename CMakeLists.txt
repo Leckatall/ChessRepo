@@ -20,7 +20,7 @@ set(CMAKE_AUTOUIC ON)
 
 # Import Qt6
 # set(Qt6_DIR "C:\\Qt\\6.9.2\\mingw_64\\lib\\cmake\\Qt6")
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Network)
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Network Svg)
 
 # Building the execuatble
 ## Building source list
@@ -51,6 +51,9 @@ set(MODELS
         src/domain/types/position/position_key.h
         src/domain/types/position/position_graph.cpp
         src/domain/types/position/position_graph.h
+        src/domain/chess/primitives.h
+        src/domain/chess/Board.cpp
+        src/domain/chess/Board.h
 )
 set(VIEWS
         src/ui/components/chessboard/square_delegate.cpp
@@ -83,7 +86,13 @@ set(VIEWS
         src/ui/components/chessboard/board_view.h
         src/presentation/viewmodels/explorer_viewmodel.cpp
         src/presentation/viewmodels/explorer_viewmodel.h
-        src/presentation/uitls.h
+        src/presentation/utils.h
+        src/ui/components/chessboard/board_graphics_view.cpp
+        src/ui/components/chessboard/board_graphics_view.h
+        src/ui/components/chessboard/board_graphics_scene.cpp
+        src/ui/components/chessboard/board_graphics_scene.h
+        src/ui/components/chessboard/piece_graphics_item.cpp
+        src/ui/components/chessboard/piece_graphics_item.h
 )
 
 
@@ -108,6 +117,14 @@ set(CONTROLLERS
         src/domain/types/position/position_record.h
         src/infrastructure/explorer/lichess_request_builder.cpp
         src/infrastructure/explorer/lichess_request_builder.h
+        src/app/app.cpp
+        src/app/app.h
+        src/presentation/viewmodels/board_viewmodel.cpp
+        src/presentation/viewmodels/board_viewmodel.h
+        src/ui/components/chessboard/square_graphics_item.cpp
+        src/ui/components/chessboard/square_graphics_item.h
+        src/ui/components/repertoire/move_card.cpp
+        src/ui/components/repertoire/move_card.h
 )
 
 add_executable(myapp
@@ -134,7 +151,7 @@ add_executable(myapp
 )
 
 # Link Qt6 libraries
-target_link_libraries(myapp PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Network)
+target_link_libraries(myapp PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Network Qt6::Svg)
 
 
 

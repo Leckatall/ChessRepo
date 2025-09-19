@@ -15,7 +15,6 @@ namespace explorer {
           m_explorerViewModel(service, this),
           m_view(new View()) {
         m_view->setTblModel(m_explorerViewModel.tableModel());
-        m_view->initTblUi();
         initConnections();
     }
 

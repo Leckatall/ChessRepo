@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "board_wrapper.h"
+#include "domain/types/uci_move.h"
 #include "models/datatypes.h"
 
 struct SquareData {
@@ -83,7 +84,7 @@ namespace chessboard {
         }
 
     public slots:
-        void makeUciMove(const QString &uci);
+        void makeUciMove(const Domain::Types::UCIMove &uci);
 
         void emit_update();
 

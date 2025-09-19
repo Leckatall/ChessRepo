@@ -5,6 +5,9 @@
 #ifndef CHESSREPO_UITLS_H
 #define CHESSREPO_UITLS_H
 #include <QString>
+#include "../domain/types/fen.h"
+#include "../domain/types/uci_move.h"
+#include <chess.hpp>
 
 namespace Presentation::Utils {
     inline QString formatPercentage(double value, int precision = 2) {
@@ -19,6 +22,10 @@ namespace Presentation::Utils {
 
     inline QString toPercentage(const double numerator, const double denominator) {
         return formatPercentage(numerator / denominator);
+    }
+    inline QString uciToSan(const Domain::Types::FEN &fen, const Domain::Types::UCIMove &move) {
+        const chess::Board board(fen);
+        return QString::fromStdString(chess::uci::moveToSan(board, chess::uci::uciToMove(board, move)));
     }
 }
 #endif //CHESSREPO_UITLS_H

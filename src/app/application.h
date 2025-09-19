@@ -39,7 +39,7 @@ namespace application {
 
         QMap<Page, Controller *> m_controllers;
         chessboard::Controller *m_board_controller;
-        explorer::Controller *m_explorer_controller;
+        Presentation::Features::Explorer::ExplorerViewModel* m_explorer;
     };
 }
 

@@ -11,7 +11,7 @@
 namespace Domain::Types {
     class FEN : public std::string {
     public:
-        explicit FEN(const std::string &fen);
+        FEN(const std::string &fen);
 
         [[nodiscard]] static bool isValid(const std::string &fen);
 

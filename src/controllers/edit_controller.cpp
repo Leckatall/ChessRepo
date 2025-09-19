@@ -40,11 +40,11 @@ void EditController::updateData() {
 }
 
 void EditController::initConnections() {
-    connect(m_view, &EditPage::routeToListRequested,
-            this, [this] { emit routeToPage(application::Page::LIST); });
-    connect(m_view, &EditPage::uciMoveRequest,
-            m_board_controller, &chessboard::Controller::makeUciMove);
-    connect(m_view, &EditPage::explorerUpdateRequested, m_view, &EditPage::updateExplorer);
-    connect(m_board_controller, &chessboard::Controller::boardChanged,
-            m_explorer_controller, &explorer::Controller::exploreFen);
+    // connect(m_view, &EditPage::routeToListRequested,
+    //         this, [this] { emit routeToPage(application::Page::LIST); });
+    // connect(m_view, &EditPage::uciMoveRequest,
+    //         m_board_controller, &chessboard::Controller::makeUciMove);
+    // connect(m_view, &EditPage::explorerUpdateRequested, m_view, &EditPage::updateExplorer);
+    // connect(m_board_controller, &chessboard::Controller::boardChanged,
+    //         m_explorer_controller, &explorer::Controller::exploreFen);
 }

@@ -42,6 +42,8 @@ namespace Presentation::Features::Explorer {
 
         void refresh();
 
+        void indexClicked(const QModelIndex &index);
+
     signals:
         void moveClicked(Domain::Types::UCIMove uci);
 

@@ -14,7 +14,7 @@ namespace Domain::Types {
     public:
         explicit UCIMove(const std::string &move) : std::string(move) {
             if (!isValid(move)) {
-                throw std::invalid_argument("Invalid UCI move");
+                throw std::invalid_argument("Invalid UCI move: " + move);
             }
         }
 
