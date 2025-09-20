@@ -28,6 +28,8 @@ add_library(chess_domain STATIC
         # Explorer
     explorer/iexplorer_service.cpp
     explorer/iexplorer_service.h
+        types/collections.cpp
+        types/collections.h
 )
 
 target_link_libraries(chess_domain PUBLIC

@@ -4,10 +4,12 @@
 
 #ifndef CHESSREPO_MOVE_CARD_H
 #define CHESSREPO_MOVE_CARD_H
+#include <qboxlayout.h>
 #include <QFrame>
 #include <QLabel>
 #include <QMouseEvent>
 
+#include "types/collections.h"
 #include "ui/components/common/stats_painter.h"
 
 
@@ -16,22 +18,23 @@ namespace View::Features::Repertoire {
         Q_OBJECT
 
     public:
-        explicit MoveCard(const QString &move, Domain::Types::PositionStats stats, QWidget *parent = nullptr);
+        explicit MoveCard(Domain::Types::MoveData move_data, QWidget *parent = nullptr);
 
         signals:
-            void clicked();
+            void clicked(Domain::Types::UCIMove move);
 
     private:
         // void initLayout();
         void mousePressEvent(QMouseEvent* event) override {
             if (event->button() == Qt::LeftButton)
-                emit clicked();
+                emit clicked(m_move_data.uci);
         }
-        Domain::Types::PositionStats m_move_data;
+        Domain::Types::MoveData m_move_data;
         bool m_recommended;
 
         QLabel* m_move_lbl;
         StatsWidget* m_move_stats;
+        QHBoxLayout* m_layout;
     };
 }
 

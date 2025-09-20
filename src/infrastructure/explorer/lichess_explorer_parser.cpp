@@ -46,7 +46,6 @@ PositionGraph LichessExplorerParser::handle_reponse(const FEN &fen, const QByteA
     PositionGraph graph(PositionKey(fen), parseStats(root));
     for (const auto &move : root.value("moves").toArray()) {
         addMoveEdge(graph, fen, move.toObject());
-        qDebug() << "Move Edge: {\n" << fen << "\n" << move.toObject() << "\n}";
     }
 
     return graph;

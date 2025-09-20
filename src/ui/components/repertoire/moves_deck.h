@@ -7,21 +7,31 @@
 #include <qboxlayout.h>
 #include <QScrollArea>
 
-#include "ui/components/move_card.h"
+#include "move_card.h"
 
-namespace View::Feature::Repertoire {
+namespace Domain::Types {
+    struct MoveData;
+}
+
+namespace View::Features::Repertoire {
     class MovesDeck : public QFrame {
         Q_OBJECT
 
     public:
         explicit MovesDeck(QWidget *parent = nullptr);
 
-        void updateMoveCards(QList<MoveCard *> move_cards);
+        void setMoves(QList<Domain::Types::MoveData> moves);
+
+        MoveCard *getMoveCard() {return m_move_cards.first();}
+
+    signals:
+        void moveClicked(Domain::Types::UCIMove move);
 
     private:
         QScrollArea *m_scrollArea;
         QWidget *m_scroll_widget;
         QVBoxLayout *m_scroll_layout;
+        QList<MoveCard *> m_move_cards;
     };
 }
 

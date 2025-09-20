@@ -31,10 +31,12 @@ add_library(chess_ui STATIC
     components/createrepomodal.h
     components/repertoire_tree.cpp
     components/repertoire_tree.h
-    components/move_card.cpp
-    components/move_card.h
+#    components/move_card.cpp
+#    components/move_card.h
     components/repertoire/move_card.cpp
     components/repertoire/move_card.h
+    components/repertoire/moves_deck.cpp
+    components/repertoire/moves_deck.h
 
     # Common Components
     components/common/stats_painter.cpp
@@ -43,8 +45,8 @@ add_library(chess_ui STATIC
     # Pages
     pages/list/repocard.cpp
     pages/list/repocard.h
-    pages/edit/moves_deck.cpp
-    pages/edit/moves_deck.h
+        #    pages/edit/moves_deck.cpp
+#    pages/edit/moves_deck.h
 )
 
 target_link_libraries(chess_ui PUBLIC

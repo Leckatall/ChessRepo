@@ -20,7 +20,10 @@ namespace Infrastructure::Features::Repertoire {
         Q_OBJECT
 
     public:
-        RepertoirePersistence(const std::string &repo_dir = "../../../persistence/", QObject *parent = nullptr);
+
+        explicit RepertoirePersistence(const std::string &repo_dir, QObject *parent = nullptr);
+
+        explicit RepertoirePersistence(QObject *parent = nullptr): RepertoirePersistence("../../../persistence/", parent) {}
 
         void updateRepertoireList();
 

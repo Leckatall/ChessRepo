@@ -28,6 +28,10 @@ create_test(test_persistence
     unit/test_repertoire_persistence.cpp
     unit/test_repertoire_persistence.h
 )
+create_test(moves_deck_widget_test
+    unit/ui/test_moves_deck_widget.cpp
+    unit/ui/test_moves_deck_widget.h
+)
 #
 ## Integration Tests
 #create_test(test_integration
