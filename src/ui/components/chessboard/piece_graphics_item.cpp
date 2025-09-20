@@ -4,7 +4,7 @@
 
 #include "piece_graphics_item.h"
 
-namespace Views::Features::Board {
+namespace View::Features::Board {
     PieceGraphicsItem::PieceGraphicsItem(const QSharedPointer<QSvgRenderer> &renderer, int size,
     QGraphicsItem *parent): QGraphicsItem(parent),
                             m_renderer(renderer),

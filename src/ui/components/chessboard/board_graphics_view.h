@@ -10,7 +10,7 @@
 #include <QGraphicsView>
 #include <QGraphicsScene>
 
-namespace Views::Features::Board {
+namespace View::Features::Board {
     class BoardGraphicsView: public QGraphicsView {
         Q_OBJECT
     public:

@@ -32,6 +32,10 @@ create_test(moves_deck_widget_test
     unit/ui/test_moves_deck_widget.cpp
     unit/ui/test_moves_deck_widget.h
 )
+create_test(test_board_widget
+    unit/ui/test_board_widget.cpp
+    unit/ui/test_board_widget.h
+)
 #
 ## Integration Tests
 #create_test(test_integration

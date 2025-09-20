@@ -9,7 +9,7 @@
 #include <QGraphicsSceneMouseEvent>
 #include <QtSvg/QSvgRenderer>
 
-namespace Views::Features::Board {
+namespace View::Features::Board {
     class PieceGraphicsItem : public QGraphicsItem {
     public:
         explicit PieceGraphicsItem(const QSharedPointer<QSvgRenderer> &renderer, int size,

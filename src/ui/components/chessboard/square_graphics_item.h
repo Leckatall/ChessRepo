@@ -10,22 +10,21 @@
 
 #include "domain/chess/primitives.h"
 
-namespace Views::Features::Board {
+namespace View::Features::Board {
     constexpr QColor LIGHT_SQUARE_COLOR(100, 100, 100, 100);
     constexpr QColor DARK_SQUARE_COLOR(0, 0, 0, 100);
-    class SquareGraphicsObject : public QGraphicsObject {
+    class SquareGraphicsObject : public QGraphicsRectItem {
         Q_OBJECT
     public:
         explicit SquareGraphicsObject(const Domain::Types::Chess::Square square, const int size, QGraphicsItem *parent = nullptr)
-        : QGraphicsObject(parent), m_square(square), m_size(size) {
+        : QGraphicsRectItem(parent), m_square(square), m_size(size) {
             m_rect = QRectF(0, 0, size, size);
-            m_rect.moveTo(square.getFile() * size, (7 - square.getRank()) * size);
             setZValue(1);
         }
 
         QRectF boundingRect() const override { return m_rect; }
         void paint(QPainter *p, const QStyleOptionGraphicsItem *opt, QWidget *w) override {
-            p->setBrush({((m_square.getRank() + m_square.getFile()) % 2 == 0) ? LIGHT_SQUARE_COLOR : DARK_SQUARE_COLOR});
+            p->setBrush({((m_square.rank() + m_square.file()) % 2 == 0) ? LIGHT_SQUARE_COLOR : DARK_SQUARE_COLOR});
             p->drawRect(m_rect);
         }
 
@@ -47,7 +46,7 @@ namespace Views::Features::Board {
     protected:
         void mousePressEvent(QGraphicsSceneMouseEvent *event) override {
             emit clicked(m_square);
-            QGraphicsObject::mousePressEvent(event);
+            QGraphicsRectItem::mousePressEvent(event);
         }
     private:
         Domain::Types::Chess::Square m_square;

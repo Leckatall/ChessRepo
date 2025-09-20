@@ -21,12 +21,23 @@ namespace Presentation::Features::Board {
     public:
         explicit BoardViewModel(Domain::Features::Chess::Board &board, QObject *parent = nullptr);
 
-        [[nodiscard]] QString getFen() const {
-            qDebug() << "Why call BoardViewModel::getFen()?";
-            return QString::fromStdString(m_board.fen());
+        [[nodiscard]] Domain::Types::FEN getFen() const {
+            return m_board.fen();
         }
 
-        [[nodiscard]] Views::Features::Board::BoardGraphicsScene *scene() { return &m_scene; }
+        void setFen(const Domain::Types::FEN &fen) const {
+            m_board.set_fen(fen);
+        }
+
+        [[nodiscard]] View::Features::Board::BoardGraphicsScene *scene() { return &m_scene; }
+
+        [[nodiscard]] Domain::Types::Chess::Square selected_square() const { return m_selected_square; }
+        [[nodiscard]] int square_size() const { return m_square_size; }
+
+        QPointF squareToPoint(const Domain::Types::Chess::Square &square) const;
+        QRectF squareToRect(const Domain::Types::Chess::Square &square) const;
+
+        Domain::Types::Chess::Square pointToSquare(const QPointF &point) const;
 
         // DEPRECATED
         // [[nodiscard]] Domain::Types::Chess::Square getSelection() const {
@@ -39,21 +50,24 @@ namespace Presentation::Features::Board {
 
         void onSquareClicked(Domain::Types::Chess::Square square);
 
+        void sceneResized() {m_square_size = std::ranges::min(m_scene.width() / 8, m_scene.height() / 8);}
+
+        void flipBoard();
+
+        void undoMove();
+
     signals:
         void currentFenChanged(Domain::Types::FEN fen);
 
         void refresh();
 
-    private slots:
-        void flipBoard();
-
-        void undoMove();
-
     private:
-        Views::Features::Board::BoardGraphicsScene m_scene;
+        View::Features::Board::BoardGraphicsScene m_scene;
 
         Domain::Features::Chess::Board &m_board;
         bool m_white_on_bottom = true;
+        int m_square_size;
+        Domain::Types::Chess::Square m_selected_square{};
     };
 }
 

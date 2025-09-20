@@ -14,7 +14,7 @@
 #include "domain/chess/primitives.h"
 
 
-namespace Views::Features::Board {
+namespace View::Features::Board {
     class SquareGraphicsObject;
     class PieceGraphicsItem;
 
@@ -46,18 +46,22 @@ namespace Views::Features::Board {
         explicit BoardGraphicsScene(QObject *parent = nullptr);
 
         void update_board(const QList<PieceData> &pieces);
+        void set_selected_square(const Domain::Types::Chess::Square &square) {m_selected_square = square;}
+
 
     public slots:
         // void on_square_clicked(Domain::Types::Chess::Square square);
 
         void on_piece_dragged(const QPointF &origin, const QPointF &target);
 
-        void onResizeEvent(QResizeEvent *event) { m_square_size = std::min(width() / 8, height() / 8); }
+        void onResizeEvent(QResizeEvent *event) {emit boardResized();}
 
     signals:
         void requestMove(const Domain::Types::Chess::Move &move);
 
         void squareClicked(const Domain::Types::Chess::Square &square);
+
+        void boardResized();
 
     private:
         void init_board();

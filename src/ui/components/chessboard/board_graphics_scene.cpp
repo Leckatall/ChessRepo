@@ -23,7 +23,7 @@ enum class PieceTypeFake {
     BlackKing
 };
 
-namespace Views::Features::Board {
+namespace View::Features::Board {
     BoardGraphicsScene::BoardGraphicsScene(QObject *parent)
         : QGraphicsScene(parent){
         m_square_size = std::min(width() / 8, height() / 8);
@@ -47,6 +47,7 @@ namespace Views::Features::Board {
             PieceGraphicsItem piece_item(m_piece_svg_cache[piece_data.type], m_square_size, m_squares[piece_data.square]);
         }
     }
+
     // DEPRECATED
     // void BoardGraphicsScene::on_square_clicked(Domain::Types::Chess::Square square) {
     //     if (m_selected_square) {
@@ -78,8 +79,6 @@ namespace Views::Features::Board {
     }
 
     Domain::Types::Chess::Square BoardGraphicsScene::point_to_square(const QPointF point) const {
-        const int file = static_cast<int>(point.x() / m_square_size);
-        const int rank = 7 - static_cast<int>(point.y() / m_square_size);
-        return Domain::Types::Chess::Square(file, rank);
+
     }
 }

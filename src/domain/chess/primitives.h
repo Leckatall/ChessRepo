@@ -12,13 +12,13 @@ namespace Domain::Types::Chess {
     struct Square {
         int m_id = 64; // NULL MOVE
 
+        int rank() const {return (m_id / 8) + 1;}
+
+        int file() const {return (m_id % 8) + 1;}
+
         Square() = default;
 
-        int getRank() const {return (m_id / 8) + 1;}
-
-        int getFile() const {return (m_id % 8) + 1;}
-
-        explicit Square(const int file, const int rank): m_id(rank * 8 + file) {
+        Square(const int file, const int rank): m_id(rank * 8 + file) {
         }
 
         explicit Square(const int id): m_id(id) {
@@ -34,7 +34,7 @@ namespace Domain::Types::Chess {
             return m_id != 0;
         }
         Square(const chess::Square square) { m_id = square.index();}
-        chess::Square toChessLib() const {return chess::Square(chess::File(getFile()), chess::Rank(getRank()));}
+        chess::Square toChessLib() const {return chess::Square(chess::File(file()), chess::Rank(rank()));}
     };
     struct Move {
         Square from;
@@ -48,7 +48,7 @@ namespace Domain::Types::Chess {
 namespace std {
     template<> struct hash<Domain::Types::Chess::Square> {
         size_t operator()(const Domain::Types::Chess::Square &k) const noexcept {
-            return hash<int>{}(k.getFile()) ^ hash<int>{}(k.getRank());
+            return hash<int>{}(k.file()) ^ hash<int>{}(k.rank());
         }
     };
     template<> struct hash<Domain::Types::Chess::Move> {

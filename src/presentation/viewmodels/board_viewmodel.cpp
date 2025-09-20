@@ -9,6 +9,24 @@ namespace Presentation::Features::Board {
         : QObject(parent), m_board(board){
     }
 
+    QPointF BoardViewModel::squareToPoint(const Domain::Types::Chess::Square &square) const {
+        const int xpos = square.file() * m_square_size;
+        const int ypos = (m_white_on_bottom ? 8 - square.rank() : square.rank() - 1) * m_square_size;
+        return QPointF(xpos, ypos);
+    }
+
+    QRectF BoardViewModel::squareToRect(const Domain::Types::Chess::Square &square) const {
+        QPointF top_left = squareToPoint(square);
+        return QRectF(top_left, QSizeF(m_square_size, m_square_size));
+    }
+
+    Domain::Types::Chess::Square BoardViewModel::pointToSquare(const QPointF &point) const {
+        const int file = static_cast<int>(point.x() / m_square_size);
+        const int rank = 8 - static_cast<int>(point.y() / m_square_size);
+        return Domain::Types::Chess::Square(file, rank);
+    }
+
+
     void BoardViewModel::makeMove(const Domain::Types::Chess::Move &move) {
         if (m_board.playMove(move)) refresh();
     }
