@@ -71,16 +71,6 @@ namespace Presentation::Features::Explorer {
     void ExplorerViewModel::onGotPositionData(const Domain::Types::PositionGraph &position) {
         m_tableModel.setGraph(position);
         qDebug() << "Got position data";
-        Domain::Types::Repertoire::Header header = {
-            "Repertoire",
-            true,
-            "Date",
-            "Description",
-            floor<std::chrono::seconds>(std::chrono::system_clock::now())
-        };
-        Domain::Types::Repertoire::RepertoireData repertoire{header, position};
-        Infrastructure::Features::Repertoire::RepertoirePersistence::toJson(repertoire);
-                updatePositionSummary(position.getNode(position.getRootKey())->stats);
     }
 
     void ExplorerViewModel::onNetworkError(const QString &message) {

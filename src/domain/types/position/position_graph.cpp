@@ -4,6 +4,7 @@
 
 #include "position_graph.h"
 
+#include <ranges>
 #include <span>
 
 namespace Domain::Types {
@@ -96,6 +97,25 @@ namespace Domain::Types {
         const auto target = getNode(moveEdge.target);
         if (!target) return {};
         return target->stats;
+    }
+
+    std::vector<PositionNode> PositionGraph::getNodes() const {
+        std::vector<PositionNode> nodes;
+        nodes.reserve(m_nodes.size());
+        for (const auto &node: m_nodes | std::views::values) {
+            nodes.push_back(*node);
+        }
+        return nodes;
+    }
+
+    bool PositionGraph::operator==(const PositionGraph &other) const {
+        if (this->m_rootKey != other.m_rootKey) return false;
+        if (this->m_nodes.size() != other.m_nodes.size()) return false;
+        for (const auto &[position_key, node]: m_nodes) {
+            if (!other.m_nodes.contains(position_key)) return false;
+            if (node->stats != other.m_nodes.at(position_key)->stats) return false;
+        }
+        return true;
     }
 }
 

@@ -25,6 +25,8 @@ namespace Domain::Types {
         [[nodiscard]] double draw_rate() const {
             return games > 0 ? static_cast<double>(draws) / games : 0.0;
         }
+
+        bool operator==(const PositionStats & other) const = default;
     };
 }
 

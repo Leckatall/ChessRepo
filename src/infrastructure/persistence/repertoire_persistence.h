@@ -5,17 +5,22 @@
 #ifndef CHESSREPO_REPERTOIRE_PERSISTENCE_H
 #define CHESSREPO_REPERTOIRE_PERSISTENCE_H
 #include <qfilesystemwatcher.h>
+#include <QIODevice>
 #include <QObject>
 
+#include "qt_serialization.h"
 #include "domain/repertoire/repertoire.h"
 #include "domain/types/position/position_graph.h"
 
+class QFile;
+
+using namespace Infrastructure::Features::Persistence;
 namespace Infrastructure::Features::Repertoire {
     class RepertoirePersistence : public QObject {
         Q_OBJECT
 
     public:
-        RepertoirePersistence(QObject *parent = nullptr);
+        RepertoirePersistence(const std::string &repo_dir = "../../../persistence/", QObject *parent = nullptr);
 
         void updateRepertoireList();
 
@@ -23,7 +28,9 @@ namespace Infrastructure::Features::Repertoire {
 
         bool save_repertoire(const Domain::Types::Repertoire::RepertoireData &repertoire, bool overwrite = false);
 
-        Domain::Types::Repertoire::RepertoireData get_repertoire(const QString &name);
+        Domain::Types::Repertoire::RepertoireData get_repertoire(const std::string &name);
+
+        void setRepertoireDir(const std::string &dir) { m_directory = dir; updateRepertoireList(); }
 
     public slots:
         void onDirectoryChanged();
@@ -33,12 +40,8 @@ namespace Infrastructure::Features::Repertoire {
         void repertoireListChanged();
 
     private:
-        constexpr static std::string_view REPERTOIRE_DIR = "../../../persistence/";
-
-        QJsonDocument toJson(const Domain::Types::Repertoire::RepertoireData &repertoire);
-
-        // QJsonObject toJson(const Domain::Types::Repertoire::Header &header);
-        // QJsonObject toJson(const Domain::Types::PositionGraph &graph);
+        std::string m_directory;
+        std::string_view REPERTOIRE_FILE_EXTENSION = ".rep";
 
         QFileSystemWatcher m_watcher;
 

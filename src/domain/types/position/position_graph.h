@@ -15,12 +15,12 @@
 #include "domain/types/uci_move.h"
 
 namespace Domain::Types {
-    struct PositionNode;
-
     struct MoveEdge {
-        UCIMove uci;
-        PositionKey target;
+        UCIMove uci{};
+        PositionKey target{};
         std::optional<std::string> comment;
+
+        MoveEdge() = default;
 
         MoveEdge(const UCIMove &uci, const PositionKey &target, std::string comment)
             : uci(uci),
@@ -30,9 +30,11 @@ namespace Domain::Types {
     };
 
     struct PositionNode {
-        PositionKey key;
-        PositionStats stats;
+        PositionKey key{};
+        PositionStats stats{};
         std::vector<MoveEdge> edges{};
+
+        PositionNode() = default;
 
         PositionNode(PositionKey k, PositionStats s) : key(std::move(k)), stats(std::move(s)) {
         }
@@ -105,13 +107,18 @@ namespace Domain::Types {
 
         PositionStats getStats(const MoveEdge &moveEdge) const;
 
+        std::vector<PositionNode> getNodes() const;
+
+        bool operator==(const PositionGraph &other) const;
+
     private:
         std::unordered_map<PositionKey, PositionNode* > m_nodes{};
         PositionKey m_rootKey{};
     };
 }
-
-Q_DECLARE_METATYPE(Domain::Types::PositionGraph);
+Q_DECLARE_METATYPE(Domain::Types::MoveEdge)
+Q_DECLARE_METATYPE(Domain::Types::PositionNode)
+Q_DECLARE_METATYPE(Domain::Types::PositionGraph)
 
 
 #endif //CHESSREPO_POSITION_GRAPH_H

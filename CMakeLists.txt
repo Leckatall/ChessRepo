@@ -1,161 +1,61 @@
+cmake_minimum_required(VERSION 3.21)
+project(ChessRepo VERSION 1.0.0)
 
-cmake_minimum_required(VERSION 3.10)
-project(ChessRepo)
+# C++ Standard Configuration
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-
-set(CMAKE_CXX_STANDARD 20)       # Use C++20
-set(CMAKE_CXX_STANDARD_REQUIRED ON)  # Ensure the standard is used
-set(CMAKE_CXX_EXTENSIONS OFF) # Use only standard C++, no compiler-specific extensions
-#set(CMAKE_TOOLCHAIN_FILE "C:\\Users\\Lecka\\.vcpkg-clion\\vcpkg\\scripts\\buildsystems\\vcpkg.cmake" CACHE STRING "Vcpkg toolchain file")
-
-#set(CMAKE_PREFIX_PATH "C:/Users/Lecka/.vcpkg-clion/vcpkg/installed/x64-mingw-dynamic/share")
-
-include_directories(${PROJECT_SOURCE_DIR}/src)
-include_directories(${PROJECT_SOURCE_DIR}/libs/chess-library/include)
-
-# Ensure Qt6 automatically handles MOC (Meta-Object Compiler) for QObject-based classes
+# Qt Configuration
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
-# Import Qt6
-# set(Qt6_DIR "C:\\Qt\\6.9.2\\mingw_64\\lib\\cmake\\Qt6")
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Widgets Network Svg)
-
-# Building the execuatble
-## Building source list
-
-
-set(MODELS
-        src/presentation/models/tablemodel.h
-        src/presentation/models/tablemodel.cpp
-        src/presentation/models/chessboard/board_tblmodel.h
-        src/presentation/models/chessboard/board_tblmodel.cpp
-        src/presentation/models/chessboard/board_wrapper.cpp
-        src/presentation/models/chessboard/board_wrapper.h
-        src/presentation/models/chessboard/board_proxytblmodel.cpp
-        src/presentation/models/chessboard/board_proxytblmodel.h
-        src/models/datatypes.h
-        src/presentation/models/explorer_tblmodel.cpp
-        src/presentation/models/explorer_tblmodel.h
-        src/presentation/models/repertoires/repotreemodel.cpp
-        src/presentation/models/repertoires/repotreemodel.h
-        src/domain/types/stats.cpp
-        src/domain/types/stats.h
-        src/domain/types/fen.cpp
-        src/domain/types/fen.h
-        src/domain/types/uci_move.cpp
-        src/domain/types/uci_move.h
-        src/domain/types/value_objects.h
-        src/domain/types/position/position_key.cpp
-        src/domain/types/position/position_key.h
-        src/domain/types/position/position_graph.cpp
-        src/domain/types/position/position_graph.h
-        src/domain/chess/primitives.h
-        src/domain/chess/Board.cpp
-        src/domain/chess/Board.h
-        src/domain/repertoire/repertoire.cpp
-        src/domain/repertoire/repertoire.h
+# Find Qt6
+find_package(Qt6 REQUIRED COMPONENTS
+    Core 
+    Gui 
+    Widgets 
+    Network 
+    Svg
+    Test  # Add for testing
 )
-set(VIEWS
-        src/ui/components/chessboard/square_delegate.cpp
-        src/ui/components/chessboard/square_delegate.h
-        src/ui/components/chessboard/board_tblview.cpp
-        src/ui/components/chessboard/board_tblview.h
-        src/ui/components/explorer/explorer_tblview.cpp
-        src/ui/components/explorer/explorer_tblview.h
-        src/ui/components/explorer/winrate_delegate.cpp
-        src/ui/components/explorer/winrate_delegate.h
-        src/ui/components/chessboard/arrowoverlay.cpp
-        src/ui/components/chessboard/arrowoverlay.h
-        src/ui/components/createrepomodal.cpp
-        src/ui/components/createrepomodal.h
-        src/ui/pages/list/repocard.cpp
-        src/ui/pages/list/repocard.h
-#        src/app/router.cpp
-#        src/app/router.h
-#        src/ui/pages/edit/edit_page.cpp
-#        src/ui/pages/edit/edit_page.h
-        src/ui/components/repertoire_tree.cpp
-        src/ui/components/repertoire_tree.h
-        src/ui/components/move_card.cpp
-        src/ui/components/move_card.h
-        src/ui/components/common/stats_painter.cpp
-        src/ui/components/common/stats_painter.h
-        src/ui/pages/edit/moves_deck.cpp
-        src/ui/pages/edit/moves_deck.h
-        src/ui/components/chessboard/board_view.cpp
-        src/ui/components/chessboard/board_view.h
-        src/presentation/viewmodels/explorer_viewmodel.cpp
-        src/presentation/viewmodels/explorer_viewmodel.h
-        src/presentation/utils.h
-        src/ui/components/chessboard/board_graphics_view.cpp
-        src/ui/components/chessboard/board_graphics_view.h
-        src/ui/components/chessboard/board_graphics_scene.cpp
-        src/ui/components/chessboard/board_graphics_scene.h
-        src/ui/components/chessboard/piece_graphics_item.cpp
-        src/ui/components/chessboard/piece_graphics_item.h
-)
+# Include directories
+include_directories(${PROJECT_SOURCE_DIR}/src)
+include_directories(${PROJECT_SOURCE_DIR}/libs/chess-library/include)
 
+# Add subdirectories for modular libraries
+add_subdirectory(src/domain)
+add_subdirectory(src/infrastructure) 
+add_subdirectory(src/presentation)
+add_subdirectory(src/ui)
+add_subdirectory(src/controllers)
 
-set(CONTROLLERS
-#        src/controllers/explorer_controller.cpp
-#        src/controllers/explorer_controller.h
-#        src/controllers/openingcontroller.cpp
-#        src/controllers/openingcontroller.h
-#        src/ui/pages/list/list_page.cpp
-#        src/ui/pages/list/list_page.h
-#        src/controllers/repertoire_list_controller.cpp
-#        src/controllers/repertoire_list_controller.h
-#        src/controllers/Controller.h
-#        src/controllers/Controller.cpp
-#        src/controllers/edit_controller.cpp
-#        src/controllers/edit_controller.h
-        src/controllers/board_controller.cpp
-        src/controllers/board_controller.h
-        src/ui/components/explorer/explorer_view.cpp
-        src/ui/components/explorer/explorer_view.h
-        src/domain/types/position/position_stats.h
-        src/domain/types/position/position_record.h
-        src/infrastructure/explorer/lichess_request_builder.cpp
-        src/infrastructure/explorer/lichess_request_builder.h
-        src/app/app.cpp
-        src/app/app.h
-        src/presentation/viewmodels/board_viewmodel.cpp
-        src/presentation/viewmodels/board_viewmodel.h
-        src/ui/components/chessboard/square_graphics_item.cpp
-        src/ui/components/chessboard/square_graphics_item.h
-        src/ui/components/repertoire/move_card.cpp
-        src/ui/components/repertoire/move_card.h
-)
-
+# Main executable
 add_executable(myapp
-        src/main.cpp
-        ${MODELS}
-        ${VIEWS}
-        ${CONTROLLERS}
-        src/infrastructure/explorer/lichess_explorer_service.cpp
-        src/infrastructure/explorer/lichess_explorer_service.h
-        src/infrastructure/persistence/repertoire_service.cpp
-        src/infrastructure/persistence/repertoire_service.h
-#        src/app/application.cpp
-#        src/app/application.h
-#        src/ui/pages/page.cpp
-#        src/ui/pages/page.h
-#        src/app/session.cpp
-#        src/app/session.h
-        src/app/models.h
-        src/domain/explorer/iexplorer_service.cpp
-        src/domain/explorer/iexplorer_service.h
-        src/infrastructure/explorer/lichess_explorer_parser.cpp
-        src/infrastructure/explorer/lichess_explorer_parser.h
-        src/utils/chess.h
-        src/infrastructure/persistence/repertoire_persistence.cpp
-        src/infrastructure/persistence/repertoire_persistence.h
+    src/main.cpp
+    src/app/app.cpp
+    src/app/app.h
+    src/app/models.h
+    src/utils/chess.h
+        src/infrastructure/persistence/QJson_parser.cpp
+        src/infrastructure/persistence/QJson_parser.h
 )
 
-# Link Qt6 libraries
-target_link_libraries(myapp PRIVATE Qt6::Core Qt6::Gui Qt6::Widgets Qt6::Network Qt6::Svg)
+# Link libraries to main executable
+target_link_libraries(myapp PRIVATE
+    Qt6::Core
+    Qt6::Gui 
+    Qt6::Widgets
+    Qt6::Network
+    Qt6::Svg
+    chess_domain
+    chess_infrastructure  
+    chess_presentation
+    chess_ui
+    chess_controllers
+)
 
-
-
+# Enable testing
+enable_testing()
+add_subdirectory(tests)

@@ -16,13 +16,27 @@ namespace Domain::Types::Repertoire {
         std::string description;
         std::string author;
         std::chrono::time_point<std::chrono::system_clock, std::chrono::seconds> createdAt;
+        bool operator==(const Header &other) const {
+            if (this->name != other.name) return false;
+            if (this->forWhite != other.forWhite) return false;
+            if (this->description != other.description) return false;
+            if (this->author != other.author) return false;
+            if (this->createdAt != other.createdAt) return false;
+            return true;
+        }
     };
     struct RepertoireData {
         Header header{};
-        PositionGraph data{};
+        PositionGraph data{PositionKey(FEN::startingPosition())};
 
         RepertoireData() = default;
         RepertoireData(Header header, PositionGraph data) : header(std::move(header)), data(std::move(data)) {}
+
+        bool operator==(const RepertoireData &other) const {
+            if (this->header != other.header) return false;
+            if (this->data != other.data) return false;
+            return true;
+        }
     };
 }
 Q_DECLARE_METATYPE(Domain::Types::Repertoire::RepertoireData)
