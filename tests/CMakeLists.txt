@@ -2,7 +2,7 @@ find_package(Qt6 REQUIRED COMPONENTS Test)
 
 # Function to create test executables
 function(create_test test_name test_source)
-    add_executable(${test_name} ${test_source})
+    add_executable(${test_name} ${test_source} test_utils.cpp test_utils.h)
     target_link_libraries(${test_name}
         Qt6::Test
         Qt6::Core
@@ -16,6 +16,7 @@ function(create_test test_name test_source)
     add_test(NAME ${test_name} COMMAND ${test_name})
 endfunction()
 
+
 # Domain Tests
 #create_test(test_domain
 #    domain/test_board.cpp
@@ -28,13 +29,17 @@ create_test(test_persistence
     unit/test_repertoire_persistence.cpp
     unit/test_repertoire_persistence.h
 )
-create_test(moves_deck_widget_test
+create_test(test_moves_deck_widget
     unit/ui/test_moves_deck_widget.cpp
     unit/ui/test_moves_deck_widget.h
 )
 create_test(test_board_widget
     unit/ui/test_board_widget.cpp
     unit/ui/test_board_widget.h
+)
+create_test(test_repertoire_viewmodel
+    unit/presentation/test_repertoire_viewmodel.cpp
+    unit/presentation/test_repertoire_viewmodel.h
 )
 #
 ## Integration Tests

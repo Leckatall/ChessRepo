@@ -68,7 +68,7 @@ namespace View::Features::Board {
 
         void cache_piece(PieceType type, const QString &file_name);
 
-        Domain::Types::Chess::Square point_to_square(QPointF point) const;
+        // Domain::Types::Chess::Square point_to_square(QPointF point) const;
 
         // Internally generated members
         const QString m_svg_path = "../../../resources/chess/";

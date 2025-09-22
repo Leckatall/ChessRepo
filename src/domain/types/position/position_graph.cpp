@@ -7,6 +7,8 @@
 #include <ranges>
 #include <span>
 
+#include "utils/chess.h"
+
 namespace Domain::Types {
     PositionGraph::PositionGraph(const PositionNode &root)
     : m_rootKey(root.key) {
@@ -72,6 +74,16 @@ namespace Domain::Types {
         if (!getNode(from)) return false;
         ensureNode(to);
         return addEdgeToNodes(from, to.key, move, std::move(comment));
+    }
+
+    bool PositionGraph::addMoveFromNode(const PositionKey &from, const UCIMove &move, const PositionStats &toStats,
+        std::string comment) {
+        auto* fromNode = getNode(from);
+        if (!fromNode) return false;
+        const auto toFEN = Utils::Chess::resultOfMove(from.fen(), move);
+        const PositionKey toKey(toFEN, from.policy());
+        ensureNode(toKey, toStats);
+        return fromNode->addEdge({move, toKey, std::move(comment)});
     }
 
     // Get edges from a position

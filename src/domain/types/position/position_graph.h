@@ -101,6 +101,8 @@ namespace Domain::Types {
 
         bool addEdge(const PositionKey &from, const PositionNode &to, const UCIMove &move, std::string comment);
 
+        bool addMoveFromNode(const PositionKey &from, const UCIMove &move, const PositionStats &toStats, std::string comment = "");
+
         std::span<const MoveEdge> getEdges(const PositionKey &key) const;
 
         PositionStats getMoveStats(const PositionKey &from, const UCIMove &move) const;

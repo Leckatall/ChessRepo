@@ -61,24 +61,20 @@ namespace View::Features::Board {
     // }
 
     void BoardGraphicsScene::on_piece_dragged(const QPointF &origin, const QPointF &target) {
-        emit requestMove(Domain::Types::Chess::Move(point_to_square(origin), point_to_square(target)));
+        // emit requestMove(Domain::Types::Chess::Move(point_to_square(origin), point_to_square(target)));
     }
 
     void BoardGraphicsScene::init_board() {
         for (int squareid = 0; squareid < 64; squareid++) {
             const Domain::Types::Chess::Square square(squareid);
             auto square_item = new SquareGraphicsObject(square, m_square_size);
-            connect(square_item, &SquareGraphicsObject::clicked,
-                this, [this, square] {emit squareClicked(square);});
+            // connect(square_item, &SquareGraphicsObject::clicked,
+            //     this, [this, square] {emit squareClicked(square);});
             m_squares.insert(square, square_item);
         }
     }
 
     void BoardGraphicsScene::cache_piece(const PieceType type, const QString &file_name) {
         m_piece_svg_cache[type] = QSharedPointer<QSvgRenderer>::create(m_svg_path + file_name + ".svg", this);
-    }
-
-    Domain::Types::Chess::Square BoardGraphicsScene::point_to_square(const QPointF point) const {
-
     }
 }

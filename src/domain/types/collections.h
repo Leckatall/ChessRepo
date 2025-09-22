@@ -13,7 +13,15 @@ namespace Domain::Types {
         PositionStats stats;
 
         MoveData() = default;
-        MoveData(const UCIMove &uci, const PositionStats &stats) : uci(uci), stats(stats) {}
+
+        MoveData(const UCIMove &uci, const PositionStats &stats) : uci(uci), stats(stats) {
+        }
+
+        bool operator==(const MoveData &other) const {
+            if (this->uci != other.uci) return false;
+            if (this->stats != other.stats) return false;
+            return true;
+        }
     };
 }
 

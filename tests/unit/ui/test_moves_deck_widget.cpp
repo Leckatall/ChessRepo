@@ -6,10 +6,9 @@
 
 #include <QMainWindow>
 
-#include "components/move_card.h"
-
-
-void TestMovesDeckWidget::initTestCase() {
+namespace Test {
+    void TestMovesDeckWidget::initTestCase() {
+        qDebug() << "Starting TestMovesDeckWidget...";
     m_window = new QMainWindow();
     m_window->setGeometry(300, 300, 300, 500);
     m_move_deck = new View::Features::Repertoire::MovesDeck(m_window);
@@ -79,5 +78,6 @@ Domain::Types::MoveData TestMovesDeckWidget::createTestMoveData(const Domain::Ty
     return Domain::Types::MoveData(move, stats);
 }
 
-QTEST_MAIN(TestMovesDeckWidget)
+}
+QTEST_MAIN(Test::TestMovesDeckWidget)
 #include "test_moves_deck_widget.moc"

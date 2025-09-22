@@ -22,6 +22,8 @@ add_library(chess_presentation STATIC
     viewmodels/board_viewmodel.h
     viewmodels/explorer_viewmodel.cpp
     viewmodels/explorer_viewmodel.h
+        viewmodels/repertoire_viewmodel.cpp
+        viewmodels/repertoire_viewmodel.h
 )
 
 target_link_libraries(chess_presentation PUBLIC

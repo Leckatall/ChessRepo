@@ -14,7 +14,6 @@ namespace View::Features::Board {
     constexpr QColor LIGHT_SQUARE_COLOR(100, 100, 100, 100);
     constexpr QColor DARK_SQUARE_COLOR(0, 0, 0, 100);
     class SquareGraphicsObject : public QGraphicsRectItem {
-        Q_OBJECT
     public:
         explicit SquareGraphicsObject(const Domain::Types::Chess::Square square, const int size, QGraphicsItem *parent = nullptr)
         : QGraphicsRectItem(parent), m_square(square), m_size(size) {
@@ -45,7 +44,7 @@ namespace View::Features::Board {
 
     protected:
         void mousePressEvent(QGraphicsSceneMouseEvent *event) override {
-            emit clicked(m_square);
+            // emit clicked(m_square);
             QGraphicsRectItem::mousePressEvent(event);
         }
     private:
@@ -57,6 +56,5 @@ namespace View::Features::Board {
         bool m_highlighted = false;
     };
 }
-
 
 #endif //CHESSREPO_SQUARE_GRAPHICS_ITEM_H

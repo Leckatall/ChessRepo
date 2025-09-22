@@ -6,7 +6,9 @@
 
 #include <iostream>
 
-void TestRepertoirePersistence::initTestCase() {
+#include "../test_utils.h"
+namespace Test {
+    void TestRepertoirePersistence::initTestCase() {
     temp_dir = new QTemporaryDir();
     QVERIFY(temp_dir->isValid());
     persistence = new Infrastructure::Features::Repertoire::RepertoirePersistence(temp_dir->path().toStdString() + "/");
@@ -24,26 +26,9 @@ void TestRepertoirePersistence::cleanup() {
 
 }
 
-Domain::Types::Repertoire::RepertoireData TestRepertoirePersistence::createHeaderRepertoire() {
-    Domain::Types::Repertoire::RepertoireData repertoire;
-    repertoire.header.name = "Test Repertoire";
-    repertoire.header.forWhite = true;
-    repertoire.header.author = "Test Author";
-    repertoire.header.description = "Test Description";
-    repertoire.header.createdAt = std::chrono::time_point_cast<std::chrono::seconds>(std::chrono::system_clock::now());
-    return repertoire;
-}
-
-Domain::Types::Repertoire::RepertoireData TestRepertoirePersistence::createTestRepertoire() {
-    Domain::Types::Repertoire::RepertoireData repertoire(createHeaderRepertoire());
-    Domain::Types::PositionNode node{Domain::Types::PositionKey(Domain::Types::FEN("rnbqkbnr/pppppppp/8/8/4P3/8/PPPP1PPP/RNBQKBNR b KQkq - 0 1")), {10, 4, 2, 4}};
-    repertoire.data.addEdge(repertoire.data.getRootKey(), node, Domain::Types::UCIMove("e2e4"), "");
-    return repertoire;
-}
-
 void TestRepertoirePersistence::testSaveAndLoad() {
     // Arrange
-    auto originalRepertoire = createTestRepertoire();
+    auto originalRepertoire = Test::Utils::createTestRepertoire();
 
     // Act
     QVERIFY_THROWS_NO_EXCEPTION(persistence->save_repertoire(originalRepertoire));
@@ -57,7 +42,7 @@ void TestRepertoirePersistence::testSaveAndLoad() {
 
 void TestRepertoirePersistence::testCaching() {
     // Test that repeated loads use cache
-    auto repertoire = createTestRepertoire();
+    auto repertoire = Test::Utils::createTestRepertoire();
 
     persistence->save_repertoire(repertoire);
 
@@ -86,7 +71,7 @@ void TestRepertoirePersistence::testFileNotFound() {
 
 void TestRepertoirePersistence::testRoundTripPreservation() {
     // Create complex test data
-    auto original = createTestRepertoire();
+    auto original = Test::Utils::createTestRepertoire();
     // Add complex nested data, optional fields, edge cases...
 
     // Save and load
@@ -97,7 +82,6 @@ void TestRepertoirePersistence::testRoundTripPreservation() {
     QVERIFY(original == loaded);
 }
 
-
-
-QTEST_GUILESS_MAIN(TestRepertoirePersistence)
+}
+QTEST_GUILESS_MAIN(Test::TestRepertoirePersistence)
 //#include "test_repertoire_persistence.moc"

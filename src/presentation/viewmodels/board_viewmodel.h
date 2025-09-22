@@ -16,7 +16,7 @@ namespace Presentation::Features::Board {
     class BoardViewModel : public QObject {
         Q_OBJECT
 
-        Q_PROPERTY(Views::Features::Board::BoardGraphicsScene* scene READ scene CONSTANT)
+        Q_PROPERTY(View::Features::Board::BoardGraphicsScene* scene READ scene CONSTANT)
 
     public:
         explicit BoardViewModel(Domain::Features::Chess::Board &board, QObject *parent = nullptr);

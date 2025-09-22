@@ -12,7 +12,7 @@ namespace Domain::Types {
     class PositionKey {
     public:
         PositionKey() = default;
-        explicit PositionKey(const FEN &fen, const PositionIdentityPolicy policy = PositionIdentityPolicy::Aggregated)
+        PositionKey(const FEN &fen, const PositionIdentityPolicy policy = PositionIdentityPolicy::Aggregated)
             :m_fen(fen), m_policy(policy) {}
 
         [[nodiscard]] const FEN &fen() const noexcept { return m_fen; }

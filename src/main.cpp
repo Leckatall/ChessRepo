@@ -6,6 +6,7 @@
 
 #include "app/app.h"
 #include "app/application.h"
+#include "types/collections.h"
 
 
 void declare_metatypes() {
@@ -14,6 +15,7 @@ void declare_metatypes() {
     qRegisterMetaType<Domain::Types::PositionStats>("Domain::Types::PositionStats");
     qRegisterMetaType<Domain::Types::PositionKey>("Domain::Types::PositionKey");
     qRegisterMetaType<Domain::Types::PositionGraph>("Domain::Types::PositionGraph");
+    qRegisterMetaType<Domain::Types::MoveData>("Domain::Types::MoveData");
 }
 
 int main(int argc, char *argv[]) {
