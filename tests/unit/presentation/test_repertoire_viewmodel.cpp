@@ -22,7 +22,7 @@ namespace Test {
     }
 
     void TestRepertoireViewmodel::cleanup() {
-        m_rep_viewmodel->setFEN(Domain::Types::FEN::startingPosition());
+        m_rep_viewmodel->setFen(Domain::Types::FEN::startingPosition());
     }
 
     void TestRepertoireViewmodel::testSetEmptyRepertoire() {
@@ -42,10 +42,10 @@ namespace Test {
     void TestRepertoireViewmodel::testAddMove() {
         QSignalSpy spy(m_rep_viewmodel, SIGNAL(moveListChanged(QList<Domain::Types::MoveData>)));
         const Domain::Types::MoveData moveData{{"d2d4"}, {5, 3, 1, 1}};
-        m_rep_viewmodel->addMove(moveData);
+        m_rep_viewmodel->addNextMove(moveData);
         QCOMPARE(spy.count(), 1);
         spy.pop_front();
-        m_rep_viewmodel->setFEN(Domain::Types::FEN::startingPosition());
+        m_rep_viewmodel->setFen(Domain::Types::FEN::startingPosition());
         QCOMPARE(spy.count(), 1);
         auto moves = spy.takeFirst().at(0).value<QList<Domain::Types::MoveData>>();
         QVERIFY2(moves.contains<Domain::Types::MoveData>(moveData), "Added Move not found in emitted move list");
@@ -57,7 +57,7 @@ namespace Test {
         m_rep_viewmodel->removeMove(moveData);
         QCOMPARE(spy.count(), 1);
         spy.pop_front();
-        m_rep_viewmodel->setFEN(Domain::Types::FEN::startingPosition());
+        m_rep_viewmodel->setFen(Domain::Types::FEN::startingPosition());
         QCOMPARE(spy.count(), 1);
         auto moves = spy.takeFirst().at(0).value<QList<Domain::Types::MoveData>>();
         QVERIFY2(!moves.contains<Domain::Types::MoveData>(moveData), "Removed Move still found in emitted move list");

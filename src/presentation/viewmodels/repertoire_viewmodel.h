@@ -23,7 +23,7 @@ namespace Presentation::Features::Repertoire {
         [[nodiscard]] Domain::Types::Repertoire::RepertoireData getRepertoire() const { return m_repertoire; }
 
     public slots:
-        bool addMove(const Domain::Types::MoveData &move);
+        bool addNextMove(const Domain::Types::MoveData &move);
 
         bool removeMove(const Domain::Types::MoveData &move);
 
@@ -31,12 +31,14 @@ namespace Presentation::Features::Repertoire {
 
         void setRepertoire(const Domain::Types::Repertoire::RepertoireData &repertoire);
 
-        void setFEN(const Domain::Types::FEN &fen) { onPositionChanged(fen); }
+        void setFen(const Domain::Types::FEN &fen) { onPositionChanged(fen); }
 
     signals:
         void moveListChanged(QList<Domain::Types::MoveData> moves);
 
         void saveRepertoire(Domain::Types::Repertoire::RepertoireData repertoire);
+
+        void moveClicked(Domain::Types::UCIMove move);
 
     private:
         Domain::Types::Repertoire::RepertoireData m_repertoire{};

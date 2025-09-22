@@ -21,13 +21,13 @@ namespace View::Features::Repertoire {
         explicit MoveCard(Domain::Types::MoveData move_data, QWidget *parent = nullptr);
 
         signals:
-            void clicked(Domain::Types::UCIMove move);
+            void clicked(Domain::Types::MoveData move_data);
 
     private:
         // void initLayout();
         void mousePressEvent(QMouseEvent* event) override {
             if (event->button() == Qt::LeftButton)
-                emit clicked(m_move_data.uci);
+                emit clicked(m_move_data);
         }
         Domain::Types::MoveData m_move_data;
         bool m_recommended;

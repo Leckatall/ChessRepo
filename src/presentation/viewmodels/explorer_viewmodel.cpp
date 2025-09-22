@@ -13,7 +13,8 @@ namespace Presentation::Features::Explorer {
         : QObject(parent),
           m_service(service),
           m_persistence(persistence),
-          m_tableModel(this) {
+          m_tableModel(this),
+    m_fen(Domain::Types::FEN::startingPosition()) {
         initConnections();
 
         // Relay clicks from the table model upwards as UCIMove
@@ -39,25 +40,24 @@ namespace Presentation::Features::Explorer {
                 this, &ExplorerViewModel::onNetworkError);
     }
 
-    void ExplorerViewModel::setFen(const QString &fen) {
-        qDebug() << "Set fen: " << fen;
+    void ExplorerViewModel::setFen(const Domain::Types::FEN &fen) {
         if (m_fen == fen) {
             qDebug() << "Cancelled emit bc fen unchanged";
             return;
         }
         m_fen = fen;
-        emit fenChanged(Domain::Types::FEN(m_fen.toStdString()));
+        emit fenChanged(m_fen);
     }
 
     void ExplorerViewModel::exploreCurrentFen() {
-        if (m_fen.isEmpty()) {
+        if (!m_fen.data()) {
             setErrorMessage(QStringLiteral("FEN is empty"));
             return;
         }
         setErrorMessage({});
         setLoading(true);
 
-        m_service.fetch_opening_data(Domain::Types::FEN(m_fen.toStdString()));
+        m_service.fetch_opening_data(m_fen);
     }
 
     void ExplorerViewModel::refresh() {
@@ -70,7 +70,6 @@ namespace Presentation::Features::Explorer {
 
     void ExplorerViewModel::onGotPositionData(const Domain::Types::PositionGraph &position) {
         m_tableModel.setGraph(position);
-        qDebug() << "Got position data";
     }
 
     void ExplorerViewModel::onNetworkError(const QString &message) {

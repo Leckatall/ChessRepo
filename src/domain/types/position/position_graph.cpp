@@ -120,6 +120,15 @@ namespace Domain::Types {
         return nodes;
     }
 
+    PositionGraph PositionGraph::getSubGraph(PositionKey from) {
+        PositionGraph subGraph(from, getNode(from)->stats);
+        for (const auto &edge: getEdges(from)) {
+            subGraph << getSubGraph(edge.target);
+            subGraph.addEdgeToNodes(from, edge.target, edge.uci, edge.comment.value());
+        }
+        return subGraph;
+    }
+
     bool PositionGraph::operator==(const PositionGraph &other) const {
         if (this->m_rootKey != other.m_rootKey) return false;
         if (this->m_nodes.size() != other.m_nodes.size()) return false;
@@ -128,6 +137,12 @@ namespace Domain::Types {
             if (node->stats != other.m_nodes.at(position_key)->stats) return false;
         }
         return true;
+    }
+
+    void PositionGraph::operator<<(const PositionGraph &other) {
+        for (const auto& [k, v] : other.m_nodes) {
+            m_nodes[k] = v;
+        }
     }
 }
 

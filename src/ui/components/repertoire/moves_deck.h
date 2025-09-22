@@ -20,12 +20,13 @@ namespace View::Features::Repertoire {
     public:
         explicit MovesDeck(QWidget *parent = nullptr);
 
-        void setMoves(QList<Domain::Types::MoveData> moves);
-
         MoveCard *getMoveCard() {return m_move_cards.first();}
 
+    public slots:
+        void setMoves(QList<Domain::Types::MoveData> moves);
+
     signals:
-        void moveClicked(Domain::Types::UCIMove move);
+        void moveClicked(Domain::Types::MoveData move);
 
     private:
         QScrollArea *m_scrollArea;

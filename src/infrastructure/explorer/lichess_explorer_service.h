@@ -12,6 +12,7 @@
 #include "lichess_request_builder.h"
 #include "domain/types/fen.h"
 #include "models/datatypes.h"
+#include "types/position/position_graph.h"
 
 namespace Infrastructure::Features::Explorer {
 class LichessExplorerService : public QObject {
@@ -41,6 +42,8 @@ private:
     QNetworkAccessManager m_net_client;
     LichessRequestBuilder m_request_builer;
     LichessExplorerParser m_parser;
+
+    Domain::Types::PositionGraph m_cache{};
 
 };
 }

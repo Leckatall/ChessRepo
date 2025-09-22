@@ -17,16 +17,17 @@ namespace Presentation::Features::Repertoire {
         // emit repertoireChanged(m_repertoire); no one cares abt that only that the next movelist has changed
     }
 
-    bool RepertoireViewModel::addMove(const Domain::Types::MoveData &move) {
+    bool RepertoireViewModel::addNextMove(const Domain::Types::MoveData &move) {
         if (m_repertoire.data.addMoveFromNode(m_currentFEN, move.uci, move.stats)) {
             onPositionChanged(Utils::Chess::resultOfMove(m_currentFEN, move.uci));
+            emit moveClicked(move.uci);
             return true;
         }
         return false;
     }
 
     bool RepertoireViewModel::removeMove(const Domain::Types::MoveData &move) {
-        auto current_node = m_repertoire.data.getNode(m_currentFEN);
+        const auto current_node = m_repertoire.data.getNode(m_currentFEN);
         const int starting_edge_count = current_node->edgeCount();
         if (current_node->findMove(move.uci)) {
             std::erase_if(current_node->edges,
@@ -42,7 +43,8 @@ namespace Presentation::Features::Repertoire {
     void RepertoireViewModel::onPositionChanged(const Domain::Types::FEN &fen) {
         m_currentFEN = fen;
         QList<Domain::Types::MoveData> move_data_list{};
-        Domain::Types::PositionNode *node = m_repertoire.data.getNode({fen});
+        const Domain::Types::PositionNode *node = m_repertoire.data.getNode({fen});
+        if (!node) return;
         move_data_list.reserve(node->edgeCount());
         for (const auto& move_edge: node->edges) {
             Domain::Types::MoveData move_data{};

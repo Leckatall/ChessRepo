@@ -26,6 +26,10 @@ namespace Infrastructure::Features::Explorer {
     }
 
     void LichessExplorerService::fetch_opening_data(const Domain::Types::FEN &fen) {
+        if (m_cache.hasNode(fen)) {
+            emit gotOpeningGraph(m_cache.getSubGraph(fen));
+            return;
+        }
         QNetworkRequest request(m_request_builer.buildApiUrl(fen));
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
         QNetworkReply *reply = m_net_client.get(request);
@@ -39,7 +43,9 @@ namespace Infrastructure::Features::Explorer {
 
     void LichessExplorerService::handleOpeningReply(const Domain::Types::FEN &fen, QNetworkReply *reply) {
         if (reply->error() == QNetworkReply::NoError) {
-            emit gotOpeningGraph(LichessExplorerParser::handle_reponse(fen, reply->readAll()));
+            const auto opening_graph = LichessExplorerParser::handle_reponse(fen, reply->readAll());
+            m_cache << opening_graph;
+            emit gotOpeningGraph(opening_graph);
         } else {
             qDebug() << "error!!";
             emit errorOccurred(reply->errorString());

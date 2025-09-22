@@ -111,8 +111,10 @@ namespace Domain::Types {
 
         std::vector<PositionNode> getNodes() const;
 
-        bool operator==(const PositionGraph &other) const;
+        PositionGraph getSubGraph(PositionKey from);
 
+        bool operator==(const PositionGraph &other) const;
+        void operator<<(const PositionGraph &other);
     private:
         std::unordered_map<PositionKey, PositionNode* > m_nodes{};
         PositionKey m_rootKey{};

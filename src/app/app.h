@@ -6,12 +6,14 @@
 #define CHESSREPO_APP_H
 #include <QMainWindow>
 
-#include "controllers/board_controller.h"
+#include "compound_widgets/chessboard_table.h"
+#include "compound_widgets/explorer_table.h"
+#include "compound_widgets/repertoire_manager_widget.h"
 #include "infrastructure/persistence/repertoire_persistence.h"
-#include "presentation/models/explorer_tblmodel.h"
-#include "presentation/viewmodels/explorer_viewmodel.h"
+#include "models/explorer_tblmodel.h"
+#include "viewmodels/explorer_viewmodel.h"
 #include "ui/components/chessboard/board_view.h"
-#include "ui/components/explorer/explorer_view.h"
+#include "viewmodels/board_viewmodel.h"
 
 namespace Application {
     class App: public QObject {
@@ -30,8 +32,12 @@ namespace Application {
         QMainWindow *m_window;
         QFrame *m_container;
         Presentation::Features::Explorer::ExplorerViewModel m_explorerVM;
-        chessboard::Controller *m_board_controller;
-        explorer::View* m_explorerView;
+        Presentation::Features::Repertoire::RepertoireViewModel m_repertoireVM;
+        Domain::Features::Chess::Board m_board;
+        Presentation::Features::Board::BoardTableViewModel m_boardVM;
+        View::Features::Explorer::ExplorerTable* m_explorerView;
+        View::Features::Repertoire::RepertoireManagerWidget* m_repertoireManagerWidget;
+        View::Features::Board::ChessboardTable *m_boardTable;
     };
 }
 

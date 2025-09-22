@@ -4,8 +4,6 @@
 
 #include "app.h"
 
-#include "controllers/explorer_controller.h"
-
 namespace Application {
     App::App() : QObject(nullptr),
                  m_lichessApi(this),
@@ -13,21 +11,31 @@ namespace Application {
                  m_window(new QMainWindow()),
                  m_container(new QFrame()),
                  m_explorerVM(m_lichessApi, m_repertoirePersistence),
-                 m_board_controller(new chessboard::Controller(this)),
-                 m_explorerView(new explorer::View(m_container)) {
+                 m_repertoireVM(this),
+                 m_board(Domain::Features::Chess::Board()),
+                 m_boardVM(m_board, this),
+                 m_explorerView(new View::Features::Explorer::ExplorerTable(&m_explorerVM, m_container)),
+                 m_repertoireManagerWidget(new View::Features::Repertoire::RepertoireManagerWidget(
+                     &m_repertoireVM, m_container)),
+                 m_boardTable(new View::Features::Board::ChessboardTable(&m_boardVM, m_container)) {
         m_window->setWindowTitle("ChessRepo");
         m_window->setGeometry(0, 0, 1200, 800);
         m_window->setCentralWidget(m_container);
-        m_explorerView->setTblModel(m_explorerVM.tableModel());
-        m_explorerView->initTblUi();
         initLayout();
         initConnections();
     }
 
     void App::initLayout() const {
-        const auto layout = new QGridLayout();
-        layout->addWidget(m_board_controller->view(), 0, 0);
-        layout->addWidget(m_explorerView, 0, 1);
+        // ReSharper disable once CppDFAMemoryLeak
+        const auto layout = new QGridLayout(m_container);
+        m_boardTable->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+        layout->addWidget(m_boardTable, 0, 0, 2, 1);
+        m_repertoireManagerWidget->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+        layout->addWidget(m_repertoireManagerWidget, 0, 1);
+        m_explorerView->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
+        layout->addWidget(m_explorerView, 1, 1);
+        layout->setColumnStretch(0, 2);
+        layout->setColumnStretch(1, 1);
         m_container->setLayout(layout);
     }
 
@@ -36,11 +44,13 @@ namespace Application {
     }
 
     void App::initConnections() {
-        connect(m_board_controller, &chessboard::Controller::boardChanged,
+        connect(&m_boardVM, &Presentation::Features::Board::BoardTableViewModel::boardChanged,
                 &m_explorerVM, &Presentation::Features::Explorer::ExplorerViewModel::setFen);
-        connect(m_explorerView, &explorer::View::moveIndexClicked,
-                &m_explorerVM, &Presentation::Features::Explorer::ExplorerViewModel::indexClicked);
+        connect(&m_boardVM, &Presentation::Features::Board::BoardTableViewModel::boardChanged,
+                &m_repertoireVM, &Presentation::Features::Repertoire::RepertoireViewModel::setFen);
         connect(&m_explorerVM, &Presentation::Features::Explorer::ExplorerViewModel::moveClicked,
-                m_board_controller, &chessboard::Controller::makeUciMove);
+                &m_boardVM, &Presentation::Features::Board::BoardTableViewModel::makeUciMove);
+        connect(&m_repertoireVM, &Presentation::Features::Repertoire::RepertoireViewModel::moveClicked,
+                &m_boardVM, &Presentation::Features::Board::BoardTableViewModel::makeUciMove);
     }
 }

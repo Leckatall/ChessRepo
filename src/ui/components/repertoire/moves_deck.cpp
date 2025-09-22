@@ -39,7 +39,7 @@ namespace View::Features::Repertoire {
             card->setFixedHeight(50);
             m_scroll_layout->addWidget(card);
             connect(card, &MoveCard::clicked,
-                    this, [this](const Domain::Types::UCIMove &move) { emit moveClicked(move); });
+                    this, [this](const Domain::Types::MoveData &move_data) { emit moveClicked(move_data); });
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Presentation::Features::Explorer {
         Q_PROPERTY(bool loading READ loading NOTIFY loadingChanged)
         Q_PROPERTY(QString errorMessage READ errorMessage NOTIFY errorMessageChanged)
         Q_PROPERTY(QString positionSummary READ positionSummary NOTIFY positionSummaryChanged)
-        Q_PROPERTY(QString fen READ fen WRITE setFen NOTIFY fenChanged)
+        //Q_PROPERTY(QString fen READ fen WRITE setFen NOTIFY fenChanged)
 
     public:
         explicit ExplorerViewModel(Infrastructure::Features::Explorer::LichessExplorerService &service,
@@ -34,9 +34,9 @@ namespace Presentation::Features::Explorer {
         [[nodiscard]] const QString &errorMessage() const { return m_errorMessage; }
         [[nodiscard]] const QString &positionSummary() const { return m_positionSummary; }
 
-        [[nodiscard]] const QString &fen() const { return m_fen; }
+        [[nodiscard]] const Domain::Types::FEN &fen() const { return m_fen; }
 
-        void setFen(const QString &fen);
+        void setFen(const Domain::Types::FEN &fen);
 
     public slots:
         // Commands the view can trigger
@@ -77,10 +77,10 @@ namespace Presentation::Features::Explorer {
         Infrastructure::Features::Repertoire::RepertoirePersistence &m_persistence;
         TableModel m_tableModel;
 
-        QString m_fen;
+        Domain::Types::FEN m_fen;
         bool m_loading{false};
         QString m_errorMessage;
-        QString m_positionSummary;
+        QString m_positionSummary = "Position summary will appear here.";
     };
 };
 
