@@ -40,6 +40,7 @@ add_executable(myapp
     src/utils/chess.h
         src/infrastructure/persistence/QJson_parser.cpp
         src/infrastructure/persistence/QJson_parser.h
+        resources.qrc
 )
 
 # Link libraries to main executable

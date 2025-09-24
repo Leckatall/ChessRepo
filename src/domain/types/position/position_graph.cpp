@@ -4,6 +4,7 @@
 
 #include "position_graph.h"
 
+#include <deque>
 #include <ranges>
 #include <span>
 
@@ -129,6 +130,20 @@ namespace Domain::Types {
         return subGraph;
     }
 
+    PositionGraph PositionGraph::getLine(const PositionKey &from, std::deque<UCIMove>& moves) {
+        const auto* from_node = getNode(from);
+        if (!from_node) return {};
+        PositionGraph lineGraph(from, from_node->stats);
+        if (moves.empty()) return lineGraph;
+        const auto firstMove = moves.front();
+        moves.pop_front();
+        const auto* moveEdge = from_node->findMove(firstMove);
+        if (!moveEdge) return lineGraph;
+        lineGraph << getLine(moveEdge->target, moves);
+        lineGraph.addEdgeToNodes(from, moveEdge->target, moveEdge->uci, moveEdge->comment.value());
+        return lineGraph;
+    }
+
     bool PositionGraph::operator==(const PositionGraph &other) const {
         if (this->m_rootKey != other.m_rootKey) return false;
         if (this->m_nodes.size() != other.m_nodes.size()) return false;
@@ -141,6 +156,16 @@ namespace Domain::Types {
 
     void PositionGraph::operator<<(const PositionGraph &other) {
         for (const auto& [k, v] : other.m_nodes) {
+            if (m_nodes.contains(k)) {
+                for (const auto &edge: v->edges) {
+                    // Avoid duplicate edges
+                    if (!m_nodes[k]->findMove(edge.uci)) {
+                        m_nodes[k]->addEdge(edge);
+                    }
+                }
+                m_nodes[k]->stats = v->stats;
+                continue;
+            }
             m_nodes[k] = v;
         }
     }

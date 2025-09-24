@@ -5,6 +5,7 @@
 #ifndef CHESSREPO_POSITION_GRAPH_H
 #define CHESSREPO_POSITION_GRAPH_H
 #include <algorithm>
+#include <deque>
 #include <memory>
 #include <optional>
 #include <span>
@@ -112,6 +113,7 @@ namespace Domain::Types {
         std::vector<PositionNode> getNodes() const;
 
         PositionGraph getSubGraph(PositionKey from);
+        PositionGraph getLine(const PositionKey &from, std::deque<UCIMove>& moves);
 
         bool operator==(const PositionGraph &other) const;
         void operator<<(const PositionGraph &other);

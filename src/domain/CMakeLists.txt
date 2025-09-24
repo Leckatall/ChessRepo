@@ -30,6 +30,8 @@ add_library(chess_domain STATIC
     explorer/iexplorer_service.h
         types/collections.cpp
         types/collections.h
+        chess/piece.cpp
+        chess/piece.h
 )
 
 target_link_libraries(chess_domain PUBLIC

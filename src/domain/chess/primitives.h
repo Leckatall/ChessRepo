@@ -18,7 +18,7 @@ namespace Domain::Types::Chess {
 
         Square() = default;
 
-        Square(const int file, const int rank): m_id(rank * 8 + file) {
+        Square(const int file, const int rank): m_id(((rank - 1) * 8) + (file - 1)) {
         }
 
         explicit Square(const int id): m_id(id) {

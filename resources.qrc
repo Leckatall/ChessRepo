@@ -1,2 +1,18 @@
-
+<!DOCTYPE RCC>
+<RCC version="1.0">
+    <qresource prefix="/chess">
+        <file alias="b_bishop.svg">resources/chess/b_bishop.svg</file>
+        <file alias="b_king.svg">resources/chess/b_king.svg</file>
+        <file alias="b_knight.svg">resources/chess/b_knight.svg</file>
+        <file alias="b_pawn.svg">resources/chess/b_pawn.svg</file>
+        <file alias="b_queen.svg">resources/chess/b_queen.svg</file>
+        <file alias="b_rook.svg">resources/chess/b_rook.svg</file>
+        <file alias="w_bishop.svg">resources/chess/w_bishop.svg</file>
+        <file alias="w_king.svg">resources/chess/w_king.svg</file>
+        <file alias="w_knight.svg">resources/chess/w_knight.svg</file>
+        <file alias="w_pawn.svg">resources/chess/w_pawn.svg</file>
+        <file alias="w_queen.svg">resources/chess/w_queen.svg</file>
+        <file alias="w_rook.svg">resources/chess/w_rook.svg</file>
+    </qresource>
+</RCC>
 

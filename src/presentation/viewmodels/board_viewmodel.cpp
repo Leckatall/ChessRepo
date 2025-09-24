@@ -5,43 +5,47 @@
 #include "board_viewmodel.h"
 
 namespace Presentation::Features::Board {
-    BoardViewModel::BoardViewModel(Domain::Features::Chess::Board& board, QObject *parent)
-        : QObject(parent), m_board(board){
+    BoardViewModel::BoardViewModel(Domain::Features::Chess::Board &board, QObject *parent)
+        : QObject(parent),
+          m_board(board),
+          m_scene(View::Features::Board::BoardGraphicsScene(this)) {
+        initConnections();
     }
 
-    QPointF BoardViewModel::squareToPoint(const Domain::Types::Chess::Square &square) const {
-        const int xpos = square.file() * m_square_size;
-        const int ypos = (m_white_on_bottom ? 8 - square.rank() : square.rank() - 1) * m_square_size;
-        return QPointF(xpos, ypos);
-    }
-
-    QRectF BoardViewModel::squareToRect(const Domain::Types::Chess::Square &square) const {
-        QPointF top_left = squareToPoint(square);
-        return QRectF(top_left, QSizeF(m_square_size, m_square_size));
-    }
-
-    Domain::Types::Chess::Square BoardViewModel::pointToSquare(const QPointF &point) const {
-        const int file = static_cast<int>(point.x() / m_square_size);
-        const int rank = 8 - static_cast<int>(point.y() / m_square_size);
-        return Domain::Types::Chess::Square(file, rank);
-    }
-
-
-    void BoardViewModel::makeMove(const Domain::Types::Chess::Move &move) {
-        if (m_board.playMove(move)) refresh();
+    void BoardViewModel::updateScene() {
+        QList<Domain::Types::Chess::PieceData> piece_data{};
+        for (const auto &piece: m_board.getAllPieces()) {
+            piece_data.append(piece);
+        }
+        m_scene.updateBoard(piece_data);
     }
 
     void BoardViewModel::undoMove() {
         m_board.undo_last_move();
     }
 
-    void BoardViewModel::onSquareClicked(const Domain::Types::Chess::Square square) {
+    void BoardViewModel::initConnections() {
+        connect(&m_scene, &View::Features::Board::BoardGraphicsScene::squareClicked,
+                this, &BoardViewModel::onSquareClicked);
+    }
 
+    void BoardViewModel::onSquareClicked(const Domain::Types::Chess::Square &square) {
+        qDebug() << "BoardViewModel::onSquareClicked: " << square.file() << square.rank() << " id: " << square.m_id;
+        if (m_board.is_enabled_square(square)) {
+            qDebug() << "Selected square: " << square.file() << square.rank();
+            m_scene.setSelectedSquare(new Domain::Types::Chess::Square(square));
+            return;
+        }
+        if (Domain::Types::Chess::Square *selected_square = m_scene.selectedSquare(); selected_square) {
+            if (m_board.get_legal_targets_from(*selected_square).contains(square)) {
+                m_board.playMove({*selected_square, square});
+                updateScene();
+            }
+        }
+        m_scene.setSelectedSquare(nullptr);
     }
 
     void BoardViewModel::flipBoard() {
         m_white_on_bottom = !m_white_on_bottom;
     }
-
-
 }

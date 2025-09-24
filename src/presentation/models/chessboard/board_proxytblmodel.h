@@ -8,6 +8,8 @@
 #include <chess.hpp>
 #include <QSortFilterProxyModel>
 
+#include "chess/primitives.h"
+
 namespace chessboard {
     class ProxyTblModel : public QSortFilterProxyModel {
     public:
@@ -15,9 +17,10 @@ namespace chessboard {
         }
 
         [[nodiscard]] QModelIndex mapFromSource(const QModelIndex &sourceIndex) const override;
+        Domain::Types::Chess::Square sourceIndexToSquare(const QModelIndex &sourceIndex) const;
 
         [[nodiscard]] QModelIndex mapToSource(const QModelIndex &proxyIndex) const override;
-        [[nodiscard]] QModelIndex square_to_index(chess::Square square) const;
+        [[nodiscard]] QModelIndex squareToIndex(Domain::Types::Chess::Square square) const;
 
         void flip() {
             m_white_on_bottom = !m_white_on_bottom;

@@ -18,7 +18,7 @@ namespace Presentation::Features::Repertoire {
         Q_OBJECT
 
     public:
-        explicit RepertoireViewModel(QObject *parent = nullptr);
+        explicit RepertoireViewModel(Domain::Types::Repertoire::RepertoireData& repertoire, QObject *parent = nullptr);
 
         [[nodiscard]] Domain::Types::Repertoire::RepertoireData getRepertoire() const { return m_repertoire; }
 
@@ -41,7 +41,7 @@ namespace Presentation::Features::Repertoire {
         void moveClicked(Domain::Types::UCIMove move);
 
     private:
-        Domain::Types::Repertoire::RepertoireData m_repertoire{};
+        Domain::Types::Repertoire::RepertoireData& m_repertoire;
         Domain::Types::FEN m_currentFEN{Domain::Types::FEN::startingPosition()};
     };
 }

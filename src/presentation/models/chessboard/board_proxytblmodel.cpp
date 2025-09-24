@@ -16,6 +16,12 @@ namespace chessboard {
         return createIndex(row, sourceIndex.column(), sourceIndex.internalPointer());
     }
 
+    Domain::Types::Chess::Square ProxyTblModel::sourceIndexToSquare(const QModelIndex &sourceIndex) const {
+        if (!sourceIndex.isValid()) return {};
+
+        return {sourceIndex.column(), m_white_on_bottom ? sourceIndex.row() : 7 - sourceIndex.row()};
+    }
+
     QModelIndex ProxyTblModel::mapToSource(const QModelIndex &proxyIndex) const {
         if (!proxyIndex.isValid())
             return {};
@@ -26,17 +32,10 @@ namespace chessboard {
         return sourceModel()->index(row, proxyIndex.column());
     }
 
-    QModelIndex ProxyTblModel::square_to_index(const chess::Square square) const {
-        //TODO: Refactor this to 1 line
-        if (!sourceModel()) {
-            return {};
-        }
 
-        int sourceRow = 7 - square.rank();
-        int column = square.file();
+    QModelIndex ProxyTblModel::squareToIndex(const Domain::Types::Chess::Square square) const {
+        if (!sourceModel()) return {};
 
-        int viewRow = m_white_on_bottom ? sourceRow : (7 - sourceRow);
-
-        return index(viewRow, column);
+        return index(m_white_on_bottom ? 7 - square.rank() : square.rank(), square.file());
     }
 }

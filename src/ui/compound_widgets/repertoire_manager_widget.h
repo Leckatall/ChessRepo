@@ -4,6 +4,7 @@
 
 #ifndef CHESSREPO_REPERTOIRE_MANAGER_WIDGET_H
 #define CHESSREPO_REPERTOIRE_MANAGER_WIDGET_H
+#include <QPushButton>
 #include <QWidget>
 
 #include "components/repertoire/moves_deck.h"
@@ -21,6 +22,7 @@ namespace View::Features::Repertoire {
 
         Presentation::Features::Repertoire::RepertoireViewModel* m_viewModel;
         MovesDeck* m_deck;
+        QPushButton* m_add_line_btn;
     };
 }
 

@@ -1,8 +1,8 @@
 # Intend to make this library DEPRECATED in the future
 # Controllers Layer Library
 add_library(chess_controllers STATIC
-    board_controller.cpp
-    board_controller.h
+#    board_controller.cpp
+#    board_controller.h
     # Add other controllers as they're uncommented/created
 )
 

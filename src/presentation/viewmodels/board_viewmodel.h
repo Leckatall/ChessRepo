@@ -25,19 +25,12 @@ namespace Presentation::Features::Board {
             return m_board.fen();
         }
 
-        void setFen(const Domain::Types::FEN &fen) const {
-            m_board.set_fen(fen);
-        }
+        [[nodiscard]] View::Features::Board::BoardGraphicsScene* scene() { return &m_scene; }
 
-        [[nodiscard]] View::Features::Board::BoardGraphicsScene *scene() { return &m_scene; }
-
-        [[nodiscard]] Domain::Types::Chess::Square selected_square() const { return m_selected_square; }
-        [[nodiscard]] int square_size() const { return m_square_size; }
-
-        QPointF squareToPoint(const Domain::Types::Chess::Square &square) const;
-        QRectF squareToRect(const Domain::Types::Chess::Square &square) const;
-
-        Domain::Types::Chess::Square pointToSquare(const QPointF &point) const;
+        // QPointF squareToPoint(const Domain::Types::Chess::Square &square) const;
+        // QRectF squareToRect(const Domain::Types::Chess::Square &square) const;
+        //
+        // Domain::Types::Chess::Square pointToSquare(const QPointF &point) const;
 
         // DEPRECATED
         // [[nodiscard]] Domain::Types::Chess::Square getSelection() const {
@@ -46,11 +39,12 @@ namespace Presentation::Features::Board {
         // }
 
     public slots:
-        void makeMove(const Domain::Types::Chess::Move &move);
+        void updateScene();
+        // void makeMove(const Domain::Types::Chess::Move &move);
 
-        void onSquareClicked(Domain::Types::Chess::Square square);
+        void onSquareClicked(const Domain::Types::Chess::Square &square);
 
-        void sceneResized() {m_square_size = std::ranges::min(m_scene.width() / 8, m_scene.height() / 8);}
+        // void sceneResized() {m_square_size = std::ranges::min(m_scene.width() / 8, m_scene.height() / 8);}
 
         void flipBoard();
 
@@ -59,15 +53,12 @@ namespace Presentation::Features::Board {
     signals:
         void currentFenChanged(Domain::Types::FEN fen);
 
-        void refresh();
-
     private:
-        View::Features::Board::BoardGraphicsScene m_scene;
-
+        void initConnections();
         Domain::Features::Chess::Board &m_board;
+
+        View::Features::Board::BoardGraphicsScene m_scene;
         bool m_white_on_bottom = true;
-        int m_square_size;
-        Domain::Types::Chess::Square m_selected_square{};
     };
 }
 

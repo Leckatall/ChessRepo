@@ -5,15 +5,15 @@
 #include "piece_graphics_item.h"
 
 namespace View::Features::Board {
-    PieceGraphicsItem::PieceGraphicsItem(const QSharedPointer<QSvgRenderer> &renderer, int size,
-    QGraphicsItem *parent): QGraphicsItem(parent),
-                            m_renderer(renderer),
-                            m_square_size(size) {
+    PieceGraphicsItem::PieceGraphicsItem(const QSharedPointer<QSvgRenderer> &renderer,
+                                         QGraphicsItem *parent)
+        : QGraphicsItem(parent),
+          m_renderer(renderer) {
         setZValue(2);
     }
 
     QRectF PieceGraphicsItem::boundingRect() const {
-        return QRectF(0,0, m_square_size, m_square_size);
+        return parentItem()->boundingRect();
     }
 
     void PieceGraphicsItem::mousePressEvent(QGraphicsSceneMouseEvent *event) {
@@ -33,4 +33,3 @@ namespace View::Features::Board {
         //emit dragged_to(m_origin, event->pos());
     }
 }
-

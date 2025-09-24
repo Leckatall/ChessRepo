@@ -7,7 +7,10 @@
 #include "utils/chess.h"
 
 namespace Presentation::Features::Repertoire {
-    RepertoireViewModel::RepertoireViewModel(QObject *parent): QObject(parent) {
+    RepertoireViewModel::RepertoireViewModel(Domain::Types::Repertoire::RepertoireData &repertoire, QObject *parent)
+        : QObject(parent),
+          m_repertoire(repertoire) {
+        onPositionChanged(Domain::Types::FEN::startingPosition());
     }
 
     void RepertoireViewModel::setRepertoire(
@@ -35,8 +38,12 @@ namespace Presentation::Features::Repertoire {
         }
         const int post_edge_count = current_node->edgeCount();
         if (starting_edge_count == post_edge_count) return false;
-        if (starting_edge_count - 1 == post_edge_count) {onPositionChanged(m_currentFEN); return true;}
-        std::cout << "RepertoireViewModel::removeMove was supposed to remove 1 move - " << starting_edge_count - post_edge_count << " Moves removed";
+        if (starting_edge_count - 1 == post_edge_count) {
+            onPositionChanged(m_currentFEN);
+            return true;
+        }
+        std::cout << "RepertoireViewModel::removeMove was supposed to remove 1 move - " << starting_edge_count -
+                post_edge_count << " Moves removed";
         return false;
     }
 
@@ -46,7 +53,7 @@ namespace Presentation::Features::Repertoire {
         const Domain::Types::PositionNode *node = m_repertoire.data.getNode({fen});
         if (!node) return;
         move_data_list.reserve(node->edgeCount());
-        for (const auto& move_edge: node->edges) {
+        for (const auto &move_edge: node->edges) {
             Domain::Types::MoveData move_data{};
             move_data.uci = move_edge.uci;
             move_data.stats = m_repertoire.data.getNode(move_edge.target)->stats;
@@ -55,4 +62,3 @@ namespace Presentation::Features::Repertoire {
         emit moveListChanged(move_data_list);
     }
 }
-

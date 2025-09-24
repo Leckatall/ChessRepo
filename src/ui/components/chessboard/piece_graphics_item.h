@@ -12,8 +12,8 @@
 namespace View::Features::Board {
     class PieceGraphicsItem : public QGraphicsItem {
     public:
-        explicit PieceGraphicsItem(const QSharedPointer<QSvgRenderer> &renderer, int size,
-                                   QGraphicsItem *parent = nullptr);
+        explicit PieceGraphicsItem(const QSharedPointer<QSvgRenderer> &renderer,
+                                   QGraphicsItem *parent);
 
         QRectF boundingRect() const override;
 
@@ -33,7 +33,6 @@ namespace View::Features::Board {
     private:
         QSharedPointer<QSvgRenderer> m_renderer;
         QPointF m_origin;
-        int m_square_size;
     };
 }
 

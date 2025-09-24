@@ -28,16 +28,17 @@ namespace Application {
 
         Infrastructure::Features::Explorer::LichessExplorerService m_lichessApi;
         Infrastructure::Features::Repertoire::RepertoirePersistence m_repertoirePersistence;
+        Domain::Types::Repertoire::RepertoireData m_repertoire;
 
         QMainWindow *m_window;
         QFrame *m_container;
         Presentation::Features::Explorer::ExplorerViewModel m_explorerVM;
         Presentation::Features::Repertoire::RepertoireViewModel m_repertoireVM;
         Domain::Features::Chess::Board m_board;
-        Presentation::Features::Board::BoardTableViewModel m_boardVM;
+        // Presentation::Features::Board::BoardTableViewModel m_boardVM;
         View::Features::Explorer::ExplorerTable* m_explorerView;
         View::Features::Repertoire::RepertoireManagerWidget* m_repertoireManagerWidget;
-        View::Features::Board::ChessboardTable *m_boardTable;
+        // View::Features::Board::ChessboardTable *m_boardTable;
     };
 }
 

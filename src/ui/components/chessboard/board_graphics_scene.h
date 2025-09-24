@@ -11,6 +11,7 @@
 #include <QtSvg/QSvgRenderer>
 #include <QSharedPointer>
 
+#include "chess/piece.h"
 #include "domain/chess/primitives.h"
 
 
@@ -22,64 +23,46 @@ namespace View::Features::Board {
         Q_OBJECT
 
     public:
-        enum class PieceType {
-            None,
-            WhitePawn,
-            WhiteKnight,
-            WhiteBishop,
-            WhiteRook,
-            WhiteQueen,
-            WhiteKing,
-            BlackPawn,
-            BlackKnight,
-            BlackBishop,
-            BlackRook,
-            BlackQueen,
-            BlackKing
-        };
 
-        struct PieceData {
-            PieceType type;
-            Domain::Types::Chess::Square square;
-        };
 
         explicit BoardGraphicsScene(QObject *parent = nullptr);
 
-        void update_board(const QList<PieceData> &pieces);
-        void set_selected_square(const Domain::Types::Chess::Square &square) {m_selected_square = square;}
+        void updateBoard(const QList<Domain::Types::Chess::PieceData> &pieces);
+        void setSelectedSquare(Domain::Types::Chess::Square *square);
 
+        Domain::Types::Chess::Square* selectedSquare() const {return m_selected_square;}
 
     public slots:
         // void on_square_clicked(Domain::Types::Chess::Square square);
 
-        void on_piece_dragged(const QPointF &origin, const QPointF &target);
+        void onPieceDragged(const QPointF &origin, const QPointF &target);
 
-        void onResizeEvent(QResizeEvent *event) {emit boardResized();}
+        void setSquareSize(int size);
+
+        void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
     signals:
         void requestMove(const Domain::Types::Chess::Move &move);
 
         void squareClicked(const Domain::Types::Chess::Square &square);
 
-        void boardResized();
-
     private:
-        void init_board();
+        void initBoard();
 
-        void cache_piece(PieceType type, const QString &file_name);
+        void cachePiece(Domain::Types::Chess::PieceType type, const QString &file_name);
 
         // Domain::Types::Chess::Square point_to_square(QPointF point) const;
 
         // Internally generated members
-        const QString m_svg_path = "../../../resources/chess/";
+        const QString m_svg_path = ":/chess/";
 
-        QHash<PieceType, QSharedPointer<QSvgRenderer> > m_piece_svg_cache;
+        QHash<Domain::Types::Chess::PieceType, QSharedPointer<QSvgRenderer> > m_piece_svg_cache;
         int m_square_size;
         QMap<Domain::Types::Chess::Square, SquareGraphicsObject *> m_squares;
 
         // Inputs
-        QList<PieceData> m_pieces_data;
-        Domain::Types::Chess::Square m_selected_square{};
+        QList<Domain::Types::Chess::PieceData> m_pieces_data;
+        Domain::Types::Chess::Square* m_selected_square = nullptr;
     };
 }
 

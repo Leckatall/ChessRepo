@@ -31,7 +31,7 @@ namespace chessboard {
     void Controller::handleSquareClicked(const QModelIndex &proxy_index) {
         auto index = m_boardProxyModel.mapToSource(proxy_index);
         m_boardTblModel.begin_update();
-        if (m_boardTblModel.square_selected()) {
+        if (m_boardTblModel.isSquareSelected()) {
             // A piece has already been selected
             m_boardTblModel.try_move_to(index);
             // Clear the currrent highlights:
