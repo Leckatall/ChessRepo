@@ -28,6 +28,6 @@ namespace View::Features::Repertoire {
                 m_deck, &MovesDeck::setMoves);
         connect(m_deck, &MovesDeck::moveClicked,
                 m_viewModel, &Presentation::Features::Repertoire::RepertoireViewModel::addNextMove);
-        // connect(m_add_line_btn, &QPushButton::clicked,)
+        connect(m_add_line_btn, &QPushButton::clicked, this, [this]{emit addLineRequested();});
     }
 }

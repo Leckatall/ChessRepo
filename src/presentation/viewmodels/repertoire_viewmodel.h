@@ -36,6 +36,8 @@ namespace Presentation::Features::Repertoire {
     signals:
         void moveListChanged(QList<Domain::Types::MoveData> moves);
 
+        void repertoireChanged();
+
         void saveRepertoire(Domain::Types::Repertoire::RepertoireData repertoire);
 
         void moveClicked(Domain::Types::UCIMove move);

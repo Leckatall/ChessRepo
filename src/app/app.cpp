@@ -3,6 +3,9 @@
 //
 
 #include "app.h"
+#include <QStatusBar>
+
+#include "components/mainwindow/menu_bar.h"
 
 namespace Application {
     App::App() : QObject(nullptr),
@@ -11,7 +14,7 @@ namespace Application {
                  m_window(new QMainWindow()),
                  m_container(new QFrame()),
                  m_explorerVM(m_lichessApi, m_repertoirePersistence),
-                 m_repertoireVM(this),
+                 m_repertoireVM(m_repertoire,this),
                  m_board(Domain::Features::Chess::Board()),
                  m_boardVM(m_board, this),
                  m_explorerView(new View::Features::Explorer::ExplorerTable(&m_explorerVM, m_container)),
@@ -21,6 +24,8 @@ namespace Application {
         m_window->setWindowTitle("ChessRepo");
         m_window->setGeometry(0, 0, 1200, 800);
         m_window->setCentralWidget(m_container);
+        m_window->setMenuBar(new View::Features::MainWindow::WindowMenuBar());
+        setStatusBarMessage();
         initLayout();
         initConnections();
     }
@@ -52,5 +57,11 @@ namespace Application {
                 &m_boardVM, &Presentation::Features::Board::BoardTableViewModel::makeUciMove);
         connect(&m_repertoireVM, &Presentation::Features::Repertoire::RepertoireViewModel::moveClicked,
                 &m_boardVM, &Presentation::Features::Board::BoardTableViewModel::makeUciMove);
+        connect(&m_repertoireVM, &Presentation::Features::Repertoire::RepertoireViewModel::repertoireChanged,
+                this, &App::setStatusBarMessage);
+    }
+
+    void App::setStatusBarMessage() const {
+        m_window->statusBar()->showMessage(("Loaded Repertoire: " + m_repertoire.header.name).data());
     }
 }

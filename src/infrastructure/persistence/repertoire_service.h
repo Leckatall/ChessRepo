@@ -9,61 +9,44 @@
 #include <qtmetamacros.h>
 #include <QtCore>
 
-#include "models/datatypes.h"
+#include "repertoire_persistence.h"
 
+namespace Infrastructure::Features::Repertoire {
+    class RepertoireService : public QObject {
+        Q_OBJECT
 
-class RepertoireService : public QObject {
-    Q_OBJECT
+    public:
+        explicit RepertoireService(RepertoirePersistence &persistence, QObject *parent = nullptr)
+            : QObject(parent),
+              m_persistence(persistence) {
+            initConnections();
+        }
 
-public:
-    explicit RepertoireService(QObject *parent = nullptr) : QObject(parent) {
-        updateRepertoireList();
+        [[nodiscard]] QStringList getRepertoireList() { return m_repertoire_title_list; }
 
-        // Monitors the repertoire directory for any changes
-        m_watcher.addPath(getRepoDir());
-        connect(&m_watcher, &QFileSystemWatcher::directoryChanged,
-                this, &RepertoireService::onDirectoryChanged);
-    }
+        Domain::Types::Repertoire::RepertoireData *getRepertoire() { return &m_current_repertoire; }
 
-    [[nodiscard]] QStringList get_repertoire_list();
+    public slots:
+        void saveLoadedRepertoire() const;
 
-    Models::Repertoire get_current_repertoire() { return m_current_repertoire; }
+        void loadRepertoire(const QString &name);
 
-    void load_repertoire(const QString &name);
+        void onRepertoireListChanged();
 
-public slots:
-    bool saveRepertoire(const Models::Repertoire &rep);
+    signals:
+        void repertoireListChanged();
 
-    Models::Repertoire getRepertoire(const QString &name);
+        void repertoireLoaded();
 
-signals:
-    void repertoireListChanged();
+    private:
+        void initConnections();
 
-    void repertoireChanged(const QString &name);
+        RepertoirePersistence &m_persistence;
+        Domain::Types::Repertoire::RepertoireData m_current_repertoire;
 
-    void newRepertoireLoaded();
-
-    void error(const QString &message);
-
-private slots:
-    void onDirectoryChanged();
-
-private:
-    static QString getRepoDir();
-
-    static QString getRepertoireFilePath(const QString &name);
-
-    void updateRepertoireList();
-
-    Models::Repertoire read_repertoire_file(const QString &name);
-
-    Models::Repertoire m_current_repertoire;
-
-    QHash<QString, Models::Repertoire> m_cached_repertoires;
-    QStringList m_repertoire_title_list;
-
-    QFileSystemWatcher m_watcher;
-};
+        QStringList m_repertoire_title_list;
+    };
+}
 
 
 #endif //OPENINGSERVICE_H

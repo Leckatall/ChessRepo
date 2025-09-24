@@ -6,8 +6,8 @@ add_library(chess_presentation STATIC
     # Models
     models/tablemodel.h
     models/tablemodel.cpp
-#    models/chessboard/board_tblmodel.h
-#    models/chessboard/board_tblmodel.cpp
+    models/chessboard/board_tblmodel.h
+    models/chessboard/board_tblmodel.cpp
     models/chessboard/board_wrapper.cpp
     models/chessboard/board_wrapper.h
     models/chessboard/board_proxytblmodel.cpp
@@ -24,8 +24,10 @@ add_library(chess_presentation STATIC
     viewmodels/explorer_viewmodel.h
         viewmodels/repertoire_viewmodel.cpp
         viewmodels/repertoire_viewmodel.h
-#        viewmodels/board_table_viewmodel.cpp
-#        viewmodels/board_table_viewmodel.h
+        viewmodels/board_table_viewmodel.cpp
+        viewmodels/board_table_viewmodel.h
+        viewmodels/repertoire_selection_viewmodel.cpp
+        viewmodels/repertoire_selection_viewmodel.h
 )
 
 target_link_libraries(chess_presentation PUBLIC

@@ -26,7 +26,9 @@ namespace View::Features::Explorer {
     void ExplorerTable::initLayout() {
         // ReSharper disable once CppDFAMemoryLeak
         const auto layout = new QVBoxLayout(this);
+        m_tblView->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::MinimumExpanding);
         layout->addWidget(m_tblView);
+        m_current_pos_label->setSizePolicy(QSizePolicy::MinimumExpanding, QSizePolicy::Minimum);
         layout->addWidget(m_current_pos_label);
         setLayout(layout);
     }

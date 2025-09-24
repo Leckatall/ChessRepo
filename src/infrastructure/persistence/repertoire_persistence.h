@@ -38,7 +38,6 @@ namespace Infrastructure::Features::Repertoire {
     public slots:
         void onDirectoryChanged();
 
-
     signals:
         void repertoireListChanged();
 

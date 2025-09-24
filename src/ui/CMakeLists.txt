@@ -1,13 +1,13 @@
 # UI Layer Library
 set(CHESSBOARD_COMPONENTS
-#        components/chessboard/square_delegate.cpp
-#        components/chessboard/square_delegate.h
-#        components/chessboard/board_tblview.cpp
-#        components/chessboard/board_tblview.h
-#        components/chessboard/arrowoverlay.cpp
-#        components/chessboard/arrowoverlay.h
-#        components/chessboard/board_view.cpp
-#        components/chessboard/board_view.h
+        components/chessboard/square_delegate.cpp
+        components/chessboard/square_delegate.h
+        components/chessboard/board_tblview.cpp
+        components/chessboard/board_tblview.h
+        components/chessboard/arrowoverlay.cpp
+        components/chessboard/arrowoverlay.h
+        components/chessboard/board_view.cpp
+        components/chessboard/board_view.h
         components/chessboard/board_graphics_view.cpp
         components/chessboard/board_graphics_view.h
         components/chessboard/board_graphics_scene.cpp
@@ -32,7 +32,9 @@ set(OTHER_COMPONENTS
         components/repertoire_tree.h
         components/repertoire/move_card.cpp
         components/repertoire/move_card.h
-        components/repertoire/moves_deck.cpp)
+        components/repertoire/moves_deck.cpp
+        components/mainwindow/menu_bar.h
+)
 set(COMMON_COMPONENTS
         components/common/stats_painter.cpp
         components/common/stats_painter.h)
@@ -43,12 +45,14 @@ set(COMPONENTS
         ${OTHER_COMPONENTS}
         ${COMMON_COMPONENTS})
 set(WIDGETS
-#        compound_widgets/chessboard_table.cpp
-#        compound_widgets/chessboard_table.h
+        compound_widgets/chessboard_table.cpp
+        compound_widgets/chessboard_table.h
         compound_widgets/explorer_table.cpp
         compound_widgets/explorer_table.h
         compound_widgets/repertoire_manager_widget.cpp
-        compound_widgets/repertoire_manager_widget.h)
+        compound_widgets/repertoire_manager_widget.h
+        compound_widgets/repertoire_selection_widget.cpp
+        compound_widgets/repertoire_selection_widget.h)
 
 add_library(chess_ui STATIC
         ${COMPONENTS}

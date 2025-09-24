@@ -16,6 +16,9 @@ namespace View::Features::Repertoire {
     public:
         explicit RepertoireManagerWidget(Presentation::Features::Repertoire::RepertoireViewModel* view_model, QWidget *parent = nullptr);
 
+        signals:
+        void addLineRequested();
+
     private:
         void initLayout();
         void initConnections();

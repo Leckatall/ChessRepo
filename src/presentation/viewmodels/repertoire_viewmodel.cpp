@@ -17,7 +17,7 @@ namespace Presentation::Features::Repertoire {
         const Domain::Types::Repertoire::RepertoireData &repertoire) {
         m_repertoire = repertoire;
         onPositionChanged(Domain::Types::FEN::startingPosition());
-        // emit repertoireChanged(m_repertoire); no one cares abt that only that the next movelist has changed
+        emit repertoireChanged();
     }
 
     bool RepertoireViewModel::addNextMove(const Domain::Types::MoveData &move) {
