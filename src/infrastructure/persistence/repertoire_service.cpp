@@ -3,6 +3,7 @@
 //
 
 #include "repertoire_service.h"
+#include <QDebug>
 
 
 namespace Infrastructure::Features::Repertoire {
@@ -18,6 +19,25 @@ namespace Infrastructure::Features::Repertoire {
     void RepertoireService::loadRepertoire(const QString &name) {
         m_current_repertoire = m_persistence.get_repertoire(name.toStdString());
         emit repertoireLoaded();
+    }
+
+    void RepertoireService::editHeader(Domain::Types::Repertoire::Header new_header) {
+        if (m_current_repertoire.header.name != new_header.name) {
+            qDebug() << "Cannot change header name";
+            return;
+        }
+        m_current_repertoire.header = new_header;
+        saveLoadedRepertoire();
+    }
+
+    void RepertoireService::createRepertoire(Domain::Types::Repertoire::Header new_rep_header) const {
+        m_persistence.save_repertoire({
+                                          new_rep_header,
+                                          Domain::Types::PositionGraph(
+                                              Domain::Types::PositionKey(Domain::Types::FEN::startingPosition()),
+                                              {})
+                                      },
+                                      false);
     }
 
     void RepertoireService::onRepertoireListChanged() {

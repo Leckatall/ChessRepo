@@ -6,9 +6,11 @@
 #define CHESSREPO_TEST_REPERTOIRE_SELECTION_VIEWMODEL_H
 
 #include <QtTest/QtTest>
+#include <qtemporarydir.h>
 
 #include "persistence/repertoire_persistence.h"
 #include "viewmodels/repertoire_selection_viewmodel.h"
+#include "../../test_utils.h"
 
 namespace Test {
     class TestRepertoireSelectionViewmodel : public QObject {
@@ -19,21 +21,23 @@ namespace Test {
 
         void cleanupTestCase();
 
-        void init();
-
-        void cleanup();
-
+        // void init();
+        //
+        // void cleanup();
 
         void testRepertoireListLoading();
         void testRepertoireSelectionUpdates();
-        void testRepertoireSavePropogation();
-        void testRepertoireDeletion();
+        // void testRepertoireSavePropogation(); ???
+        //void testRepertoireDeletion(); TODO
         void testNewRepertoireCreation();
         void testEditRepertoire();
 
     private:
-        Infrastructure::Features::Repertoire::RepertoirePersistence m_repertoirePersistence;
-        Presentation::Features::Persistence::RepertoireSelectionViewmodel m_viewmodel;
+        Domain::Types::Repertoire::RepertoireData testRepertoireData;
+        QTemporaryDir *temp_dir;
+        Infrastructure::Features::Repertoire::RepertoirePersistence* m_repertoirePersistence;
+        Infrastructure::Features::Repertoire::RepertoireService *m_repertoireService;
+        Presentation::Features::Persistence::RepertoireSelectionViewmodel* m_viewmodel;
     };
 }
 

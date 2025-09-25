@@ -42,7 +42,7 @@ void TestRepertoirePersistence::testSaveAndLoad() {
 
 void TestRepertoirePersistence::testCaching() {
     // Test that repeated loads use cache
-    auto repertoire = Test::Utils::createTestRepertoire();
+    auto repertoire = Utils::createTestRepertoire();
 
     persistence->save_repertoire(repertoire);
 

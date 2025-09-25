@@ -49,6 +49,10 @@ create_test(test_resources
 create_test(test_square_primitive
         unit/domain/test_square_primitive.cpp
         unit/domain/test_square_primitive.h)
+
+create_test(test_repertoire_selection_viewmodel
+        unit/presentation/test_repertoire_selection_viewmodel.cpp
+        unit/presentation/test_repertoire_selection_viewmodel.h)
 #
 ## Integration Tests
 #create_test(test_integration

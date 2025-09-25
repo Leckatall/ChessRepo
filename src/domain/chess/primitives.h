@@ -33,6 +33,7 @@ namespace Domain::Types::Chess {
         operator bool() const {
             return m_id != 0;
         }
+        operator std::string() const { return static_cast<char>('a' + (file() - 1)) + std::to_string(rank());}
         Square(const chess::Square square) { m_id = square.index();}
         chess::Square toChessLib() const {return chess::Square(chess::File(file()), chess::Rank(rank()));}
     };
@@ -43,6 +44,10 @@ namespace Domain::Types::Chess {
         Move(const Square &from, const Square &to): from(from), to(to) {
         }
         chess::Move toChessLib() const { return chess::Move::make(from.toChessLib(), to.toChessLib());}
+        // UCIMove toUCI() const {
+        //     // Warning doesn't handle promotions just using for testing
+        //     return UCIMove(std::string(from) + std::string(to));
+        // }
     };
 }
 namespace std {

@@ -7,7 +7,7 @@
 
 namespace Presentation::Features::Persistence {
     RepertoireSelectionViewmodel::RepertoireSelectionViewmodel(
-        RepertoireService &persistence, QObject *parent)
+        Infrastructure::Features::Repertoire::RepertoireService &persistence, QObject *parent)
         : QObject(parent),
           m_service(persistence) {
         initConnections();
@@ -16,26 +16,35 @@ namespace Presentation::Features::Persistence {
 
     }
 
-    QStringList RepertoireSelectionViewmodel::loadRepertoireList() const {
-        QStringList rep_list;
-        for (const auto &rep_name: m_service.get_repertoire_list()) {
-            rep_list.append(QString::fromStdString(rep_name));
-        }
-        return rep_list;
+    QStringList RepertoireSelectionViewmodel::getRepertoireList() const {
+        return m_service.getRepertoireList();
     }
 
-    Domain::Types::Repertoire::RepertoireData RepertoireSelectionViewmodel::getRepertoireData(
-        const QString &rep_name) const {
-        return m_service.get_repertoire(rep_name.toStdString());
+    Domain::Types::Repertoire::RepertoireData RepertoireSelectionViewmodel::getRepertoireData() {
+        auto* rep = m_service.getRepertoire();
+        if (rep == nullptr) {
+            qDebug() << "No repertoire loaded";
+            return {};
+        }
+        return *m_service.getRepertoire();
     }
+
 
     bool RepertoireSelectionViewmodel::deleteRepertoire(const QString &rep_name) const {
         qDebug() << "Not implemented: RepertoireSelectionViewmodel::deleteRepertoire";
         return false;
     }
 
-    void RepertoireSelectionViewmodel::saveRepertoire(Domain::Types::Repertoire::RepertoireData repertoire) const {
-        m_service.save_repertoire(repertoire, true);
+    void RepertoireSelectionViewmodel::saveRepertoire() const {
+        m_service.saveLoadedRepertoire();
     }
 
+    void RepertoireSelectionViewmodel::editRepertoireHeader(const Domain::Types::Repertoire::Header &new_header) const {
+        m_service.editHeader(new_header);
+    }
+
+
+    void RepertoireSelectionViewmodel::createNewRepertoire(const Domain::Types::Repertoire::Header &new_header) const {
+        m_service.createRepertoire(new_header);
+    }
 }

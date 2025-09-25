@@ -14,25 +14,33 @@ namespace Presentation::Features::Persistence {
         Q_OBJECT
 
     public:
-        explicit RepertoireSelectionViewmodel(RepertoireService &persistence,
+        explicit RepertoireSelectionViewmodel(Infrastructure::Features::Repertoire::RepertoireService &persistence,
                                               QObject *parent = nullptr);
 
     public slots:
-        [[nodiscard]] QStringList loadRepertoireList() const;
+        [[nodiscard]] QStringList getRepertoireList() const;
 
-        [[nodiscard]] Domain::Types::Repertoire::RepertoireData getRepertoireData(const QString &rep_name) const;
-        void selectRepertoire(const QString &rep_name) {m_service.load_repertoire(rep_name);}
+        [[nodiscard]] Domain::Types::Repertoire::RepertoireData getRepertoireData();
 
-        [[nodiscard]] QString getSelectedRepertoireName() const {return m_service.get_current_repertoire().header.name;}
+        void selectRepertoire(const QString &rep_name) const {
+            m_service.saveLoadedRepertoire();
+            m_service.loadRepertoire(rep_name);
+        }
+
+        [[nodiscard]] QString getSelectedRepertoireName() const {
+            return m_service.getRepertoire()->header.name.data();
+        }
 
         [[nodiscard]] bool deleteRepertoire(const QString &rep_name) const;
 
-        void saveRepertoire(Domain::Types::Repertoire::RepertoireData repertoire) const;
+        void saveRepertoire() const;
+        void editRepertoireHeader(const Domain::Types::Repertoire::Header &new_header) const;
+        void createNewRepertoire(const Domain::Types::Repertoire::Header &new_header) const;
 
     private:
         void initConnections();
 
-        RepertoireService &m_service;
+        Infrastructure::Features::Repertoire::RepertoireService &m_service;
     };
 }
 

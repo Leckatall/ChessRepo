@@ -7,40 +7,38 @@
 #include <QGridLayout>
 #include <QLabel>
 
+#include "components/createrepomodal.h"
+
 namespace View::Features::Persistence {
     RepertoireSelectionWidget::RepertoireSelectionWidget(
     Presentation::Features::Persistence::RepertoireSelectionViewmodel *viewmodel, QWidget *parent)
     : QFrame(parent),
       m_viewmodel(viewmodel) {
-        m_repDescriptionEdit = new QTextEdit(this);
-        m_repForWhiteCheckBox = new QCheckBox(this);
         m_selectedRepertoireComboBox = new QComboBox(this);
-        m_selectedRepertoireComboBox->addItems(m_viewmodel->loadRepertoireList());
-        m_selectedRepertoireComboBox->setPlaceholderText("Select Repertoire");
-        m_loadRepBtn = new QPushButton("Load Repertoire", this);
+        m_selectedRepertoireComboBox->addItems(m_viewmodel->getRepertoireList());
+        m_selectedRepertoireComboBox->setPlaceholderText("Select a Repertoire");
         m_deleteRepBtn = new QPushButton("Delete Repertoire", this);
         m_saveRepBtn = new QPushButton("Save Repertoire", this);
+        m_editRepHeadBtn = new QPushButton("Edit Header", this);
+        m_newRepBtn = new QPushButton("New Repertoire", this); //TODO: just put this as an option of CB
         initLayout();
         initConnections();
     }
 
     void RepertoireSelectionWidget::saveCurrentRepertoire() const {
-        Domain::Types::Repertoire::RepertoireData repertoire = m_viewmodel->getRepertoireData(m_viewmodel->getSelectedRepertoireName());
-        repertoire.header.description = m_repDescriptionEdit->toPlainText().toStdString();
-        repertoire.header.forWhite = m_repForWhiteCheckBox->isChecked();
-        m_viewmodel->saveRepertoire(repertoire);
+        m_viewmodel->saveRepertoire();
     }
 
     void RepertoireSelectionWidget::initLayout() {
         // ReSharper disable once CppDFAMemoryLeak
         auto *layout = new QGridLayout(this);
-        layout->addWidget(new QLabel("Repertoire Selection", this), 0, 0);
-        layout->addWidget(m_selectedRepertoireComboBox, 1, 0);
+        layout->addWidget(new QLabel("Repertoire Selection", this), 0, 0, 1, 3, Qt::AlignCenter);
+        layout->addWidget(m_selectedRepertoireComboBox, 1, 1);
         layout->addWidget(m_saveRepBtn, 2, 0);
-        layout->addWidget(m_loadRepBtn, 2, 1);
         layout->addWidget(m_deleteRepBtn, 2, 2);
-        layout->addWidget(m_repForWhiteCheckBox, 2, 3);
-        layout->addWidget(m_repDescriptionEdit, 3, 0);
+        layout->addWidget(m_editRepHeadBtn, 3, 0);
+        layout->addWidget(m_newRepBtn, 3, 1);
+
         this->setLayout(layout);
     }
 
@@ -51,4 +49,18 @@ namespace View::Features::Persistence {
             this, &RepertoireSelectionWidget::saveCurrentRepertoire);
     }
 
+    void RepertoireSelectionWidget::editRepertoireHeader() {
+        auto rep_data = m_viewmodel->getRepertoireData();
+        Repertoire::RepertoireHeaderModal modal(rep_data.header, this);
+        if (modal.exec() == QDialog::Accepted) {
+            m_viewmodel->editRepertoireHeader(modal.getHeader());
+        }
+    }
+
+    void RepertoireSelectionWidget::createNewRepertoire() {
+        Repertoire::RepertoireHeaderModal modal(this);
+        if (modal.exec() == QDialog::Accepted) {
+            m_viewmodel->createNewRepertoire(modal.getHeader());
+        }
+    }
 }

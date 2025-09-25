@@ -12,28 +12,34 @@
 #include <QDialogButtonBox>
 #include <QFormLayout>
 
-#include "models/datatypes.h"
+#include "repertoire/repertoire.h"
 
-class CreateRepoModal: public QDialog {
-Q_OBJECT
-    // TODO: Don't allow creation of repos with names that already exist
-public:
-    explicit CreateRepoModal(QWidget* parent = nullptr);
+namespace View::Features::Repertoire {
+    class RepertoireHeaderModal: public QDialog {
+        Q_OBJECT
+            // TODO: Don't allow creation of repos with names that already exist
+        public:
+        explicit RepertoireHeaderModal(QWidget* parent = nullptr);
+        explicit RepertoireHeaderModal(const Domain::Types::Repertoire::Header &rep_header, QWidget* parent = nullptr);
 
-    Models::Repertoire getRepertoire() const;
+        [[nodiscard]] Domain::Types::Repertoire::Header getHeader() const;
 
-private slots:
-    void validateForm() const;
+    private slots:
+        void validateForm() const;
 
-private:
-    void initUI();
-    QFormLayout m_layout;
-    QLineEdit m_name_edit;
-    QTextEdit m_desc_edit;
-    QLineEdit m_auth_edit;
-    QCheckBox m_for_white_check_box;
-    QDialogButtonBox m_button_box;
-};
+    private:
+        void initUI();
+
+        std::optional<Domain::Types::Repertoire::Header> m_rep_header;
+        QFormLayout m_layout;
+        QLineEdit m_name_edit;
+        QTextEdit m_desc_edit;
+        QLineEdit m_auth_edit;
+        QCheckBox m_for_white_check_box;
+        QDialogButtonBox m_button_box;
+    };
+}
+
 
 
 

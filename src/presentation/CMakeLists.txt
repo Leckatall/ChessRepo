@@ -14,8 +14,8 @@ add_library(chess_presentation STATIC
     models/chessboard/board_proxytblmodel.h
     models/explorer_tblmodel.cpp
     models/explorer_tblmodel.h
-    models/repertoires/repotreemodel.cpp
-    models/repertoires/repotreemodel.h
+#    models/repertoires/repotreemodel.cpp
+#    models/repertoires/repotreemodel.h
 
     # ViewModels
     viewmodels/board_viewmodel.cpp

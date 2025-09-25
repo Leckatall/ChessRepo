@@ -25,14 +25,15 @@ namespace View::Features::Persistence {
     private:
         void initLayout();
         void initConnections();
+        void editRepertoireHeader();
+        void createNewRepertoire();
         Presentation::Features::Persistence::RepertoireSelectionViewmodel* m_viewmodel;
-        QLineEdit* m_repNameEdit;
-        QTextEdit* m_repDescriptionEdit;
-        QCheckBox* m_repForWhiteCheckBox;
         QComboBox* m_selectedRepertoireComboBox;
         QPushButton* m_loadRepBtn;
         QPushButton* m_deleteRepBtn;
         QPushButton* m_saveRepBtn;
+        QPushButton* m_editRepHeadBtn;
+        QPushButton* m_newRepBtn;
     };
 }
 

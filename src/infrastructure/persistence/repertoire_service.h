@@ -7,7 +7,6 @@
 
 #include <QObject>
 #include <qtmetamacros.h>
-#include <QtCore>
 
 #include "repertoire_persistence.h"
 
@@ -30,6 +29,11 @@ namespace Infrastructure::Features::Repertoire {
         void saveLoadedRepertoire() const;
 
         void loadRepertoire(const QString &name);
+
+        void editHeader(Domain::Types::Repertoire::Header new_header);
+
+        void createRepertoire(Domain::Types::Repertoire::Header new_rep_header) const;
+
 
         void onRepertoireListChanged();
 
