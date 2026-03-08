@@ -9,16 +9,17 @@
 #include <utility>
 
 #include "board_wrapper.h"
+#include "chess/board.h"
 #include "domain/types/uci_move.h"
 #include "models/datatypes.h"
 
 struct SquareData {
-    int piece;
+    Domain::Types::Chess::PieceType piece;
     bool isLight;
     bool isSelected = false;
     bool isHighlighted = false;
 
-    explicit SquareData(const chess::Piece p = {}, const bool l = false, const bool s = false, const bool h = false)
+    explicit SquareData(const Domain::Types::Chess::PieceType p = {}, const bool l = false, const bool s = false, const bool h = false)
         : piece(p),
           isLight(l),
           isSelected(s),
@@ -34,14 +35,17 @@ namespace chessboard {
         Q_OBJECT
 
     public:
-        explicit TblModel(QObject *parent = nullptr)
+        explicit TblModel(const Domain::Features::Chess::Board &board, QObject *parent = nullptr)
             : QAbstractTableModel(parent),
-              m_board(chess::Board()) {
+              m_board(board) {
         }
 
         // Helper methods
         [[nodiscard]] QModelIndex square_to_index(const chess::Square &square) const {
             return index(square.rank(), square.file());
+        }
+        [[nodiscard]] static chess::Square index_to_square(const QModelIndex &index) {
+            return {index.row() * 8 + index.column()};
         }
 
         // Get table info
@@ -59,37 +63,21 @@ namespace chessboard {
         // Set table info
         bool setData(const QModelIndex &index, const QVariant &value, int role = Qt::EditRole) override;
 
-        // Data to get from the board
-        [[nodiscard]] QSet<QModelIndex> get_legal_targets_from(const QModelIndex &index) const;
-
         [[nodiscard]] bool square_selected() const { return m_selected_square.isValid(); }
-        [[nodiscard]] QString get_fen() const { return m_board.fen(); }
+        [[nodiscard]] QModelIndex get_selected_square() const { return m_selected_square; }
 
-        // Actions to perform on the board
         void try_select(const QModelIndex &index);
 
         void clear_selection();
 
-        void try_move_to(const QModelIndex &index);
-
-        void make_move(Models::Move m);
-
-        void undo_move();
-
         void begin_update() { beginResetModel(); }
         void end_update() { endResetModel(); }
 
-        QList<Models::Move> get_history() {
-            return m_board.get_history();
-        }
-
     public slots:
-        void makeUciMove(const Domain::Types::UCIMove &uci);
+
+        void set_state(const Domain::Features::Chess::Board &board);
 
         void emit_update();
-
-    signals:
-        void boardUpdated();
 
     private:
         void select(const QModelIndex &index);
@@ -98,12 +86,8 @@ namespace chessboard {
 
         void deselect(const QModelIndex &index);
 
-        void make_move(const QModelIndex &from, const QModelIndex &to);
 
-        template<typename... Args>
-        void makeMove(Args &&... args);
-
-        Board m_board;
+        Domain::Features::Chess::Board m_board;
 
         QModelIndex m_selected_square = {};
         QSet<QModelIndex> m_target_squares;

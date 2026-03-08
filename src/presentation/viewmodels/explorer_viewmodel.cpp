@@ -41,6 +41,7 @@ namespace Presentation::Features::Explorer {
     }
 
     void ExplorerViewModel::setFen(const Domain::Types::FEN &fen) {
+        qDebug() << "setFen called with fen: " << QString::fromStdString(fen);
         if (m_fen == fen) {
             qDebug() << "Cancelled emit bc fen unchanged";
             return;

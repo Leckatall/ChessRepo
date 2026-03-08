@@ -34,9 +34,9 @@ namespace chessboard {
             return {};
         }
         if (role == Qt::DisplayRole) {
-            const auto square = Board::square(index);
+            const auto square = index_to_square(index);
             return QVariant::fromValue(SquareData(
-                m_board.at(square),
+                m_board.piece_at(square),
                 square.is_light(),
                 m_selected_square == index,
                 m_target_squares.contains(index)));
@@ -48,7 +48,7 @@ namespace chessboard {
 
     Qt::ItemFlags TblModel::flags(const QModelIndex &index) const {
         Qt::ItemFlags flags = Qt::ItemIsEnabled;
-        if (m_board.is_enabled_square(index)) {
+        if (m_board.is_enabled_square(index_to_square(index))) {
             flags = flags | Qt::ItemIsSelectable | Qt::ItemIsDragEnabled;
         } else {
             flags = flags | Qt::ItemIsDropEnabled;
@@ -56,21 +56,17 @@ namespace chessboard {
         return flags;
     }
 
-    QSet<QModelIndex> TblModel::get_legal_targets_from(const QModelIndex &index) const {
-        QSet<QModelIndex> targets = {};
-        for (auto square: m_board.get_legal_targets_for(index)) {
-            targets << square_to_index(square);
-        }
-        return targets;
+    void TblModel::set_state(const Domain::Features::Chess::Board &board) {
+        m_board = board;
+        emit_update();
     }
 
     void TblModel::emit_update() {
         emit dataChanged(createIndex(0, 0), createIndex(7, 7));
-        emit boardUpdated();
     }
 
     void TblModel::try_select(const QModelIndex &index) {
-        if (m_board.is_enabled_square(index)) {
+        if (m_board.is_enabled_square(index_to_square(index))) {
             select(index);
         }
     }
@@ -84,8 +80,8 @@ namespace chessboard {
 
         // Target all the legal target squares
         m_target_squares.clear();
-        for (auto target_square: m_board.get_legal_targets_for(index)) {
-            target(square_to_index(target_square));
+        for (auto target_square: m_board.get_legal_targets_from(index_to_square(index))) {
+            target(square_to_index(target_square.toChessLib()));
         }
     }
 
@@ -112,37 +108,4 @@ namespace chessboard {
         m_target_squares = {};
     }
 
-    void TblModel::try_move_to(const QModelIndex &index) {
-        if (m_target_squares.contains(index)) {
-            make_move(m_selected_square, index);
-        }
-    }
-
-    template<typename... Args>
-    void TblModel::makeMove(Args &&... args) {
-        if (m_board.make_move(std::forward<Args>(args)...)) {
-            emit_update();
-        }
-    }
-
-    void TblModel::makeUciMove(const Domain::Types::UCIMove &uci) {
-        // UCI format is like "e2e4" or "e7e8q" for promotion
-        qDebug() << "Make UCI move in Model: " << uci;
-        const auto move = chess::uci::uciToMove(m_board, uci);
-        makeMove(move);
-    }
-
-    void TblModel::make_move(Models::Move m) {
-        makeMove(m);
-    }
-
-    void TblModel::make_move(const QModelIndex &from, const QModelIndex &to) {
-        makeMove(from, to);
-    }
-
-    void TblModel::undo_move() {
-        if(m_board.undo_last_move()) {
-            emit_update();
-        }
-    }
 }

@@ -32,7 +32,7 @@ namespace Domain::Features::Chess {
             const auto square = chess::Square(i);
             const auto piece = at(square);
             if (piece != chess::Piece::NONE) {
-                pieces.push_back({lib_to_domain[std::string(piece)], {square}});
+                pieces.push_back({Types::Chess::PieceTypeFactory(std::string(piece)), {square}});
             }
         }
         return pieces;

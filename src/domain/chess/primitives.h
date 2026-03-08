@@ -10,7 +10,7 @@
 
 namespace Domain::Types::Chess {
     struct Square {
-        int m_id = 64; // NULL MOVE
+        int m_id = 64; // NULL SQUARE
 
         int rank() const {return (m_id / 8) + 1;}
 
@@ -20,6 +20,8 @@ namespace Domain::Types::Chess {
 
         Square(const int file, const int rank): m_id(((rank - 1) * 8) + (file - 1)) {
         }
+
+        Square(const chess::Square square) { m_id = square.index();}
 
         explicit Square(const int id): m_id(id) {
         }
@@ -34,8 +36,8 @@ namespace Domain::Types::Chess {
             return m_id != 0;
         }
         operator std::string() const { return static_cast<char>('a' + (file() - 1)) + std::to_string(rank());}
-        Square(const chess::Square square) { m_id = square.index();}
-        chess::Square toChessLib() const {return chess::Square(chess::File(file()), chess::Rank(rank()));}
+
+        chess::Square toChessLib() const {return chess::Square(chess::File(file() - 1), chess::Rank(rank() - 1));}
     };
     struct Move {
         Square from;

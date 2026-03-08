@@ -18,8 +18,6 @@ namespace Presentation::Features::Board {
     public:
         explicit BoardTableViewModel(Domain::Features::Chess::Board &board, QObject *parent = nullptr);
 
-        [[nodiscard]] QString get_current_fen() const;
-
         chessboard::ProxyTblModel *boardProxyModel() { return &m_boardProxyModel; }
 
     public slots:
@@ -27,16 +25,12 @@ namespace Presentation::Features::Board {
 
         void handleSquareClicked(const QModelIndex &proxy_index);
 
-        void updateMoveHistory();
-
         void flipBoard();
 
         void undoMove();
 
         signals:
             void boardChanged(const Domain::Types::FEN &fen);
-
-        void boardHistoryChanged(const QString &pgn);
 
     private:
         void initConnections();

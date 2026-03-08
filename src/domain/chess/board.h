@@ -15,26 +15,12 @@
 
 namespace Domain::Features::Chess {
     class Board : chess::Board {
-        std::unordered_map<std::string, Types::Chess::PieceType> lib_to_domain{
-        {"P", Types::Chess::PieceType::WhitePawn},
-            {"N", Types::Chess::PieceType::WhiteKnight},
-            {"B", Types::Chess::PieceType::WhiteBishop},
-            {"R", Types::Chess::PieceType::WhiteRook},
-            {"Q", Types::Chess::PieceType::WhiteQueen},
-            {"K", Types::Chess::PieceType::WhiteKing},
-            {"p", Types::Chess::PieceType::BlackPawn},
-            {"n", Types::Chess::PieceType::BlackKnight},
-            {"b", Types::Chess::PieceType::BlackBishop},
-            {"r", Types::Chess::PieceType::BlackRook},
-            {"q", Types::Chess::PieceType::BlackQueen},
-            {"k", Types::Chess::PieceType::BlackKing},
-            {"", Types::Chess::PieceType::None}
-        };
-    public:
-        Board(){chess::Board(), m_legal_moves = {}; update_legal_moves();}
 
-        explicit Board(const chess::Board &new_board) : chess::Board(new_board) {
-        }
+    public:
+        Board() {m_legal_moves = {}; update_legal_moves();}
+
+        // explicit Board(const chess::Board &new_board) : chess::Board(new_board) {
+        // }
 
         bool playMove(const chess::Move &move);
         bool playMove(const Types::UCIMove &move) { return playMove(chess::uci::uciToMove(*this, move));}
@@ -46,7 +32,9 @@ namespace Domain::Features::Chess {
 
         [[nodiscard]] std::unordered_set<Types::Chess::Square>
         get_legal_targets_from(const Types::Chess::Square &square) const;
-
+        Types::Chess::PieceType piece_at(const Types::Chess::Square &square) const {
+            return Types::Chess::PieceTypeFactory(std::string(at(square.toChessLib())));
+        }
         [[nodiscard]] bool is_enabled_square(const Types::Chess::Square &square) const;
         std::vector<Types::Chess::PieceData> getAllPieces();
 
@@ -56,7 +44,7 @@ namespace Domain::Features::Chess {
         bool undo_last_move() {if (m_move_stack.empty()) { return false; } return undo_move(m_move_stack.top());}
 
     private:
-        // Move history must be stored in ches slib format as the same Move object can only undo itself
+        // Move history must be stored in chess lib format as the same Move object can only undo itself
         bool undo_move(const chess::Move &m);
         void update_legal_moves();
 
