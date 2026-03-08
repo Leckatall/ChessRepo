@@ -18,15 +18,12 @@ namespace Domain::Explorer {
     struct IExplorerService {
         virtual ~IExplorerService() = default;
 
-        // async API options — pick one pattern for your app
-        // 1) Callback-based
         virtual void fetchOpeningData(const Types::FEN& fen,
                                       std::optional<Types::UCIMove> play,
                                       std::function<void(const Types::PositionStats&,
                                                          const std::vector<Types::PositionStats>&)> onSuccess,
                                       std::function<void(std::string)> onError) = 0;
 
-        // or 2) Return a task/future/promise if you use such infra
     };
 
 }

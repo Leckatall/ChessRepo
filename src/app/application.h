@@ -1,46 +1,46 @@
+// //
+// // Created by Lecka on 11/06/2025.
+// //
 //
-// Created by Lecka on 11/06/2025.
+// #ifndef APPLICATION_H
+// #define APPLICATION_H
+// #include <qtmetamacros.h>
+// #include <QWidget>
+// #include <QMainWindow>
 //
-
-#ifndef APPLICATION_H
-#define APPLICATION_H
-#include <qtmetamacros.h>
-#include <QWidget>
-#include <QMainWindow>
-
-#include "router.h"
-#include "controllers/board_controller.h"
-#include "controllers/explorer_controller.h"
-#include "controllers/repertoire_list_controller.h"
-#include "infrastructure/explorer/lichess_explorer_service.h"
-
-namespace application {
-    class Application : public QObject {
-        Q_OBJECT
-
-    public:
-        explicit Application();
-
-        void start() const;
-
-    private slots:
-        void updatePage(application::Page page);
-
-    private:
-        void addView(Page page, Controller *controller);
-
-        void initConnections();
-
-        QMainWindow *m_window;
-        Router *m_router;
-
-        RepertoireService m_repertoireService;
-        Infrastructure::Features::Explorer::LichessExplorerService m_lichessApi;
-
-        QMap<Page, Controller *> m_controllers;
-        chessboard::Controller *m_board_controller;
-        Presentation::Features::Explorer::ExplorerViewModel* m_explorer;
-    };
-}
-
-#endif //APPLICATION_H
+// #include "router.h"
+// #include "controllers/board_controller.h"
+// #include "controllers/explorer_controller.h"
+// #include "controllers/repertoire_list_controller.h"
+// #include "infrastructure/explorer/lichess_explorer_service.h"
+//
+// namespace application {
+//     class Application : public QObject {
+//         Q_OBJECT
+//
+//     public:
+//         explicit Application();
+//
+//         void start() const;
+//
+//     private slots:
+//         void updatePage(application::Page page);
+//
+//     private:
+//         void addView(Page page, Controller *controller);
+//
+//         void initConnections();
+//
+//         QMainWindow *m_window;
+//         Router *m_router;
+//
+//         RepertoireService m_repertoireService;
+//         Infrastructure::Features::Explorer::LichessExplorerService m_lichessApi;
+//
+//         QMap<Page, Controller *> m_controllers;
+//         chessboard::Controller *m_board_controller;
+//         Presentation::Features::Explorer::ExplorerViewModel* m_explorer;
+//     };
+// }
+//
+// #endif //APPLICATION_H

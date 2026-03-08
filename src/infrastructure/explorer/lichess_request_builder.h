@@ -4,11 +4,13 @@
 
 #ifndef CHESSREPO_LICHESS_REQUEST_BUILDER_H
 #define CHESSREPO_LICHESS_REQUEST_BUILDER_H
+#include <qcoreapplication.h>
 #include <stdexcept>
 #include <string>
 #include <unordered_map>
 
 #include "domain/types/fen.h"
+#include "utils/env_loader.h"
 
 namespace Domain::Types {
     class FEN;
@@ -18,7 +20,9 @@ class QUrl;
 
 namespace Infrastructure::Features::Explorer {
     struct LichessRequestBuilder {
-        const std::string LICHESS_URL = "https://explorer.lichess.ovh/lichess";
+        const std::string LICHESS_URL = "https://explorer.lichess.org/lichess";
+        // Get the API key from the .env file in the application directory
+
 
         enum class ConfigOption {
             Variant,

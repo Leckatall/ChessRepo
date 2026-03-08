@@ -38,8 +38,7 @@ add_executable(myapp
     src/app/app.h
     src/app/models.h
     src/utils/chess.h
-        src/infrastructure/persistence/QJson_parser.cpp
-        src/infrastructure/persistence/QJson_parser.h
+    src/utils/env_loader.h
         resources.qrc
 )
 
@@ -55,6 +54,14 @@ target_link_libraries(myapp PRIVATE
     chess_presentation
     chess_ui
     chess_controllers
+)
+
+add_custom_command(
+    TARGET myapp POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_SOURCE_DIR}/.env
+        $<TARGET_FILE_DIR:myapp>/.env
+    COMMENT "Copying .env to build directory"
 )
 
 # Enable testing

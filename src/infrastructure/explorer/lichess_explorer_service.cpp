@@ -16,6 +16,7 @@ namespace Infrastructure::Features::Explorer {
         : QObject(parent),
           m_net_client(this) {
         initConnections();
+        setAPIKey();
     }
 
     LichessExplorerService::LichessExplorerService(const LichessRequestBuilder::Configs &config, QObject *parent)
@@ -32,6 +33,7 @@ namespace Infrastructure::Features::Explorer {
         }
         QNetworkRequest request(m_request_builer.buildApiUrl(fen));
         request.setHeader(QNetworkRequest::ContentTypeHeader, "application/json");
+        request.setRawHeader("Authorization", ("Bearer " + m_lichess_token).toUtf8());
         QNetworkReply *reply = m_net_client.get(request);
 
         connect(reply, &QNetworkReply::finished,
@@ -54,6 +56,13 @@ namespace Infrastructure::Features::Explorer {
 
     void LichessExplorerService::handleNetworkError(const QString &errorMessage) {
         qDebug() << QString("Network error: %1").arg(errorMessage);
+    }
+
+    void LichessExplorerService::setAPIKey() {
+        const QString envPath = QCoreApplication::applicationDirPath() + "/.env";
+        m_lichess_token = loadEnv(envPath).value("lichessToken");
+        if (m_lichess_token.isEmpty())
+            qFatal("API_KEY not set in .env");
     }
 
     void LichessExplorerService::initConnections() const {

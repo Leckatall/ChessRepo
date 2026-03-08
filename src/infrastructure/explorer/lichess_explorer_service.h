@@ -37,6 +37,10 @@ private slots:
     static void handleNetworkError(const QString &errorMessage);
 
 private:
+
+    void setAPIKey();
+    QString m_lichess_token;
+
     void initConnections() const;
 
     QNetworkAccessManager m_net_client;
